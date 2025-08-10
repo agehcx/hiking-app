@@ -1,4 +1,4 @@
-export function SuggestUnseenCard() {
+export function DiscoverCard() {
   return (
     <div className="rounded-xl border border-[var(--color-border)] bg-white p-6 shadow-sm">
       <h3 className="mb-4 flex items-center gap-2 font-bold">

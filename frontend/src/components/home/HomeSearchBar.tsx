@@ -1,32 +1,64 @@
 "use client";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { Button } from "@/components/ui/Button";
 
 export function HomeSearchBar() {
   const [q, setQ] = useState("");
+  const [loading, setLoading] = useState(false);
   const router = useRouter();
+  
+  const handleSearch = async () => {
+    if (!q.trim()) return;
+    setLoading(true);
+    // Simulate search delay
+    await new Promise(resolve => setTimeout(resolve, 800));
+    router.push(`/plan?q=${encodeURIComponent(q)}`);
+  };
+
+  const handleQuickTag = (tag: string) => {
+    setQ(tag);
+  };
+
   return (
-    <div className="rounded-xl border p-4">
-      <label className="mb-2 block text-sm font-medium text-[var(--color-foreground)]">Search destination</label>
-      <div className="flex gap-2">
+    <div className="rounded-xl border border-[var(--color-border)] bg-gradient-to-br from-white to-[var(--color-primary-25)] p-6 shadow-sm">
+      <div className="mb-4 flex items-center gap-2">
+        <div className="text-2xl">🗺️</div>
+        <h2 className="text-lg font-semibold text-[var(--color-foreground)]">Find your next adventure</h2>
+      </div>
+      
+      <div className="flex gap-3">
         <input
-          className="flex-1 rounded-md border px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-[var(--color-primary-300)]"
-          placeholder="City, park, or trail name"
+          className="flex-1 rounded-lg border border-[var(--color-border)] px-4 py-3 text-sm outline-none transition-all focus:border-[var(--color-primary-300)] focus:ring-2 focus:ring-[var(--color-primary-100)]"
+          placeholder="Search mountains, trails, national parks..."
           value={q}
           onChange={(e) => setQ(e.target.value)}
+          onKeyDown={(e) => e.key === "Enter" && handleSearch()}
         />
-        <button
-          onClick={() => router.push(`/plan?q=${encodeURIComponent(q)}`)}
-          className="rounded-md bg-[var(--color-primary-500)] px-4 py-2 text-sm font-medium text-white hover:bg-[var(--color-primary-600)]"
+        <Button 
+          onClick={handleSearch}
+          variant="primary"
+          size="lg"
+          loading={loading}
+          disabled={!q.trim()}
         >
           Search
-        </button>
+        </Button>
       </div>
-      <div className="mt-3 flex flex-wrap gap-2 text-xs text-[color:var(--color-foreground)/0.8]">
-        <span className="rounded-full border px-2 py-1">Mountains</span>
-        <span className="rounded-full border px-2 py-1">Waterfalls</span>
-        <span className="rounded-full border px-2 py-1">Lakes</span>
-        <span className="rounded-full border px-2 py-1">Forests</span>
+      
+      <div className="mt-4">
+        <p className="mb-2 text-xs font-medium text-[color:var(--color-foreground)/0.7]">Popular categories</p>
+        <div className="flex flex-wrap gap-2">
+          {["Mountains", "Waterfalls", "Lakes", "Forests", "Desert", "Coastal"].map((tag) => (
+            <button
+              key={tag}
+              onClick={() => handleQuickTag(tag)}
+              className="rounded-full border border-[var(--color-border)] bg-white px-3 py-1 text-xs transition-all hover:border-[var(--color-primary-300)] hover:bg-[var(--color-primary-50)]"
+            >
+              {tag}
+            </button>
+          ))}
+        </div>
       </div>
     </div>
   );
