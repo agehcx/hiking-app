@@ -9,7 +9,7 @@ export function ChatPanel() {
   const [messages, setMessages] = useState<Message[]>([
     { 
       role: "assistant", 
-      content: "👋 Hi there! I'm your hiking assistant. Ask me about routes, gear, weather, or anything else for your adventure!", 
+      content: "🏔️ Hi! I'm your wilderness guide AI. I can help with trail recommendations, gear advice, weather warnings, and safety tips for your outdoor adventures!", 
       timestamp: new Date()
     },
   ]);
@@ -34,17 +34,49 @@ export function ChatPanel() {
     // Simulate AI thinking
     await new Promise(resolve => setTimeout(resolve, 1000 + Math.random() * 2000));
     
-    // Generate contextual reply
-    const replies = [
-      `Great question about "${userMsg.content}"! 🎯 For that kind of adventure, I'd suggest starting with a day pack, sturdy boots, and checking weather conditions. Would you like specific gear recommendations?`,
-      `Interesting! 🤔 Based on what you're asking, I'd recommend checking the trail difficulty and bringing extra water. The area you mentioned has some amazing viewpoints. Need route suggestions?`,
-      `Perfect timing to ask! 🌟 For "${userMsg.content}", here's what I'd suggest: Plan for changing weather, inform someone of your route, and consider the season. Want me to check current conditions?`,
-      `Love that you're thinking ahead! 🏔️ That's exactly the kind of planning that makes for safe, amazing trips. Let me share some tips for "${userMsg.content}"...`
-    ];
+    // Generate contextual wilderness reply
+    const generateWildernessReply = (userInput: string) => {
+      const input = userInput.toLowerCase();
+      
+      // Weather-based recommendations
+      if (input.includes('rain') || input.includes('weather')) {
+        return "🌧️ I see rain in the forecast! Pack a waterproof rain jacket, quick-dry pants, and waterproof boot covers. Pro tip: Bring anti-leech socks if you're heading to wet, forested areas. Rain probability is 78% in the next 2 days - consider postponing or choosing a sheltered trail.";
+      }
+      
+      if (input.includes('wet') || input.includes('swamp') || input.includes('jungle')) {
+        return "💧 For wet environments, I highly recommend: Anti-leech socks (essential!), waterproof gaiters, quick-dry hiking pants, and insect repellent with DEET. Choose boots with aggressive tread for muddy terrain. Bring extra dry socks in waterproof bags.";
+      }
+      
+      if (input.includes('mountain') || input.includes('alpine') || input.includes('peak')) {
+        return "⛰️ Mountain adventures require layered clothing! Pack a base layer, insulating mid-layer, and waterproof shell. Bring trekking poles, headlamp, emergency whistle, and extra food. Weather changes rapidly above treeline - always check conditions!";
+      }
+      
+      if (input.includes('desert') || input.includes('hot') || input.includes('sun')) {
+        return "🏜️ Desert hiking essentials: Wide-brimmed hat, UV-protective clothing, sunglasses, and LOTS of water (1L per hour of hiking). Start early morning, avoid midday heat, and bring electrolyte supplements. Sand gaiters prevent debris in boots.";
+      }
+      
+      if (input.includes('gear') || input.includes('pack') || input.includes('equipment')) {
+        return "🎒 Essential wilderness gear checklist: Navigation (map, compass, GPS), sun protection, insulation layers, illumination (headlamp + backup), first aid supplies, fire starter, repair kit, nutrition, hydration, emergency shelter. The 10 essentials save lives!";
+      }
+      
+      if (input.includes('recommend') || input.includes('suggest') || input.includes('where')) {
+        return "🗺️ I'd love to suggest some amazing wilderness spots! Tell me: What's your experience level? Do you prefer forests, mountains, or coastal areas? How many days are you planning? I can recommend trails in Yosemite, Olympic National Park, or hidden gems in the Cascades!";
+      }
+      
+      // Default responses with practical tips
+      const practicalTips = [
+        `Great question about "${userInput}"! � For wilderness adventures, always inform someone of your route and expected return. Check weather conditions and pack accordingly. Need specific gear recommendations for your trip type?`,
+        `Interesting area you're asking about! 🤔 I'd recommend checking trail conditions and seasonal accessibility. Bring layers for temperature changes and extra water. Would you like me to suggest some specific trails or camping spots?`,
+        `Perfect timing to plan ahead! 🌟 For "${userInput}", consider the season - some areas require special permits or have seasonal closures. Pack the 10 essentials and check fire restrictions. Want current weather and trail condition updates?`,
+        `Love the outdoor spirit! 🏔️ Safety first: tell someone your plans, check weather, bring navigation tools. For wet conditions, anti-leech socks are a game-changer! What specific type of wilderness experience are you planning?`
+      ];
+      
+      return practicalTips[Math.floor(Math.random() * practicalTips.length)];
+    };
     
     const reply: Message = { 
       role: "assistant", 
-      content: replies[Math.floor(Math.random() * replies.length)], 
+      content: generateWildernessReply(userMsg.content), 
       timestamp: new Date() 
     };
     
