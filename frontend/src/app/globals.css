@@ -28,8 +28,9 @@
   --color-border: #e3e8e3;
 
   /* fonts */
-  --font-sans: var(--font-inter);
-  --font-heading: var(--font-poppins, var(--font-inter));
+  --font-sans: 'Raleway', ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  --font-heading: 'Raleway', ui-sans-serif, system-ui, sans-serif;
+  --font-raleway: 'Raleway', ui-sans-serif, system-ui, sans-serif;
 }
 
 /* Keep a consistent light theme for brand colors */

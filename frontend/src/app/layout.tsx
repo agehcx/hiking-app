@@ -5,19 +5,19 @@ import "./globals.css";
 import { Navbar } from "@/components/ui/Navbar";
 import { Footer } from "@/components/ui/Footer";
 import { ChatFab } from "@/components/chat/ChatFab";
-import { Inter } from "next/font/google";
-
-const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 
 export const metadata: Metadata = {
-  title: "Hiking App",
-  description: "Offline maps, voice navigation, and live tracking for hikers.",
+  title: "Hikingbros",
+  description: "Hikingbros",
 };
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
-    <html lang="en" className={inter.variable}>
-      <body className="min-h-screen bg-white text-slate-900 antialiased">
+    <html lang="en">
+      <head>
+        <link href="https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet" />
+      </head>
+      <body className="min-h-screen bg-white text-slate-900 antialiased font-raleway">
         <Navbar />
   {children}
   <Footer />

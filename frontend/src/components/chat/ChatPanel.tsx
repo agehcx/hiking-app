@@ -1,4 +1,5 @@
-"use client";
+'use client';
+
 import { FormEvent, useRef, useState } from "react";
 import { Button } from "@/components/ui/Button";
 import { Card } from "@/components/ui/Card";
@@ -9,9 +10,9 @@ export function ChatPanel() {
   const [messages, setMessages] = useState<Message[]>([
     { 
       role: "assistant", 
-      content: "🏔️ Hi! I'm your wilderness guide AI. I can help with trail recommendations, gear advice, weather warnings, and safety tips for your outdoor adventures!", 
-      timestamp: new Date()
-    },
+      content: "🇹🇭 สวัสดี! I'm your Thailand hiking guide AI. I can help with trail recommendations in places like Doi Inthanon, Khao Yai, Erawan Falls, gear advice for tropical conditions, weather warnings, and safety tips for your Thai outdoor adventures!", 
+      timestamp: new Date() 
+    }
   ]);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
@@ -40,27 +41,27 @@ export function ChatPanel() {
       
       // Weather-based recommendations
       if (input.includes('rain') || input.includes('weather')) {
-        return "🌧️ I see rain in the forecast! Pack a waterproof rain jacket, quick-dry pants, and waterproof boot covers. Pro tip: Bring anti-leech socks if you're heading to wet, forested areas. Rain probability is 78% in the next 2 days - consider postponing or choosing a sheltered trail.";
+        return "🌧️ Thailand's rainy season (May-October) requires special preparation! Pack a waterproof rain jacket, quick-dry pants, and waterproof boot covers. Pro tip: Bring anti-leech socks - they're essential in Thai forests! Rain probability is high during monsoon season.";
       }
       
-      if (input.includes('wet') || input.includes('swamp') || input.includes('jungle')) {
-        return "💧 For wet environments, I highly recommend: Anti-leech socks (essential!), waterproof gaiters, quick-dry hiking pants, and insect repellent with DEET. Choose boots with aggressive tread for muddy terrain. Bring extra dry socks in waterproof bags.";
+      if (input.includes('wet') || input.includes('swamp') || input.includes('jungle') || input.includes('forest')) {
+        return "🌿 For Thailand's tropical forests, I highly recommend: Anti-leech socks (absolute must!), waterproof gaiters, quick-dry hiking pants, and DEET-based insect repellent. Watch for leeches especially in places like Khao Yai and Doi Inthanon. Bring extra dry socks in waterproof bags.";
       }
       
-      if (input.includes('mountain') || input.includes('alpine') || input.includes('peak')) {
-        return "⛰️ Mountain adventures require layered clothing! Pack a base layer, insulating mid-layer, and waterproof shell. Bring trekking poles, headlamp, emergency whistle, and extra food. Weather changes rapidly above treeline - always check conditions!";
+      if (input.includes('mountain') || input.includes('doi') || input.includes('peak')) {
+        return "⛰️ Mountain adventures in Thailand (like Doi Inthanon or Doi Suthep) require layered clothing! Mornings can be cool (10-15°C) but afternoons get warm. Bring trekking poles, headlamp, emergency whistle. Weather changes rapidly at altitude - always check conditions!";
       }
       
-      if (input.includes('desert') || input.includes('hot') || input.includes('sun')) {
-        return "🏜️ Desert hiking essentials: Wide-brimmed hat, UV-protective clothing, sunglasses, and LOTS of water (1L per hour of hiking). Start early morning, avoid midday heat, and bring electrolyte supplements. Sand gaiters prevent debris in boots.";
+      if (input.includes('beach') || input.includes('island') || input.includes('koh') || input.includes('hot')) {
+        return "�️ Island/beach hiking essentials for places like Koh Samui or Koh Phangan: Wide-brimmed hat, UV-protective clothing, sunglasses, and LOTS of water (Thailand heat is intense!). Start early morning, avoid 11am-3pm heat, and bring electrolyte supplements.";
       }
       
       if (input.includes('gear') || input.includes('pack') || input.includes('equipment')) {
-        return "🎒 Essential wilderness gear checklist: Navigation (map, compass, GPS), sun protection, insulation layers, illumination (headlamp + backup), first aid supplies, fire starter, repair kit, nutrition, hydration, emergency shelter. The 10 essentials save lives!";
+        return "🎒 Essential gear for Thailand hiking: Navigation tools, sun protection, quick-dry layers, headlamp + backup, first aid (include anti-diarrhea meds), fire starter, repair kit, snacks, hydration, emergency shelter. Don't forget: anti-leech socks, DEET repellent, and electrolyte tablets!";
       }
       
-      if (input.includes('recommend') || input.includes('suggest') || input.includes('where')) {
-        return "🗺️ I'd love to suggest some amazing wilderness spots! Tell me: What's your experience level? Do you prefer forests, mountains, or coastal areas? How many days are you planning? I can recommend trails in Yosemite, Olympic National Park, or hidden gems in the Cascades!";
+      if (input.includes('recommend') || input.includes('suggest') || input.includes('where') || input.includes('thailand')) {
+        return "🇹🇭 Amazing Thailand destinations! For beginners: Erawan Falls (Kanchanaburi) - beautiful 7-tier waterfalls. Intermediate: Khao Yai National Park - wildlife and waterfalls. Advanced: Doi Inthanon - Thailand's highest peak. Beach lovers: Koh Samui temple trails. What's your experience level and preferred region?";
       }
       
       // Default responses with practical tips

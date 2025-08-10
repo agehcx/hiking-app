@@ -30,7 +30,7 @@ export function HomeSearchBar() {
       <div className="flex gap-3">
         <input
           className="flex-1 rounded-lg border border-[var(--color-border)] px-4 py-3 text-sm outline-none transition-all focus:border-[var(--color-primary-300)] focus:ring-2 focus:ring-[var(--color-primary-100)]"
-          placeholder="Search mountains, trails, national parks..."
+          placeholder="Search Doi Inthanon, Erawan Falls, Khao Yai..."
           value={q}
           onChange={(e) => setQ(e.target.value)}
           onKeyDown={(e) => e.key === "Enter" && handleSearch()}
@@ -49,7 +49,7 @@ export function HomeSearchBar() {
       <div className="mt-4">
         <p className="mb-2 text-xs font-medium text-[color:var(--color-foreground)/0.7]">Popular categories</p>
         <div className="flex flex-wrap gap-2">
-          {["Mountains", "Waterfalls", "Lakes", "Forests", "Desert", "Coastal"].map((tag) => (
+          {["Mountains", "Waterfalls", "National Parks", "Temples", "Islands", "Caves"].map((tag) => (
             <button
               key={tag}
               onClick={() => handleQuickTag(tag)}

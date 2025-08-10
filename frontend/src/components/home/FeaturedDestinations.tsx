@@ -3,31 +3,31 @@ import { Card } from "@/components/ui/Card";
 
 const featured = [
   { 
-    id: "demo", 
-    name: "Scenic Ridge Loop", 
-    country: "US", 
-    distance: "12.4 km",
+    id: "doi-inthanon", 
+    name: "Doi Inthanon Summit Trail", 
+    country: "Thailand", 
+    distance: "8.2 km",
     difficulty: "Moderate",
     image: "🏔️",
-    description: "Stunning mountain views with crystal-clear alpine lakes"
+    description: "Thailand's highest peak with stunning sunrise views and cool mountain air"
   },
   { 
-    id: "demo", 
-    name: "Emerald Falls Track", 
-    country: "NZ", 
-    distance: "8.7 km",
+    id: "erawan-falls", 
+    name: "Erawan Falls 7-Tier Hike", 
+    country: "Thailand", 
+    distance: "3.5 km",
     difficulty: "Easy",
     image: "💧",
-    description: "Gentle trail to spectacular waterfall viewpoint"
+    description: "Famous emerald pools and waterfalls in Kanchanaburi province"
   },
   { 
-    id: "demo", 
-    name: "Azure Lake Circuit", 
-    country: "CA", 
-    distance: "15.2 km",
+    id: "khao-yai", 
+    name: "Khao Yai Wildlife Circuit", 
+    country: "Thailand", 
+    distance: "12.8 km",
     difficulty: "Hard",
-    image: "🏞️",
-    description: "Challenging loop through pristine wilderness"
+    image: "�",
+    description: "UNESCO World Heritage site with elephants, gibbons, and tropical birds"
   },
 ];
 
