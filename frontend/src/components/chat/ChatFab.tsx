@@ -2,6 +2,7 @@
 import { useState } from "react";
 import { ChatPanel } from "@/components/chat/ChatPanel";
 import { Modal } from "@/components/ui/Modal";
+import { Icon } from "@/components/ui/Icon";
 
 export function ChatFab() {
   const [open, setOpen] = useState(false);
@@ -12,7 +13,7 @@ export function ChatFab() {
         aria-label="Open chat"
         className="fixed bottom-5 right-5 z-40 inline-flex h-12 w-12 items-center justify-center rounded-full bg-[var(--color-primary)] text-white shadow-lg transition hover:scale-105 hover:bg-[var(--color-primary-600)] focus:outline-none focus:ring-2 focus:ring-[var(--color-primary-300)]"
       >
-        💬
+        <Icon name="chat" size={20} />
       </button>
       <Modal open={open} onClose={() => setOpen(false)}>
         <div className="mb-3 flex items-center justify-between">

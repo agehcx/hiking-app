@@ -2,6 +2,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/Button";
+import { Icon } from "@/components/ui/Icon";
 
 export function HomeSearchBar() {
   const [q, setQ] = useState("");
@@ -23,7 +24,7 @@ export function HomeSearchBar() {
   return (
     <div className="rounded-xl border border-[var(--color-border)] bg-gradient-to-br from-white to-[var(--color-primary-25)] p-6 shadow-sm">
       <div className="mb-4 flex items-center gap-2">
-        <div className="text-2xl">🗺️</div>
+        <Icon name="search" size={20} className="text-[var(--color-primary-600)]" />
         <h2 className="text-lg font-semibold text-[var(--color-foreground)]">Find your next adventure</h2>
       </div>
       

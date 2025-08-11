@@ -13,6 +13,23 @@ type TripInput = {
   start: string;
 };
 
+interface MapData {
+  markers: Array<{ 
+    id: string; 
+    lat: number; 
+    lng: number; 
+    label: string; 
+    type?: 'start' | 'end' | 'waypoint' | 'campsite' | 'water' | 'viewpoint'; 
+  }>;
+  trail: Array<{ lat: number; lng: number }>;
+}
+
+interface TripPlan {
+  overview: string;
+  steps: string[];
+  mapData: MapData;
+}
+
 type QuickTrip = {
   id: string;
   title: string;
@@ -33,7 +50,7 @@ export function TripPlanner() {
     groupSize: 2,
     start: "",
   });
-  const [generated, setGenerated] = useState<null | { overview: string; steps: string[]; mapData: any }>(null);
+  const [generated, setGenerated] = useState<TripPlan | null>(null);
   const [loading, setLoading] = useState(false);
   const [clickCount, setClickCount] = useState(0);
 
@@ -88,12 +105,12 @@ export function TripPlanner() {
     // Simulate AI generation
     await new Promise(resolve => setTimeout(resolve, 1500));
     
-    const mockMapData = {
+    const mockMapData: MapData = {
       markers: [
-        { id: '1', lat: 20, lng: 30, label: 'Trailhead Start', type: 'start' },
-        { id: '2', lat: 50, lng: 45, label: 'Scenic Viewpoint', type: 'viewpoint' },
-        { id: '3', lat: 75, lng: 60, label: 'Camp Site', type: 'campsite' },
-        { id: '4', lat: 85, lng: 25, label: 'Trail End', type: 'end' }
+        { id: '1', lat: 20, lng: 30, label: 'Trailhead Start', type: 'start' as const },
+        { id: '2', lat: 50, lng: 45, label: 'Scenic Viewpoint', type: 'viewpoint' as const },
+        { id: '3', lat: 75, lng: 60, label: 'Camp Site', type: 'campsite' as const },
+        { id: '4', lat: 85, lng: 25, label: 'Trail End', type: 'end' as const }
       ],
       trail: [
         { lat: 20, lng: 30 }, { lat: 35, lng: 40 }, { lat: 50, lng: 45 }, 
@@ -119,11 +136,11 @@ export function TripPlanner() {
     setLoading(true);
     await new Promise(resolve => setTimeout(resolve, 2000));
     
-    const mockMapData = {
+    const mockMapData: MapData = {
       markers: [
-        { id: '1', lat: 25, lng: 35, label: 'Start Point', type: 'start' },
-        { id: '2', lat: 60, lng: 50, label: 'Rest Stop', type: 'waypoint' },
-        { id: '3', lat: 80, lng: 30, label: 'Destination', type: 'end' }
+        { id: '1', lat: 25, lng: 35, label: 'Start Point', type: 'start' as const },
+        { id: '2', lat: 60, lng: 50, label: 'Rest Stop', type: 'waypoint' as const },
+        { id: '3', lat: 80, lng: 30, label: 'Destination', type: 'end' as const }
       ],
       trail: [{ lat: 25, lng: 35 }, { lat: 60, lng: 50 }, { lat: 80, lng: 30 }]
     };

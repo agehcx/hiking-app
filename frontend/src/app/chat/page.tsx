@@ -1,21 +1,22 @@
 import { ChatPanel } from "@/components/chat/ChatPanel";
 import { Card } from "@/components/ui/Card";
+import { Icon } from "@/components/ui/Icon";
 
 export default function ChatbotPage() {
   const quickCommands = [
-    { icon: "🏔️", text: "Suggest a 3-day hike near Yosemite", category: "Planning" },
-    { icon: "🎒", text: "Gear list for rainy mountain trip", category: "Equipment" },
-    { icon: "🌤️", text: "Best time to visit Zion National Park", category: "Weather" },
-    { icon: "📍", text: "Make a checkpoint plan for Angel's Landing", category: "Navigation" },
-    { icon: "🥾", text: "What boots for rocky terrain?", category: "Equipment" },
-    { icon: "🆘", text: "Emergency procedures for solo hiking", category: "Safety" },
+    { icon: "mountain", text: "Suggest a 3-day hike near Yosemite", category: "Planning" },
+    { icon: "palette", text: "Gear list for rainy mountain trip", category: "Equipment" },
+    { icon: "calendar", text: "Best time to visit Zion National Park", category: "Weather" },
+    { icon: "mapPin", text: "Make a checkpoint plan for Angel's Landing", category: "Navigation" },
+    { icon: "activity", text: "What boots for rocky terrain?", category: "Equipment" },
+    { icon: "shield", text: "Emergency procedures for solo hiking", category: "Safety" },
   ];
 
   return (
     <main className="mx-auto max-w-6xl px-4 py-8">
       <div className="mb-6">
         <div className="flex items-center gap-2 mb-2">
-          <div className="text-2xl">🤖</div>
+          <Icon name="sparkles" size={24} className="text-[var(--color-primary-600)]" />
           <h1 className="text-3xl font-black text-[var(--color-foreground)]">AI Assistant</h1>
         </div>
         <p className="text-[color:var(--color-foreground)/0.7]">
@@ -31,7 +32,7 @@ export default function ChatbotPage() {
         <aside className="space-y-4">
           <Card padding="lg">
             <div className="mb-4 flex items-center gap-2">
-              <div className="text-lg">⚡</div>
+              <Icon name="activity" size={20} className="text-[var(--color-primary-600)]" />
               <h3 className="font-bold">Quick Commands</h3>
             </div>
             <div className="space-y-3">
@@ -41,7 +42,7 @@ export default function ChatbotPage() {
                   className="w-full rounded-lg border border-[var(--color-border)] bg-white p-3 text-left text-sm transition-all hover:border-[var(--color-primary-300)] hover:bg-[var(--color-primary-25)]"
                 >
                   <div className="flex items-start gap-2">
-                    <span className="text-lg">{cmd.icon}</span>
+                    <Icon name={cmd.icon} size={20} className="text-[var(--color-primary-600)] flex-shrink-0 mt-0.5" />
                     <div>
                       <div className="font-medium text-[var(--color-foreground)]">
                         {cmd.text}
@@ -58,24 +59,24 @@ export default function ChatbotPage() {
           
           <Card padding="lg">
             <div className="mb-3 flex items-center gap-2">
-              <div className="text-lg">📚</div>
+              <Icon name="help" size={20} className="text-[var(--color-primary-600)]" />
               <h3 className="font-bold">AI Features</h3>
             </div>
             <div className="space-y-2 text-sm text-[color:var(--color-foreground)/0.7]">
               <div className="flex items-center gap-2">
-                <span className="text-green-500">✓</span>
+                <Icon name="check" size={16} className="text-green-500" />
                 <span>Real-time weather data</span>
               </div>
               <div className="flex items-center gap-2">
-                <span className="text-green-500">✓</span>
+                <Icon name="check" size={16} className="text-green-500" />
                 <span>Trail condition reports</span>
               </div>
               <div className="flex items-center gap-2">
-                <span className="text-green-500">✓</span>
+                <Icon name="check" size={16} className="text-green-500" />
                 <span>Equipment recommendations</span>
               </div>
               <div className="flex items-center gap-2">
-                <span className="text-yellow-500">🔄</span>
+                <Icon name="clock" size={16} className="text-yellow-500" />
                 <span>Live park alerts (coming soon)</span>
               </div>
             </div>

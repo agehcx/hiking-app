@@ -4,6 +4,7 @@ import { FeaturedDestinations } from '@/components/home/FeaturedDestinations';
 import { HowItWorks } from '@/components/home/HowItWorks';
 import { DiscoverCard } from '@/components/home/DiscoverCard';
 import { Button } from '@/components/ui/Button';
+import { Icon } from '@/components/ui/Icon';
 
 export default function Home() {
   return (
@@ -12,7 +13,7 @@ export default function Home() {
       <section className="relative overflow-hidden rounded-3xl border border-[var(--color-border)] bg-gradient-to-br from-white via-[var(--color-primary-25)] to-[var(--color-primary-50)] p-12 shadow-xl">
         <div className="relative z-10">
           <div className="mb-4 flex items-center gap-2">
-            <div className="text-4xl">🏔️</div>
+            <Icon name="mountain" size={32} className="text-[var(--color-primary-600)]" />
             <span className="rounded-full bg-[var(--color-primary-100)] px-3 py-1 text-xs font-semibold text-[var(--color-primary-700)]">
               Beta Release
             </span>
@@ -31,12 +32,14 @@ export default function Home() {
           <div className="flex flex-wrap gap-4">
             <Link href="/plan">
               <Button variant="primary" size="lg">
-                🎯 Plan Your Adventure
+                <Icon name="target" size={20} className="mr-2" />
+                Plan Your Adventure
               </Button>
             </Link>
             <Link href="/trail/demo">
               <Button variant="outline" size="lg">
-                🏃‍♂️ Try Demo Trail
+                <Icon name="activity" size={20} className="mr-2" />
+                Try Demo Trail
               </Button>
             </Link>
           </div>
@@ -60,7 +63,7 @@ export default function Home() {
           {/* Stats Card */}
           <div className="rounded-xl border border-[var(--color-border)] bg-white p-6 shadow-sm">
             <h3 className="mb-4 flex items-center gap-2 font-bold">
-              <span className="text-xl">📊</span>
+              <Icon name="activity" size={20} className="text-[var(--color-primary-600)]" />
               Community Stats
             </h3>
             <div className="grid grid-cols-2 gap-4 text-center">
