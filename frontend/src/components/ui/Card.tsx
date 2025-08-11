@@ -38,26 +38,26 @@ export function Card({
     secondary: 'bg-wilderness-green-50 border-wilderness-green-200 text-wilderness-green-900'
   };
   
-  const hoverClasses = hover ? "hover:shadow-lg hover:border-wilderness-green-200 hover:-translate-y-1 cursor-pointer" : "";
-  const clickableClasses = onClick ? 'cursor-pointer hover:shadow-lg' : '';
+  const hoverClasses = hover ? "hover:shadow-xl hover:shadow-gray-200/50 hover:border-wilderness-green-300 hover:-translate-y-1 hover:scale-[1.01] cursor-pointer" : "";
+  const clickableClasses = onClick ? 'cursor-pointer hover:shadow-xl hover:shadow-gray-200/50 hover:-translate-y-1 hover:scale-[1.01] active:scale-[0.99] active:translate-y-0' : '';
 
   return (
     <div 
-      className={`rounded-xl border shadow-sm transition-all duration-300 ${variants[variant]} ${hoverClasses} ${clickableClasses} ${className}`}
+      className={`group rounded-xl border shadow-sm transition-all duration-300 ease-smooth ${variants[variant]} ${hoverClasses} ${clickableClasses} ${className}`}
       onClick={onClick}
     >
       {(icon || title) && (
         <div className={`flex items-center gap-3 ${paddings[padding]} pb-2`}>
           {icon && (
-            <div className="flex-shrink-0 p-2 bg-wilderness-green-100 rounded-lg">
-              <Icon name={icon} className="text-wilderness-green-600" size={24} />
+            <div className="flex-shrink-0 p-2 bg-wilderness-green-100 rounded-lg transition-all duration-200 group-hover:scale-110 group-hover:bg-wilderness-green-200">
+              <Icon name={icon} className="text-wilderness-green-600 transition-transform duration-200 group-hover:rotate-3" size={24} />
             </div>
           )}
           {title && (
             <div>
-              <h3 className="font-semibold text-lg">{title}</h3>
+              <h3 className="font-semibold text-lg transition-colors duration-200 group-hover:text-wilderness-green-700">{title}</h3>
               {description && (
-                <p className="text-sm text-muted-foreground mt-1">{description}</p>
+                <p className="text-sm text-muted-foreground mt-1 transition-colors duration-200 group-hover:text-wilderness-green-600">{description}</p>
               )}
             </div>
           )}
@@ -85,23 +85,23 @@ export function FeatureCard({ icon, title, description, features, action }: Feat
   return (
     <Card 
       variant="outline" 
-      className="h-full"
+      className="h-full group hover:shadow-xl hover:shadow-wilderness-green-100/50 hover:border-wilderness-green-300"
       onClick={action?.onClick}
       padding="lg"
     >
       <div className="flex items-start gap-4">
-        <div className="flex-shrink-0 p-3 bg-wilderness-green-100 rounded-xl">
-          <Icon name={icon} className="text-wilderness-green-600" size={28} />
+        <div className="flex-shrink-0 p-3 bg-wilderness-green-100 rounded-xl transition-all duration-300 group-hover:scale-110 group-hover:bg-wilderness-green-200 group-hover:shadow-lg">
+          <Icon name={icon} className="text-wilderness-green-600 transition-transform duration-300 group-hover:rotate-6" size={28} />
         </div>
         <div className="flex-1">
-          <h3 className="font-semibold text-xl mb-2 text-wilderness-green-900">{title}</h3>
-          <p className="text-gray-600 mb-4">{description}</p>
+          <h3 className="font-semibold text-xl mb-2 text-wilderness-green-900 transition-colors duration-200 group-hover:text-wilderness-green-700">{title}</h3>
+          <p className="text-gray-600 mb-4 transition-colors duration-200 group-hover:text-gray-700">{description}</p>
           
           {features && features.length > 0 && (
             <ul className="space-y-2 mb-4">
               {features.map((feature, index) => (
-                <li key={index} className="flex items-center gap-2 text-sm text-gray-600">
-                  <Icon name="check" className="text-wilderness-green-500" size={16} />
+                <li key={index} className="flex items-center gap-2 text-sm text-gray-600 transition-all duration-200 hover:text-wilderness-green-600 hover:translate-x-1" style={{ animationDelay: `${index * 100}ms` }}>
+                  <Icon name="check" className="text-wilderness-green-500 transition-transform duration-200 hover:scale-125" size={16} />
                   {feature}
                 </li>
               ))}
@@ -109,7 +109,7 @@ export function FeatureCard({ icon, title, description, features, action }: Feat
           )}
           
           {action && (
-            <button className="w-full mt-4 px-4 py-2 bg-wilderness-green-600 text-white rounded-lg hover:bg-wilderness-green-700 transition-colors duration-200 font-medium">
+            <button className="w-full mt-4 px-4 py-2 bg-wilderness-green-600 text-white rounded-lg hover:bg-wilderness-green-700 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200 font-medium active:scale-95">
               {action.label}
             </button>
           )}

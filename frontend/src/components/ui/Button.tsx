@@ -13,12 +13,12 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 }
 
 const variants = {
-  default: "bg-white border-gray-300 text-gray-700 hover:bg-wilderness-green-50 hover:border-wilderness-green-300 hover:text-wilderness-green-600",
-  primary: "bg-wilderness-green-600 border-transparent text-white hover:bg-wilderness-green-700 shadow-md hover:shadow-lg",
-  success: "bg-green-500 border-transparent text-white hover:bg-green-600 shadow-md hover:shadow-lg",
-  danger: "bg-red-500 border-transparent text-white hover:bg-red-600 shadow-md hover:shadow-lg",
-  outline: "bg-transparent border-wilderness-green-500 text-wilderness-green-500 hover:bg-wilderness-green-50 hover:border-wilderness-green-600",
-  ghost: "bg-transparent border-transparent text-wilderness-green-600 hover:bg-wilderness-green-100",
+  default: "bg-white border-gray-300 text-gray-700 hover:bg-wilderness-green-50 hover:border-wilderness-green-300 hover:text-wilderness-green-600 hover:shadow-md",
+  primary: "bg-wilderness-green-600 border-transparent text-white hover:bg-wilderness-green-700 shadow-md hover:shadow-xl hover:shadow-wilderness-green-500/25",
+  success: "bg-green-500 border-transparent text-white hover:bg-green-600 shadow-md hover:shadow-xl hover:shadow-green-500/25",
+  danger: "bg-red-500 border-transparent text-white hover:bg-red-600 shadow-md hover:shadow-xl hover:shadow-red-500/25",
+  outline: "bg-transparent border-wilderness-green-500 text-wilderness-green-500 hover:bg-wilderness-green-50 hover:border-wilderness-green-600 hover:shadow-lg",
+  ghost: "bg-transparent border-transparent text-wilderness-green-600 hover:bg-wilderness-green-100 hover:shadow-sm",
 };
 
 const sizes = {
@@ -46,23 +46,25 @@ export function Button({
 
   return (
     <button
-      className={`inline-flex items-center justify-center rounded-md border font-medium transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed hover:scale-105 active:scale-95 ${variants[variant]} ${sizes[size]} ${className}`}
+      className={`group inline-flex items-center justify-center rounded-md border font-medium transition-all duration-300 ease-smooth disabled:opacity-50 disabled:cursor-not-allowed hover:scale-[1.02] hover:-translate-y-0.5 active:scale-[0.98] active:translate-y-0 focus:outline-none focus:ring-2 focus:ring-wilderness-green-500/50 focus:ring-offset-2 ${variants[variant]} ${sizes[size]} ${className}`}
       disabled={disabled || loading}
       {...props}
     >
       {loading ? (
         <>
           <div className="mr-2 h-4 w-4 animate-spin rounded-full border-2 border-current border-t-transparent" />
-          Loading...
+          <span className="animate-pulse">Loading...</span>
         </>
       ) : (
         <>
           {icon && iconPosition === 'left' && (
-            <Icon name={icon} size={iconSizes[size]} />
+            <Icon name={icon} size={iconSizes[size]} className="transition-transform duration-200 group-hover:scale-110" />
           )}
-          {children}
+          <span className="relative overflow-hidden">
+            {children}
+          </span>
           {icon && iconPosition === 'right' && (
-            <Icon name={icon} size={iconSizes[size]} />
+            <Icon name={icon} size={iconSizes[size]} className="transition-transform duration-200 group-hover:scale-110" />
           )}
         </>
       )}
@@ -99,11 +101,11 @@ export function IconButton({
 
   return (
     <button
-      className={`inline-flex items-center justify-center rounded-md border font-medium transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed hover:scale-105 active:scale-95 ${variants[variant]} ${buttonSizes[size]} ${className}`}
+      className={`group inline-flex items-center justify-center rounded-md border font-medium transition-all duration-300 ease-smooth disabled:opacity-50 disabled:cursor-not-allowed hover:scale-[1.05] hover:-translate-y-0.5 active:scale-[0.95] active:translate-y-0 focus:outline-none focus:ring-2 focus:ring-wilderness-green-500/50 focus:ring-offset-1 ${variants[variant]} ${buttonSizes[size]} ${className}`}
       aria-label={ariaLabel}
       {...props}
     >
-      <Icon name={icon} size={iconSizes[size]} />
+      <Icon name={icon} size={iconSizes[size]} className="transition-transform duration-200 group-hover:scale-110 group-hover:rotate-3" />
     </button>
   );
 }
