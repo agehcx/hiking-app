@@ -4,7 +4,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import { Navbar } from "@/components/ui/Navbar";
 import { Footer } from "@/components/ui/Footer";
-import { ChatFab } from "@/components/chat/ChatFab";
+import { ConditionalChatFab } from "@/components/chat/ConditionalChatFab";
 
 export const metadata: Metadata = {
   title: "Hikingbros",
@@ -21,7 +21,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
         <Navbar />
   {children}
   <Footer />
-  <ChatFab />
+  <ConditionalChatFab />
       </body>
     </html>
   );

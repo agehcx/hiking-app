@@ -14,7 +14,7 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 
 const variants = {
   default: "bg-white border-gray-300 text-gray-700 hover:bg-wilderness-green-50 hover:border-wilderness-green-300 hover:text-wilderness-green-600 hover:shadow-md",
-  primary: "bg-wilderness-green-600 border-transparent text-white hover:bg-wilderness-green-700 shadow-md hover:shadow-xl hover:shadow-wilderness-green-500/25",
+  primary: "bg-wilderness-green-600 border-transparent text-black hover:bg-wilderness-green-700 hover:text-black shadow-md hover:shadow-xl hover:shadow-wilderness-green-500/25",
   success: "bg-green-500 border-transparent text-white hover:bg-green-600 shadow-md hover:shadow-xl hover:shadow-green-500/25",
   danger: "bg-red-500 border-transparent text-white hover:bg-red-600 shadow-md hover:shadow-xl hover:shadow-red-500/25",
   outline: "bg-transparent border-wilderness-green-500 text-wilderness-green-500 hover:bg-wilderness-green-50 hover:border-wilderness-green-600 hover:shadow-lg",

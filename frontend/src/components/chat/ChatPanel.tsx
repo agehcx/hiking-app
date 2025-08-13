@@ -1,6 +1,6 @@
 'use client';
 
-import { FormEvent, useRef, useState } from "react";
+import { FormEvent, useRef, useState, useEffect } from "react";
 import { Button } from "@/components/ui/Button";
 import { Card } from "@/components/ui/Card";
 
@@ -22,6 +22,11 @@ export function ChatPanel() {
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   };
+
+  // Auto-scroll when messages update
+  useEffect(() => {
+    scrollToBottom();
+  }, [messages]);
 
   const onSubmit = async (e: FormEvent) => {
     e.preventDefault();
@@ -83,7 +88,7 @@ export function ChatPanel() {
     
     setMessages((m) => [...m, reply]);
     setLoading(false);
-    setTimeout(scrollToBottom, 100);
+    // Auto-scroll will happen via useEffect
   };
 
   const formatTime = (date: Date) => {
@@ -91,22 +96,23 @@ export function ChatPanel() {
   };
 
   return (
-    <Card className="flex h-96 flex-col" padding="sm">
-      <div className="mb-3 flex items-center gap-2 border-b border-[var(--color-border)] pb-3">
-        <div className="text-lg">🤖</div>
-        <h3 className="font-bold">Trip Assistant</h3>
-        <div className="ml-auto flex h-2 w-2 rounded-full bg-green-400 animate-pulse" />
-      </div>
-      
-      <div className="flex-1 space-y-3 overflow-y-auto pr-1 text-sm">
+    <div className="flex h-[600px] max-h-[70vh] flex-col w-full max-w-full">
+      <Card className="flex-1 flex flex-col overflow-hidden" padding="sm">
+        <div className="mb-3 flex items-center gap-2 border-b border-[var(--color-border)] pb-3 flex-shrink-0">
+          <div className="text-lg">🤖</div>
+          <h3 className="font-bold">Trip Assistant</h3>
+          <div className="ml-auto flex h-2 w-2 rounded-full bg-green-400 animate-pulse" />
+        </div>
+        
+        <div className="flex-1 space-y-3 overflow-y-auto pr-1 text-sm min-h-0 w-full max-w-full pb-4">
         {messages.map((msg, i) => (
-          <div key={i} className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"}`}>
-            <div className={`max-w-[85%] rounded-lg px-3 py-2 ${
+          <div key={i} className={`flex w-full max-w-full ${msg.role === "user" ? "justify-end" : "justify-start"}`}>
+            <div className={`max-w-[85%] rounded-lg px-3 py-2 break-words overflow-hidden word-break ${
               msg.role === "user" 
                 ? "bg-[var(--color-primary-500)] text-white" 
                 : "bg-[var(--color-primary-50)] text-[var(--color-foreground)]"
             }`}>
-              <div className="break-words">{msg.content}</div>
+              <div className="break-words overflow-wrap-anywhere hyphens-auto">{msg.content}</div>
               <div className={`mt-1 text-xs ${
                 msg.role === "user" ? "text-white/70" : "text-[color:var(--color-foreground)/0.5]"
               }`}>
@@ -131,9 +137,9 @@ export function ChatPanel() {
         <div ref={messagesEndRef} />
       </div>
       
-      <form ref={formRef} onSubmit={onSubmit} className="mt-3 flex gap-2 border-t border-[var(--color-border)] pt-3">
+      <form ref={formRef} onSubmit={onSubmit} className="mt-3 flex gap-2 border-t border-[var(--color-border)] pt-3 flex-shrink-0">
         <input
-          className="flex-1 rounded-lg border border-[var(--color-border)] px-3 py-2 text-sm outline-none transition-all focus:border-[var(--color-primary-300)] focus:ring-2 focus:ring-[var(--color-primary-100)]"
+          className="flex-1 min-w-0 rounded-lg border border-[var(--color-border)] px-3 py-2 text-sm outline-none transition-all focus:border-[var(--color-primary-300)] focus:ring-2 focus:ring-[var(--color-primary-100)]"
           placeholder="Ask about routes, gear, weather..."
           value={input}
           onChange={(e) => setInput(e.target.value)}
@@ -145,10 +151,12 @@ export function ChatPanel() {
           size="sm"
           loading={loading}
           disabled={!input.trim()}
+          className="flex-shrink-0"
         >
           Send
         </Button>
       </form>
-    </Card>
+      </Card>
+    </div>
   );
 }

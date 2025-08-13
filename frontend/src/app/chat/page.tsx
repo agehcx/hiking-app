@@ -13,7 +13,7 @@ export default function ChatbotPage() {
   ];
 
   return (
-    <main className="mx-auto max-w-6xl px-4 py-8">
+    <main className="mx-auto max-w-6xl px-4 py-8 overflow-hidden">
       <div className="mb-6">
         <div className="flex items-center gap-2 mb-2">
           <Icon name="sparkles" size={24} className="text-[var(--color-primary-600)]" />
@@ -24,12 +24,12 @@ export default function ChatbotPage() {
         </p>
       </div>
 
-      <div className="grid gap-6 lg:grid-cols-[1.4fr_1fr]">
-        <section>
+      <div className="grid gap-6 lg:grid-cols-[1.4fr_1fr] min-h-0 overflow-hidden">
+        <section className="min-w-0">
           <ChatPanel />
         </section>
         
-        <aside className="space-y-4">
+        <aside className="space-y-4 min-w-0">
           <Card padding="lg">
             <div className="mb-4 flex items-center gap-2">
               <Icon name="activity" size={20} className="text-[var(--color-primary-600)]" />
