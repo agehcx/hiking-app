@@ -100,35 +100,8 @@ class App {
   }
 
   private initializeRoutes(): void {
-    // Health check
-    this.app.get('/health', (req, res) => {
-      res.status(200).json({
-        status: 'OK',
-        timestamp: new Date().toISOString(),
-        uptime: process.uptime(),
-        environment: config.nodeEnv,
-        version: process.env.npm_package_version || '1.0.0'
-      });
-    });
-
-    // API status
-    this.app.get('/api/status', (req, res) => {
-      res.status(200).json({
-        status: 'API is running',
-        version: config.apiVersion,
-        timestamp: new Date().toISOString(),
-        endpoints: {
-          auth: '/api/v1/auth',
-          users: '/api/v1/users',
-          trips: '/api/v1/trips',
-          trails: '/api/v1/trails',
-          guides: '/api/v1/guides',
-          search: '/api/v1/search',
-          ai: '/api/v1/ai',
-          uploads: '/api/v1/uploads'
-        }
-      });
-    });
+  // NOTE: All public API routes (including health + status) are now namespaced under /api/v1
+  // The unversioned /health and /api/status endpoints were removed to enforce consistent prefixing.
 
     // Setup Swagger documentation
     if (config.enableSwagger) {
@@ -182,8 +155,9 @@ class App {
       this.server.listen(config.port, () => {
         logger.info(`🚀 Server running on port ${config.port}`);
         logger.info(`📊 Environment: ${config.nodeEnv}`);
-        logger.info(`📚 API Documentation: http://localhost:${config.port}/api-docs`);
-        logger.info(`🔗 Health Check: http://localhost:${config.port}/health`);
+  logger.info(`📚 API Documentation: http://localhost:${config.port}/api-docs`);
+  logger.info(`🔗 Health Check: http://localhost:${config.port}/api/v1/health`);
+  logger.info(`🔎 Status: http://localhost:${config.port}/api/v1/status`);
         logger.info(`⚡ WebSocket Server: Ready for real-time connections`);
       });
 

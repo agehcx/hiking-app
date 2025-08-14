@@ -30,6 +30,7 @@
   "author": "Hiking App Team",
   "license": "MIT",
   "dependencies": {
+  "@vercel/node": "^3.2.19",
     "@google-cloud/storage": "^7.7.0",
     "@qdrant/js-client-rest": "^1.7.0",
     "axios": "^1.6.2",
