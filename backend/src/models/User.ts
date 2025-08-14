@@ -161,11 +161,12 @@ const userSchema = new Schema<IUser>({
   }
 }, {
   timestamps: true,
+  collection: 'user', // Explicitly set collection name to 'user'
   toJSON: {
     virtuals: true,
     transform: function(doc, ret) {
-      delete ret.passwordHash;
-      delete ret.__v;
+      delete (ret as any).passwordHash;
+      delete (ret as any).__v;
       return ret;
     }
   }

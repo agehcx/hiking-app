@@ -21,8 +21,8 @@ const options = {
         description: 'Development server',
       },
       {
-        url: 'http://localhost:5050',
-        description: 'API Documentation server',
+  url: 'http://localhost:5051',
+  description: 'Standalone API Documentation server',
       },
     ],
     components: {

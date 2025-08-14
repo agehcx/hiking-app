@@ -64,7 +64,7 @@ export const config = {
   
   // Database Configuration
   mongodbUri: getEnv('MONGODB_URI'),
-  mongodbDbName: getEnv('MONGODB_DB_NAME', 'hiking_app'),
+  mongodbDbName: getEnv('MONGODB_DB_NAME', 'WildGuide'),
   
   // Vector Database Configuration
   qdrantUrl: getEnv('QDRANT_URL'),

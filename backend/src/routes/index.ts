@@ -1,8 +1,8 @@
 import { Application } from 'express';
 import healthRoutes from './health';
+import authRoutes from './auth';
 
 // Import route modules (will be created)
-// import authRoutes from './auth';
 // import userRoutes from './users';
 // import tripRoutes from './trips';
 // import trailRoutes from './trails';
@@ -19,7 +19,7 @@ export const setupRoutes = (app: Application): void => {
   app.use(apiPrefix, healthRoutes);
 
   // Authentication routes
-  // app.use(`${apiPrefix}/auth`, authRoutes);
+  app.use(`${apiPrefix}/auth`, authRoutes);
 
   // User routes
   // app.use(`${apiPrefix}/users`, userRoutes);

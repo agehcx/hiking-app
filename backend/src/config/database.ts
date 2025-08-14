@@ -9,6 +9,7 @@ export const connectDB = async (): Promise<void> => {
       maxPoolSize: 10, // Maintain up to 10 socket connections
       serverSelectionTimeoutMS: 5000, // Keep trying to send operations for 5 seconds
       socketTimeoutMS: 45000, // Close sockets after 45 seconds of inactivity
+      dbName: 'WildGuide', // Explicitly connect to WildGuide database
     };
 
     // Connect to MongoDB

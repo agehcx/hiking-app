@@ -54,10 +54,16 @@ class App {
 
     // CORS
     this.app.use(cors({
-      origin: config.corsOrigin,
+      origin: [
+        config.corsOrigin,
+        'http://localhost:4001', // Allow Swagger UI on same port
+        'http://127.0.0.1:4001', // Allow local IP variation
+        'http://localhost:5050', // Allow docs server port
+        'http://127.0.0.1:5050'  // Allow docs server local IP
+      ],
       credentials: true,
       methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
-      allowedHeaders: ['Content-Type', 'Authorization', 'X-API-Key']
+      allowedHeaders: ['Content-Type', 'Authorization', 'X-API-Key', 'Accept', 'Origin', 'X-Requested-With']
     }));
 
     // Rate limiting
