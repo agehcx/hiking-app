@@ -14,7 +14,8 @@
     "lint:fix": "eslint src/**/*.ts --fix",
     "migrate": "ts-node src/scripts/migrate.ts",
     "seed": "ts-node src/scripts/seed.ts",
-    "docs": "swagger-jsdoc -d src/config/swagger.ts src/routes/*.ts -o docs/swagger.json"
+    "docs": "swagger-jsdoc -d src/config/swagger.ts src/routes/*.ts -o docs/swagger.json",
+    "docs:serve": "ts-node-dev --respawn --transpile-only src/swagger-server.ts"
   },
   "keywords": ["hiking", "travel", "api", "mongodb", "vector-search", "ai", "whisper", "rag"],
   "author": "Hiking App Team",

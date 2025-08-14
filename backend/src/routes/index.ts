@@ -1,4 +1,5 @@
 import { Application } from 'express';
+import healthRoutes from './health';
 
 // Import route modules (will be created)
 // import authRoutes from './auth';
@@ -13,6 +14,9 @@ import { Application } from 'express';
 export const setupRoutes = (app: Application): void => {
   // API version prefix
   const apiPrefix = '/api/v1';
+
+  // Health routes (working)
+  app.use(apiPrefix, healthRoutes);
 
   // Authentication routes
   // app.use(`${apiPrefix}/auth`, authRoutes);

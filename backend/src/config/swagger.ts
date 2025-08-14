@@ -20,6 +20,10 @@ const options = {
         url: `http://localhost:${config.port}`,
         description: 'Development server',
       },
+      {
+        url: 'http://localhost:5050',
+        description: 'API Documentation server',
+      },
     ],
     components: {
       securitySchemes: {
