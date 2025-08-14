@@ -1,4 +1,4 @@
-import jwt from 'jsonwebtoken';
+import jwt, { SignOptions } from 'jsonwebtoken';
 import { config } from '../config/environment';
 
 export interface JwtPayload {
@@ -8,9 +8,9 @@ export interface JwtPayload {
 }
 
 export const generateToken = (payload: JwtPayload): string => {
-  return jwt.sign(payload, config.jwtSecret as string, {
-    expiresIn: config.jwtExpiresIn
-  });
+  const exp: string | number = config.jwtExpiresIn || '24h';
+  // NOTE: Workaround for jsonwebtoken type overload mismatch under exactOptionalPropertyTypes
+  return (jwt as any).sign(payload, config.jwtSecret, { expiresIn: exp } as SignOptions);
 };
 
 export const verifyToken = (token: string): JwtPayload => {
@@ -18,7 +18,6 @@ export const verifyToken = (token: string): JwtPayload => {
 };
 
 export const generateRefreshToken = (payload: JwtPayload): string => {
-  return jwt.sign(payload, config.jwtRefreshSecret as string, {
-    expiresIn: config.jwtRefreshExpiresIn
-  });
+  const exp: string | number = config.jwtRefreshExpiresIn || '7d';
+  return (jwt as any).sign(payload, config.jwtRefreshSecret, { expiresIn: exp } as SignOptions);
 };

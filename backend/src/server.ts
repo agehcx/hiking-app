@@ -163,7 +163,8 @@ class App {
         await connectDB();
         logger.info('✅ MongoDB connected successfully');
       } catch (error) {
-        logger.warn('⚠️ MongoDB connection failed, continuing without database:', error.message);
+        const msg = (error as any)?.message || String(error);
+        logger.warn('⚠️ MongoDB connection failed, continuing without database:', msg);
       }
 
       // Initialize Qdrant vector database (optional)
@@ -172,7 +173,8 @@ class App {
           await initializeQdrant();
           logger.info('✅ Qdrant vector database initialized');
         } catch (error) {
-          logger.warn('⚠️ Qdrant initialization failed, continuing without vector search:', error.message);
+          const msg = (error as any)?.message || String(error);
+          logger.warn('⚠️ Qdrant initialization failed, continuing without vector search:', msg);
         }
       }
 
@@ -190,7 +192,7 @@ class App {
       process.on('SIGINT', this.gracefulShutdown.bind(this));
 
     } catch (error) {
-      logger.error('❌ Failed to start server:', error);
+      logger.error('❌ Failed to start server:', error as any);
       process.exit(1);
     }
   }
