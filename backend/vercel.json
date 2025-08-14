@@ -1,9 +1,10 @@
 {
-  "framework": "nextjs",
+  "framework": null,
   "installCommand": "npm install",
   "buildCommand": "npm run build",
   "outputDirectory": "dist",
   "env": {
     "NODE_ENV": "production"
-  }
+  },
+  "rewrites": [{ "source": "/(.*)", "destination": "/" }]
 }
