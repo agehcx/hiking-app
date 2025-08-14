@@ -17,15 +17,22 @@ export function ChatPanel() {
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
   const formRef = useRef<HTMLFormElement | null>(null);
-  const messagesEndRef = useRef<HTMLDivElement>(null);
+  const messagesContainerRef = useRef<HTMLDivElement>(null);
 
-  const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  const scrollToBottom = (smooth = true) => {
+    const el = messagesContainerRef.current;
+    if (!el) return;
+    // Only scroll the internal container, not the whole page
+    if (smooth) {
+      el.scrollTo({ top: el.scrollHeight, behavior: 'smooth' });
+    } else {
+      el.scrollTop = el.scrollHeight;
+    }
   };
 
   // Auto-scroll when messages update
   useEffect(() => {
-    scrollToBottom();
+    scrollToBottom(messages.length > 1); // smooth after first render
   }, [messages]);
 
   const onSubmit = async (e: FormEvent) => {
@@ -97,14 +104,19 @@ export function ChatPanel() {
 
   return (
     <div className="flex h-[600px] max-h-[70vh] flex-col w-full max-w-full">
-      <Card className="flex-1 flex flex-col overflow-hidden" padding="sm">
-        <div className="mb-3 flex items-center gap-2 border-b border-[var(--color-border)] pb-3 flex-shrink-0">
-          <div className="text-lg">🤖</div>
-          <h3 className="font-bold">Trip Assistant</h3>
-          <div className="ml-auto flex h-2 w-2 rounded-full bg-green-400 animate-pulse" />
-        </div>
-        
-        <div className="flex-1 space-y-3 overflow-y-auto pr-1 text-sm min-h-0 w-full max-w-full pb-4">
+  <Card className="flex-1 flex flex-col overflow-hidden p-0" padding="sm">
+        <div className="flex flex-col h-full">
+          <div className="px-4 pt-4 pb-3 flex items-center gap-2 border-b border-[var(--color-border)] flex-shrink-0 bg-white/60 backdrop-blur">
+            <div className="text-lg">🤖</div>
+            <h3 className="font-bold">Trip Assistant</h3>
+            <div className="ml-auto flex h-2 w-2 rounded-full bg-green-400 animate-pulse" />
+          </div>
+          
+          <div
+            ref={messagesContainerRef}
+            className="flex-1 space-y-3 overflow-y-auto px-4 pt-4 text-sm min-h-0 w-full max-w-full pb-4"
+            aria-live="polite"
+          >
         {messages.map((msg, i) => (
           <div key={i} className={`flex w-full max-w-full ${msg.role === "user" ? "justify-end" : "justify-start"}`}>
             <div className={`max-w-[85%] rounded-lg px-3 py-2 break-words overflow-hidden word-break ${
@@ -134,28 +146,34 @@ export function ChatPanel() {
           </div>
         )}
         
-        <div ref={messagesEndRef} />
-      </div>
-      
-      <form ref={formRef} onSubmit={onSubmit} className="mt-3 flex gap-2 border-t border-[var(--color-border)] pt-3 flex-shrink-0">
-        <input
-          className="flex-1 min-w-0 rounded-lg border border-[var(--color-border)] px-3 py-2 text-sm outline-none transition-all focus:border-[var(--color-primary-300)] focus:ring-2 focus:ring-[var(--color-primary-100)]"
-          placeholder="Ask about routes, gear, weather..."
-          value={input}
-          onChange={(e) => setInput(e.target.value)}
-          disabled={loading}
-        />
-        <Button 
-          type="submit" 
-          variant="primary" 
-          size="sm"
-          loading={loading}
-          disabled={!input.trim()}
-          className="flex-shrink-0"
-        >
-          Send
-        </Button>
-      </form>
+  {/* spacer keeps last message from being flush against input */}
+  <div className="h-1" />
+          </div>
+
+          <form
+            ref={formRef}
+            onSubmit={onSubmit}
+            className="flex gap-2 border-t border-[var(--color-border)] p-3 flex-shrink-0 bg-white/70 backdrop-blur sticky bottom-0"
+          >
+            <input
+              className="flex-1 min-w-0 rounded-lg border border-[var(--color-border)] px-3 py-2 text-sm outline-none transition-all focus:border-[var(--color-primary-300)] focus:ring-2 focus:ring-[var(--color-primary-100)]"
+              placeholder="Ask about routes, gear, weather..."
+              value={input}
+              onChange={(e) => setInput(e.target.value)}
+              disabled={loading}
+            />
+            <Button
+              type="submit"
+              variant="primary"
+              size="sm"
+              loading={loading}
+              disabled={!input.trim()}
+              className="flex-shrink-0"
+            >
+              Send
+            </Button>
+          </form>
+        </div>
       </Card>
     </div>
   );

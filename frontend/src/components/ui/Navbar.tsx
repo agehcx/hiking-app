@@ -17,7 +17,7 @@ export function Navbar() {
     { name: 'Home', href: '/' },
     { name: 'Plan Trip', href: '/plan' },
     { name: 'Navigate', href: '/navigate' },
-    { name: 'Chat AI', href: '/chat' },
+    { name: 'Chat', href: '/chat' },
     { name: 'Profile', href: '/profile' },
   ];
 

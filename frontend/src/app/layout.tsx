@@ -7,8 +7,8 @@ import { Footer } from "@/components/ui/Footer";
 import { ConditionalChatFab } from "@/components/chat/ConditionalChatFab";
 
 export const metadata: Metadata = {
-  title: "Hikingbros",
-  description: "Hikingbros",
+  title: "WildGuide",
+  description: "WildGuide - Your AI guide for exploring the wilderness.",
 };
 
 export default function RootLayout({ children }: { children: ReactNode }) {
