@@ -126,7 +126,7 @@ export function MockMap({
       )}
 
       {/* Markers */}
-      {markers.map((marker, index) => (
+  {markers.map((marker) => (
         <div
           key={marker.id}
           className="absolute z-10 transform -translate-x-1/2 -translate-y-1/2"

@@ -3,12 +3,29 @@ import { useState } from 'react';
 import { Card } from '@/components/ui/Card';
 import { Button } from '@/components/ui/Button';
 
+interface GenerateTripPlanBody {
+  start_place: string;
+  destination_place: string;
+  trip_price: number;
+  trip_context: string;
+  trip_duration_days: number;
+  group_size: number;
+  preferences: string[];
+  top_k: number;
+}
+
+interface BasicChatBody {
+  message: string;
+}
+
+type PresetBody = GenerateTripPlanBody | BasicChatBody | Record<string, never>;
+
 interface Preset {
   id: string;
   name: string;
   method: string;
   url: string;
-  body?: any;
+  body?: PresetBody;
 }
 
 const PRESETS: Preset[] = [
@@ -45,7 +62,13 @@ export default function TestApiPage() {
   const [url, setUrl] = useState(PRESETS[0].url);
   const [body, setBody] = useState(JSON.stringify(PRESETS[0].body, null, 2));
   const [loading, setLoading] = useState(false);
-  const [result, setResult] = useState<any>(null);
+  interface ApiResult {
+    ok?: boolean;
+    status?: number;
+    error?: string;
+    [key: string]: unknown;
+  }
+  const [result, setResult] = useState<ApiResult | null>(null);
   const [error, setError] = useState<string>('');
 
   function handlePresetChange(id: string) {
@@ -63,20 +86,20 @@ export default function TestApiPage() {
     setResult(null);
     setLoading(true);
     try {
-      let parsedBody: any = undefined;
+      let parsedBody: unknown = undefined;
       if (body && method !== 'GET') {
-        try { parsedBody = JSON.parse(body); } catch (e) { setError('Invalid JSON body'); setLoading(false); return; }
+  try { parsedBody = JSON.parse(body); } catch { setError('Invalid JSON body'); setLoading(false); return; }
       }
       const res = await fetch('/api/v1/test-proxy', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ url, method, body: parsedBody })
       });
-      const data = await res.json();
+      const data: ApiResult = await res.json();
       if (!res.ok) setError(data.error || 'Request failed');
       setResult(data);
-    } catch (e: any) {
-      setError(String(e.message || e));
+    } catch (e: unknown) {
+      if (e instanceof Error) setError(e.message); else setError(String(e));
     } finally {
       setLoading(false);
     }

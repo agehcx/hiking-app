@@ -4,6 +4,22 @@ import { Card } from "@/components/ui/Card";
 import { Button } from "@/components/ui/Button";
 import { MockMap } from "@/components/ui/MockMap";
 
+const trailMarkers = [
+  { id: '1', lat: 20, lng: 30, label: 'Trailhead Start', type: 'start' as const },
+  { id: '2', lat: 35, lng: 45, label: 'Forest Checkpoint', type: 'waypoint' as const },
+  { id: '3', lat: 50, lng: 35, label: 'Mountain View', type: 'viewpoint' as const },
+  { id: '4', lat: 65, lng: 55, label: 'Water Source', type: 'water' as const },
+  { id: '5', lat: 80, lng: 40, label: 'Camp Site', type: 'campsite' as const },
+  { id: '6', lat: 90, lng: 60, label: 'Summit Peak', type: 'end' as const }
+];
+
+const trailPath = [
+  { lat: 20, lng: 30 }, { lat: 25, lng: 35 }, { lat: 35, lng: 45 },
+  { lat: 45, lng: 40 }, { lat: 50, lng: 35 }, { lat: 60, lng: 50 },
+  { lat: 65, lng: 55 }, { lat: 75, lng: 45 }, { lat: 80, lng: 40 },
+  { lat: 85, lng: 50 }, { lat: 90, lng: 60 }
+];
+
 export function NavigateControls() {
   const [tracking, setTracking] = useState(false);
   const [checkpoints, setCheckpoints] = useState<string[]>(["🚩 Trailhead"]);
@@ -11,35 +27,12 @@ export function NavigateControls() {
   const [voice, setVoice] = useState(true);
   const [distance, setDistance] = useState("0.0");
   const [elevation, setElevation] = useState("0");
-  const [currentPosition, setCurrentPosition] = useState({ lat: 20, lng: 30 });
-
-  const trailMarkers = [
-    { id: '1', lat: 20, lng: 30, label: 'Trailhead Start', type: 'start' as const },
-    { id: '2', lat: 35, lng: 45, label: 'Forest Checkpoint', type: 'waypoint' as const },
-    { id: '3', lat: 50, lng: 35, label: 'Mountain View', type: 'viewpoint' as const },
-    { id: '4', lat: 65, lng: 55, label: 'Water Source', type: 'water' as const },
-    { id: '5', lat: 80, lng: 40, label: 'Camp Site', type: 'campsite' as const },
-    { id: '6', lat: 90, lng: 60, label: 'Summit Peak', type: 'end' as const }
-  ];
-
-  const trailPath = [
-    { lat: 20, lng: 30 }, { lat: 25, lng: 35 }, { lat: 35, lng: 45 },
-    { lat: 45, lng: 40 }, { lat: 50, lng: 35 }, { lat: 60, lng: 50 },
-    { lat: 65, lng: 55 }, { lat: 75, lng: 45 }, { lat: 80, lng: 40 },
-    { lat: 85, lng: 50 }, { lat: 90, lng: 60 }
-  ];
 
   useEffect(() => {
     if (tracking) {
       const interval = setInterval(() => {
         setDistance(prev => (parseFloat(prev) + 0.1).toFixed(1));
         setElevation(prev => (parseInt(prev) + Math.floor(Math.random() * 10)).toString());
-        
-        // Simulate position movement along trail
-        setCurrentPosition(prev => {
-          const nextIndex = Math.min(trailPath.length - 1, Math.floor(parseFloat(distance) * 2));
-          return trailPath[nextIndex] || prev;
-        });
       }, 2000);
       
       return () => clearInterval(interval);

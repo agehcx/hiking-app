@@ -29,7 +29,7 @@ export default function LoginPage() {
 				return;
 			}
 			router.push("/profile");
-		} catch (err) {
+		} catch {
 			setError("Network error");
 		} finally {
 			setLoading(false);

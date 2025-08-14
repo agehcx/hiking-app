@@ -14,19 +14,33 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   let target = targetParam || defaultUrl;
   if (!/^https?:\/\//i.test(target)) target = 'https://' + target; // ensure scheme
 
-  const diagnostics: Record<string, any> = { targetOriginal: targetParam || null, targetFinal: target };
+  interface DnsAddress { address: string; family: number }
+  interface AttemptResult { upstream: Response; body: unknown; durationMs: number }
+  interface Diagnostics {
+    targetOriginal: string | null;
+    targetFinal: string;
+    dns?: { durationMs: number; addresses: DnsAddress[] };
+    dnsError?: string;
+    schemeTried?: string;
+    primaryError?: { message?: string; name?: string; stack?: string };
+    fallbackUsed?: boolean;
+    fallbackUrl?: string;
+    fallbackError?: { message?: string; name?: string };
+    fetchDurationMs?: number;
+  }
+  const diagnostics: Diagnostics = { targetOriginal: targetParam || null, targetFinal: target };
 
   try {
     const urlObj = new URL(target);
     try {
       const dnsStart = performance.now();
       const lookup = await dns.lookup(urlObj.hostname, { all: true });
-      diagnostics.dns = { durationMs: +(performance.now() - dnsStart).toFixed(2), addresses: lookup };
-    } catch (e: any) {
-      diagnostics.dnsError = e?.message || String(e);
+      diagnostics.dns = { durationMs: +(performance.now() - dnsStart).toFixed(2), addresses: lookup as DnsAddress[] };
+    } catch (e: unknown) {
+      diagnostics.dnsError = e instanceof Error ? e.message : String(e);
     }
 
-    const attemptFetch = async (u: string) => {
+  const attemptFetch = async (u: string): Promise<AttemptResult> => {
       const controller = new AbortController();
       const timeout = setTimeout(() => controller.abort(), 8000);
       const start = performance.now();
@@ -35,7 +49,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         const durationMs = +(performance.now() - start).toFixed(2);
         clearTimeout(timeout);
         const contentType = upstream.headers.get('content-type') || '';
-        let body: any;
+    let body: unknown;
         if (contentType.includes('application/json')) {
           body = await upstream.json();
         } else {
@@ -48,12 +62,15 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       }
     };
 
-    let result;
+    let result: AttemptResult | undefined;
     try {
       result = await attemptFetch(target);
       diagnostics.schemeTried = 'primary';
-    } catch (primaryErr: any) {
-      diagnostics.primaryError = { message: primaryErr?.message, name: primaryErr?.name, stack: primaryErr?.stack?.split('\n').slice(0,3).join('\n') };
+    } catch (primaryErr: unknown) {
+      if (primaryErr && typeof primaryErr === 'object') {
+        const err = primaryErr as { message?: string; name?: string; stack?: string };
+        diagnostics.primaryError = { message: err.message, name: err.name, stack: err.stack?.split('\n').slice(0,3).join('\n') };
+      }
       // If https failed and we haven't explicitly requested http, try http fallback
       if (target.startsWith('https://')) {
         const httpUrl = target.replace(/^https:\/\//i, 'http://');
@@ -61,9 +78,12 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
           result = await attemptFetch(httpUrl);
           diagnostics.fallbackUsed = true;
           diagnostics.fallbackUrl = httpUrl;
-        } catch (fallbackErr: any) {
-          diagnostics.fallbackError = { message: fallbackErr?.message, name: fallbackErr?.name };
-          throw primaryErr; // bubble original
+        } catch (fallbackErr: unknown) {
+          if (fallbackErr && typeof fallbackErr === 'object') {
+            const f = fallbackErr as { message?: string; name?: string };
+            diagnostics.fallbackError = { message: f.message, name: f.name };
+          }
+          throw primaryErr as Error; // bubble original
         }
       } else {
         throw primaryErr;
@@ -74,8 +94,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     const { upstream, body, durationMs } = result;
     diagnostics.fetchDurationMs = durationMs;
     return res.status(upstream.status).json({ ok: upstream.ok, status: upstream.status, data: body, diagnostics });
-  } catch (e: any) {
-    const isAbort = e?.name === 'AbortError';
-    return res.status(500).json({ error: 'Proxy request failed', detail: e?.message, timeout: isAbort, diagnostics });
+  } catch (e: unknown) {
+    const isAbort = (e as { name?: string })?.name === 'AbortError';
+    const message = e instanceof Error ? e.message : String(e);
+    return res.status(500).json({ error: 'Proxy request failed', detail: message, timeout: isAbort, diagnostics });
   }
 }
