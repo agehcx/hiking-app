@@ -38,64 +38,63 @@ export function ChatPanel() {
   const onSubmit = async (e: FormEvent) => {
     e.preventDefault();
     if (!input.trim() || loading) return;
-    
-    const userMsg: Message = { role: "user", content: input.trim(), timestamp: new Date() };
+
+    const text = input.trim();
+    const userMsg: Message = { role: "user", content: text, timestamp: new Date() };
     setMessages((m) => [...m, userMsg]);
     setInput("");
     setLoading(true);
 
-    // Simulate AI thinking
-    await new Promise(resolve => setTimeout(resolve, 1000 + Math.random() * 2000));
-    
-    // Generate contextual wilderness reply
-    const generateWildernessReply = (userInput: string) => {
-      const input = userInput.toLowerCase();
-      
-      // Weather-based recommendations
-      if (input.includes('rain') || input.includes('weather')) {
-        return "🌧️ Thailand's rainy season (May-October) requires special preparation! Pack a waterproof rain jacket, quick-dry pants, and waterproof boot covers. Pro tip: Bring anti-leech socks - they're essential in Thai forests! Rain probability is high during monsoon season.";
+    try {
+      const controller = new AbortController();
+      const timeout = setTimeout(() => controller.abort(), 20000);
+      const resp = await fetch("https://taspol-pan-sea.hf.space/v1/basicChat", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ message: text }),
+        signal: controller.signal
+      });
+      clearTimeout(timeout);
+      let replyText = "(No content)";
+      try {
+        const data: unknown = await resp.json();
+        replyText = extractText(data);
+      } catch {
+        replyText = await resp.text();
       }
-      
-      if (input.includes('wet') || input.includes('swamp') || input.includes('jungle') || input.includes('forest')) {
-        return "🌿 For Thailand's tropical forests, I highly recommend: Anti-leech socks (absolute must!), waterproof gaiters, quick-dry hiking pants, and DEET-based insect repellent. Watch for leeches especially in places like Khao Yai and Doi Inthanon. Bring extra dry socks in waterproof bags.";
+      if (!resp.ok) {
+        replyText = `Error ${resp.status}: ${replyText}`;
       }
-      
-      if (input.includes('mountain') || input.includes('doi') || input.includes('peak')) {
-        return "⛰️ Mountain adventures in Thailand (like Doi Inthanon or Doi Suthep) require layered clothing! Mornings can be cool (10-15°C) but afternoons get warm. Bring trekking poles, headlamp, emergency whistle. Weather changes rapidly at altitude - always check conditions!";
+      const reply: Message = { role: "assistant", content: replyText, timestamp: new Date() };
+      setMessages((m) => [...m, reply]);
+    } catch (err) {
+      const message = err instanceof Error ? (err.name === 'AbortError' ? 'Request timed out.' : err.message) : String(err);
+      setMessages((m) => [...m, { role: 'assistant', content: `⚠️ ${message}`, timestamp: new Date() }]);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const extractText = (data: unknown): string => {
+    if (data == null) return "No response.";
+    if (typeof data === 'string') return data;
+    if (typeof data === 'object') {
+      // Attempt common fields
+      // @ts-expect-error dynamic
+      if (typeof data.message === 'string') return data.message;
+      // @ts-expect-error dynamic
+      if (typeof data.reply === 'string') return data.reply;
+      // @ts-expect-error dynamic
+      if (typeof data.text === 'string') return data.text;
+      // OpenAI-like
+      // @ts-expect-error dynamic
+      if (Array.isArray(data.choices) && data.choices[0]?.message?.content) {
+        // @ts-expect-error dynamic
+        return data.choices[0].message.content as string;
       }
-      
-      if (input.includes('beach') || input.includes('island') || input.includes('koh') || input.includes('hot')) {
-        return "�️ Island/beach hiking essentials for places like Koh Samui or Koh Phangan: Wide-brimmed hat, UV-protective clothing, sunglasses, and LOTS of water (Thailand heat is intense!). Start early morning, avoid 11am-3pm heat, and bring electrolyte supplements.";
-      }
-      
-      if (input.includes('gear') || input.includes('pack') || input.includes('equipment')) {
-        return "🎒 Essential gear for Thailand hiking: Navigation tools, sun protection, quick-dry layers, headlamp + backup, first aid (include anti-diarrhea meds), fire starter, repair kit, snacks, hydration, emergency shelter. Don't forget: anti-leech socks, DEET repellent, and electrolyte tablets!";
-      }
-      
-      if (input.includes('recommend') || input.includes('suggest') || input.includes('where') || input.includes('thailand')) {
-        return "🇹🇭 Amazing Thailand destinations! For beginners: Erawan Falls (Kanchanaburi) - beautiful 7-tier waterfalls. Intermediate: Khao Yai National Park - wildlife and waterfalls. Advanced: Doi Inthanon - Thailand's highest peak. Beach lovers: Koh Samui temple trails. What's your experience level and preferred region?";
-      }
-      
-      // Default responses with practical tips
-      const practicalTips = [
-        `Great question about "${userInput}"! � For wilderness adventures, always inform someone of your route and expected return. Check weather conditions and pack accordingly. Need specific gear recommendations for your trip type?`,
-        `Interesting area you're asking about! 🤔 I'd recommend checking trail conditions and seasonal accessibility. Bring layers for temperature changes and extra water. Would you like me to suggest some specific trails or camping spots?`,
-        `Perfect timing to plan ahead! 🌟 For "${userInput}", consider the season - some areas require special permits or have seasonal closures. Pack the 10 essentials and check fire restrictions. Want current weather and trail condition updates?`,
-        `Love the outdoor spirit! 🏔️ Safety first: tell someone your plans, check weather, bring navigation tools. For wet conditions, anti-leech socks are a game-changer! What specific type of wilderness experience are you planning?`
-      ];
-      
-      return practicalTips[Math.floor(Math.random() * practicalTips.length)];
-    };
-    
-    const reply: Message = { 
-      role: "assistant", 
-      content: generateWildernessReply(userMsg.content), 
-      timestamp: new Date() 
-    };
-    
-    setMessages((m) => [...m, reply]);
-    setLoading(false);
-    // Auto-scroll will happen via useEffect
+      try { return JSON.stringify(data); } catch { return String(data); }
+    }
+    return String(data);
   };
 
   const formatTime = (date: Date) => {
