@@ -5,6 +5,53 @@ import { Card } from '@/components/ui/Card';
 import { Button } from '@/components/ui/Button';
 import { Icon } from '@/components/ui/Icon';
 
+// Define types for API response
+interface Activity {
+  t: string;
+  detail: string;
+}
+
+interface TimelineDay {
+  day: number;
+  activities: Activity[];
+}
+
+interface Spot {
+  name: string;
+  time: string;
+  notes: string;
+}
+
+interface Budget {
+  total: number;
+  [key: string]: number;
+}
+
+interface SafetyContact {
+  name: string;
+  phone: string;
+}
+
+interface Safety {
+  registration: string;
+  checkins: string;
+  sos: string;
+  contacts: Record<string, SafetyContact>;
+}
+
+interface TripPlan {
+  title: string;
+  timeline: TimelineDay[];
+  spots: Spot[];
+  budget: Budget;
+  safety: Safety;
+}
+
+interface TripPlanResponse {
+  tripOverview: string;
+  trip_plan: TripPlan;
+}
+
 export default function PlanPage() {
   const [currentStep, setCurrentStep] = useState(1);
   const [selectedRegion, setSelectedRegion] = useState('');
@@ -15,14 +62,13 @@ export default function PlanPage() {
   const [startPlace, setStartPlace] = useState('');
   const [nights, setNights] = useState(2);
   const [hikers, setHikers] = useState(2);
-  const [language, setLanguage] = useState('English');
   const [interests, setInterests] = useState<string[]>([]);
   const [budgetTier, setBudgetTier] = useState('');
   const [stayPref, setStayPref] = useState('');
   const [transportPref, setTransportPref] = useState('');
   const [generatedJSON, setGeneratedJSON] = useState<string>('');
   const [isLoading, setIsLoading] = useState(false);
-  const [tripPlanResponse, setTripPlanResponse] = useState<any>(null);
+  const [tripPlanResponse, setTripPlanResponse] = useState<TripPlanResponse | null>(null);
   const [apiError, setApiError] = useState<string>('');
 
   const availableInterests = [
@@ -267,7 +313,7 @@ export default function PlanPage() {
           <Card className="p-8 shadow-xl">
             <div className="text-center mb-8">
               <h2 className="text-3xl font-bold text-gray-900 mb-2">Choose Your Region</h2>
-              <p className="text-gray-600">Select the region of Thailand you'd like to explore</p>
+              <p className="text-gray-600">Select the region of Thailand you&apos;d like to explore</p>
             </div>
             
             <div className="grid md:grid-cols-3 gap-6">
@@ -652,11 +698,11 @@ export default function PlanPage() {
                     Daily Itinerary
                   </h3>
                   <div className="space-y-6">
-                    {tripPlanResponse.trip_plan?.timeline?.map((day: any) => (
+                    {tripPlanResponse.trip_plan?.timeline?.map((day: TimelineDay) => (
                       <div key={day.day} className="border-l-4 border-[var(--color-primary-500)] pl-6">
                         <h4 className="font-bold text-lg text-gray-900 mb-3">Day {day.day}</h4>
                         <div className="space-y-2">
-                          {day.activities?.map((activity: any, index: number) => (
+                          {day.activities?.map((activity: Activity, index: number) => (
                             <div key={index} className="flex items-start gap-3 py-2">
                               <span className="text-sm font-medium text-[var(--color-primary-600)] min-w-[60px]">
                                 {activity.t}
@@ -678,7 +724,7 @@ export default function PlanPage() {
                       Budget Breakdown
                     </h3>
                     <div className="grid md:grid-cols-2 gap-4">
-                      {Object.entries(tripPlanResponse.trip_plan.budget).map(([key, value]: [string, any]) => (
+                      {Object.entries(tripPlanResponse.trip_plan.budget).map(([key, value]: [string, number]) => (
                         key !== 'total' && (
                           <div key={key} className="flex justify-between items-center py-2 border-b border-green-200">
                             <span className="capitalize text-gray-700">{key}:</span>
@@ -702,7 +748,7 @@ export default function PlanPage() {
                       Key Destinations
                     </h3>
                     <div className="grid md:grid-cols-2 gap-4">
-                      {tripPlanResponse.trip_plan.spots.map((spot: any, index: number) => (
+                      {tripPlanResponse.trip_plan.spots.map((spot: Spot, index: number) => (
                         <div key={index} className="bg-white rounded-lg p-4 border">
                           <h4 className="font-semibold text-gray-900 mb-2">{spot.name}</h4>
                           <p className="text-sm text-gray-600 mb-1">Time: {spot.time}</p>
@@ -728,7 +774,7 @@ export default function PlanPage() {
                       </div>
                       {tripPlanResponse.trip_plan.safety.contacts && (
                         <div className="grid md:grid-cols-3 gap-4 mt-4">
-                          {Object.entries(tripPlanResponse.trip_plan.safety.contacts).map(([key, contact]: [string, any]) => (
+                          {Object.entries(tripPlanResponse.trip_plan.safety.contacts).map(([key, contact]: [string, SafetyContact]) => (
                             <div key={key} className="bg-white rounded-lg p-3 border">
                               <h5 className="font-semibold text-sm text-gray-900 mb-1">{contact.name}</h5>
                               <p className="text-sm text-gray-600">{contact.phone}</p>
