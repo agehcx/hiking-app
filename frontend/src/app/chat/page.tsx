@@ -1,6 +1,5 @@
 "use client";
 import { useState, useRef, useEffect, FormEvent } from "react";
-import { Icon } from "@/components/ui/Icon";
 import { Button } from "@/components/ui/Button";
 
 interface ChatMsg { role: "user" | "assistant"; content: string; ts: Date }
@@ -42,7 +41,7 @@ export default function ChatbotPage() {
     setLoading(true);
     try {
       const controller = new AbortController();
-      const t = setTimeout(() => controller.abort(), 20000);
+      const t = setTimeout(() => controller.abort(), 30000);
       const r = await fetch('https://taspol-pan-sea.hf.space/v1/basicChat', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -75,13 +74,13 @@ export default function ChatbotPage() {
     // Ordered lists: lines starting with 1.,2., etc.
     const lines = html.split(/\n+/);
     const processed: string[] = [];
-    let inOl = false; let olBuf: string[] = [];
-    let inUl = false; let ulBuf: string[] = [];
-    const flushOl = () => { if (olBuf.length) { processed.push('<ol class="list-decimal pl-6 space-y-2 my-4">'+olBuf.join('')+'</ol>'); olBuf=[]; } inOl=false; };
-    const flushUl = () => { if (ulBuf.length) { processed.push('<ul class="list-disc pl-6 space-y-2 my-4">'+ulBuf.join('')+'</ul>'); ulBuf=[]; } inUl=false; };
+    let olBuf: string[] = [];
+    let ulBuf: string[] = [];
+    const flushOl = () => { if (olBuf.length) { processed.push('<ol class="list-decimal pl-6 space-y-2 my-4">'+olBuf.join('')+'</ol>'); olBuf=[]; } };
+    const flushUl = () => { if (ulBuf.length) { processed.push('<ul class="list-disc pl-6 space-y-2 my-4">'+ulBuf.join('')+'</ul>'); ulBuf=[]; } };
     for (const ln of lines) {
-      if (/^\d+\.\s+/.test(ln)) { flushUl(); inOl=true; olBuf.push('<li class="marker:text-green-500 text-gray-700">'+ln.replace(/^\d+\.\s+/, '')+'</li>'); continue; }
-      if (/^[-*+]\s+/.test(ln)) { flushOl(); inUl=true; ulBuf.push('<li class="marker:text-green-500 text-gray-700">'+ln.replace(/^[-*+]\s+/, '')+'</li>'); continue; }
+      if (/^\d+\.\s+/.test(ln)) { flushUl(); olBuf.push('<li class="marker:text-green-500 text-gray-700">'+ln.replace(/^\d+\.\s+/, '')+'</li>'); continue; }
+      if (/^[-*+]\s+/.test(ln)) { flushOl(); ulBuf.push('<li class="marker:text-green-500 text-gray-700">'+ln.replace(/^[-*+]\s+/, '')+'</li>'); continue; }
       flushOl(); flushUl();
       if (ln.trim().length) processed.push('<p class="mb-4 text-gray-700 leading-relaxed">'+ln+'</p>');
     }
