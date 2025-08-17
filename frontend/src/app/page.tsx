@@ -70,7 +70,7 @@ export default function Home() {
         </div>
 
         {/* Scroll indicator */}
-        <div className="absolute bottom-8 mt-5 left-1/2 transform -translate-x-1/2 animate-bounce">
+        <div className="absolute mb-8 bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
           <div className="w-6 h-10 border-2 border-white/50 rounded-full flex justify-center">
             <div className="w-1 h-3 bg-white/70 rounded-full mt-2 animate-pulse"></div>
           </div>
@@ -345,7 +345,7 @@ export default function Home() {
       </section>
 
       {/* Key Features Section */}
-      <section className="min-h-screen py-24 bg-white relative overflow-hidden snap-start snap-always flex items-center">
+      <section className="min-h-screen py-15 bg-white relative overflow-hidden snap-start snap-always flex items-center">
         {/* Background decoration */}
         <div className="absolute inset-0 bg-gradient-to-br from-emerald-50/50 to-transparent"></div>
         <div className="absolute top-10 right-10 w-72 h-72 bg-emerald-100 rounded-full opacity-20 blur-3xl"></div>
@@ -353,7 +353,7 @@ export default function Home() {
 
         <div className="relative max-w-7xl mx-auto px-4 w-full">
           <ScrollReveal direction="up">
-            <div className="text-center mb-5">
+            <div className="text-center mb-2">
               <div className="inline-flex items-center px-4 py-2 bg-emerald-100 border border-emerald-200 rounded-full text-emerald-700 text-sm font-medium mb-6">
                 ⚡ Powerful Features
               </div>
