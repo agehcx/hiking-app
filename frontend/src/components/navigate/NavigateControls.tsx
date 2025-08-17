@@ -20,7 +20,12 @@ const trailPath = [
   { lat: 85, lng: 50 }, { lat: 90, lng: 60 }
 ];
 
-export function NavigateControls() {
+interface NavigateControlsProps {
+  showLiveMap?: boolean;
+  className?: string;
+}
+
+export function NavigateControls({ showLiveMap = true, className }: NavigateControlsProps) {
   const [tracking, setTracking] = useState(false);
   const [checkpoints, setCheckpoints] = useState<string[]>(["🚩 Trailhead"]);
   const [cpName, setCpName] = useState("");
@@ -50,8 +55,8 @@ export function NavigateControls() {
   };
 
   return (
-    <div className="space-y-6">
-      {/* Live Map */}
+    <div className={"space-y-6 " + (className || "")}>        
+      {showLiveMap && (
       <Card padding="lg">
         <div className="mb-4 flex items-center gap-2">
           <div className="text-xl">🗺️</div>
@@ -85,7 +90,8 @@ export function NavigateControls() {
             </div>
           </div>
         </div>
-      </Card>
+  </Card>
+  )}
 
       {/* Navigation Controls */}
       <Card padding="lg">

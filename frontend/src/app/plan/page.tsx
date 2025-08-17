@@ -317,7 +317,7 @@ export default function PlanPage() {
     } finally {
       setIsLoading(false);
     }
-    
+    console.log('Generated trip response:', tripPlanResponse);
     return tripData;
   };
 
