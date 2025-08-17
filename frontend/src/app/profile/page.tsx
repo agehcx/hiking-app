@@ -30,8 +30,8 @@ export default function ProfilePage() {
       {/* Stats Overview */}
       <Card padding="lg" className="mb-6">
         <div className="mb-4 flex items-center gap-2">
-          <div className="text-xl">📊</div>
-          <h2 className="text-xl font-bold">Adventure Stats</h2>
+          {/* <div className="text-xl">📊</div> */}
+          <h2 className="text-3xl font-bold">Adventure Stats</h2>
         </div>
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           <div className="rounded-xl border border-[var(--color-primary-200)] bg-gradient-to-br from-[var(--color-primary-25)] to-[var(--color-primary-50)] p-4 text-center">
@@ -58,8 +58,8 @@ export default function ProfilePage() {
         <Card className="lg:col-span-2" padding="lg">
           <div className="mb-4 flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <div className="text-xl">📅</div>
-              <h2 className="text-xl font-bold">Recent Trips</h2>
+              {/* <div className="text-xl">📅</div> */}
+              <h2 className="text-3xl font-bold">Recent Trips</h2>
             </div>
             <Button variant="outline" size="sm">View All</Button>
           </div>

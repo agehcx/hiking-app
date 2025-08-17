@@ -5,10 +5,10 @@ import { Button } from "@/components/ui/Button";
 interface ChatMsg { role: "user" | "assistant"; content: string; ts: Date }
 
 const SUGGESTIONS = [
-  "วางแผนเดินป่า 3 วัน ใกล้เชียงใหม่",
-  "ต้องเตรียมอะไรบ้างหน้าฝน?",
-  "รองเท้าแบบไหนเหมาะกับเส้นทางหิน",
-  "แนะนำเส้นทางน้ำตกสวย ๆ ในไทย",
+  "Plan a 3-day backpacking trip near Chiang Mai",
+  "What should I prepare for the rainy season?",
+  "What shoes are suitable for rocky trails?",
+  "Recommend beautiful waterfall routes in Thailand",
 ];
 
 export default function ChatbotPage() {
@@ -93,7 +93,6 @@ export default function ChatbotPage() {
       <div className="w-full max-w-5xl h-[85vh] bg-gradient-to-br from-white/95 to-white/85 backdrop-blur-md border border-white/20 shadow-2xl rounded-3xl flex flex-col overflow-hidden ring-1 ring-gray-100/50">
         {/* Messages Container */}
 
-        {/* Messages Container */}
         <div ref={listRef} className="flex-1 overflow-y-auto px-8 py-8 space-y-6 scrollbar-thin scrollbar-thumb-gray-200 scrollbar-track-transparent hover:scrollbar-thumb-gray-300">
           {messages.length === 0 && (
             <div className="mt-16 flex flex-col items-center text-center gap-8 animate-fade-in">
@@ -101,8 +100,8 @@ export default function ChatbotPage() {
                 <div className="w-20 h-20 mx-auto bg-gradient-to-br from-green-400 to-blue-500 rounded-full flex items-center justify-center shadow-lg">
                   <span className="text-3xl">🏔️</span>
                 </div>
-                <h2 className="text-2xl font-bold text-gray-800 mb-3">สวัสดี Explorer!</h2>
-                <p className="text-gray-600 max-w-md leading-relaxed">ฉันพร้อมช่วยเหลือเรื่องการเดินป่า อุปกรณ์ เส้นทาง และคำแนะนำต่างๆ เริ่มคุยกันเลย!</p>
+                <h2 className="text-2xl font-bold text-gray-800 mb-3">Hello Explorer!</h2>
+                <p className="text-gray-600 max-w-md leading-relaxed">I’m here to assist with backpacking, gear, routes, and advice. Let’s start the conversation!</p>
               </div>
               <div className="flex flex-wrap gap-3 justify-center max-w-2xl">
                 {SUGGESTIONS.map((s, idx) => (
@@ -146,7 +145,7 @@ export default function ChatbotPage() {
                   <span className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '120ms' }} />
                   <span className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '240ms' }} />
                 </div>
-                <span className="text-sm text-gray-500 ml-2">กำลังคิด...</span>
+                <span className="text-sm text-gray-500 ml-2">Thinking...</span>
               </div>
             </div>
           )}
@@ -159,7 +158,7 @@ export default function ChatbotPage() {
               <textarea
                 value={input}
                 onChange={e => setInput(e.target.value)}
-                placeholder="พิมพ์ข้อความ... (Shift+Enter = ขึ้นบรรทัดใหม่)"
+                placeholder="Type your message... (Shift+Enter = New line)"
                 rows={1}
                 onKeyDown={(e) => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); send(input); } }}
                 className="w-full resize-none rounded-2xl border-2 border-gray-200/60 bg-white/90 backdrop-blur px-6 py-4 text-gray-800 font-medium shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-400/50 focus:border-blue-400/60 transition-all duration-200 max-h-40 placeholder:text-gray-500"
@@ -167,7 +166,7 @@ export default function ChatbotPage() {
               />
               {input.trim() && (
                 <div className="absolute top-2 right-2 text-xs text-gray-400 bg-white/80 px-2 py-1 rounded-md">
-                  {input.length} ตัวอักษร
+                  {input.length} characters
                 </div>
               )}
             </div>
@@ -179,7 +178,7 @@ export default function ChatbotPage() {
               loading={loading} 
               className="rounded-2xl px-8 py-4 text-white bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 shadow-lg hover:shadow-xl transition-all duration-200 transform hover:scale-105 disabled:opacity-50 disabled:scale-100 min-w-[100px] font-medium"
             >
-              {loading ? 'กำลังส่ง...' : 'ส่ง'}
+              {loading ? 'Sending...' : 'Send'}
             </Button>
           </div>
         </form>
