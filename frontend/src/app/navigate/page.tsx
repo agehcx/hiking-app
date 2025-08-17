@@ -1,91 +1,126 @@
 'use client';
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { NavigateControls } from "@/components/navigate/NavigateControls";
 import { TripMap } from "@/components/map/TripMap";
 import { Icon } from "@/components/ui/Icon";
-
-// Mock data based on your provided JSON
-const mockTripData = {
-  tripOverview: "Embark on a 4-day multi-day trekking adventure from Bangkok to Chiang Mai, immersing yourself in the serene landscapes of Phrao District and experiencing authentic hill tribe culture and off-the-beaten-path experience in northern Thailand.",
-  trip_plan: {
-    title: "4-day Multi-day Trekking Adventure in Chiang Mai",
-    date: "2025-08-22 to 2025-08-25",
-    timeline: [
-      {
-        day: 1,
-        activities: [
-          { t: "08:00", detail: "Departure from Bangkok" },
-          { t: "14:00", detail: "Arrive in Chiang Mai, check-in at Phrao District Homestay" },
-          { t: "16:00", detail: "Visit Community Library, explore local books and art" },
-          { t: "18:00", detail: "Dinner at Phrao Night Market" }
-        ]
-      },
-      {
-        day: 2,
-        activities: [
-          { t: "07:00", detail: "Breakfast at homestay" },
-          { t: "09:00", detail: "Start guided trek through countryside" },
-          { t: "12:00", detail: "Lunch break at scenic viewpoint" },
-          { t: "15:00", detail: "Continue trekking, visit local village" },
-          { t: "18:00", detail: "Return to homestay, traditional dinner" }
-        ]
-      },
-      {
-        day: 3,
-        activities: [
-          { t: "08:00", detail: "Early morning trek to waterfall" },
-          { t: "10:00", detail: "Swimming and relaxation at waterfall" },
-          { t: "14:00", detail: "Cultural workshop with local artisans" },
-          { t: "16:00", detail: "Explore more trekking trails" },
-          { t: "19:00", detail: "Community dinner and cultural show" }
-        ]
-      },
-      {
-        day: 4,
-        activities: [
-          { t: "09:00", detail: "Final morning trek" },
-          { t: "11:00", detail: "Pack and check-out from homestay" },
-          { t: "13:00", detail: "Lunch in Chiang Mai city" },
-          { t: "15:00", detail: "Departure to Bangkok" }
-        ]
-      }
-    ],
-    spots: [
-      {
-        name: "Phrao District Homestay",
-        time: "14:00-18:00",
-        notes: "Check-in and meet local hosts",
-        lat: 19.3667,
-        lng: 99.2167
-      },
-      {
-        name: "Community Library",
-        time: "16:00-17:00",
-        notes: "Explore local books and art",
-        lat: 19.3670,
-        lng: 99.2170
-      },
-      {
-        name: "Trekking Trails",
-        time: "09:00-17:00",
-        notes: "Guided trek through countryside",
-        lat: 19.3700,
-        lng: 99.2200
-      },
-      {
-        name: "Phrao Night Market",
-        time: "18:00-20:00",
-        notes: "Local food and shopping",
-        lat: 19.3665,
-        lng: 99.2165
-      }
-    ]
-  }
-};
+import { tripStore, type TripPlanData } from "@/lib/store/tripStore";
 
 export default function NavigatePage() {
   const [currentDay, setCurrentDay] = useState(1);
+  const [tripData, setTripData] = useState<TripPlanData | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    // Load the latest trip plan from localStorage
+    const latestTrip = tripStore.getLatestTripPlan();
+    if (latestTrip) {
+      setTripData(latestTrip);
+    }
+    setLoading(false);
+  }, []);
+
+  // Fallback to mock data if no trip plan is found
+  const getMockTripData = () => ({
+    tripOverview: "Embark on a 4-day multi-day trekking adventure from Bangkok to Chiang Mai, immersing yourself in the serene landscapes of Phrao District and experiencing authentic hill tribe culture and off-the-beaten-path experience in northern Thailand.",
+    trip_plan: {
+      title: "4-day Multi-day Trekking Adventure in Chiang Mai",
+      date: "2025-08-22 to 2025-08-25",
+      timeline: [
+        {
+          day: 1,
+          activities: [
+            { t: "08:00", detail: "Departure from Bangkok" },
+            { t: "14:00", detail: "Arrive in Chiang Mai, check-in at Phrao District Homestay" },
+            { t: "16:00", detail: "Visit Community Library, explore local books and art" },
+            { t: "18:00", detail: "Dinner at Phrao Night Market" }
+          ]
+        },
+        {
+          day: 2,
+          activities: [
+            { t: "07:00", detail: "Breakfast at homestay" },
+            { t: "09:00", detail: "Start guided trek through countryside" },
+            { t: "12:00", detail: "Lunch break at scenic viewpoint" },
+            { t: "15:00", detail: "Continue trekking, visit local village" },
+            { t: "18:00", detail: "Return to homestay, traditional dinner" }
+          ]
+        },
+        {
+          day: 3,
+          activities: [
+            { t: "08:00", detail: "Early morning trek to waterfall" },
+            { t: "10:00", detail: "Swimming and relaxation at waterfall" },
+            { t: "14:00", detail: "Cultural workshop with local artisans" },
+            { t: "16:00", detail: "Explore more trekking trails" },
+            { t: "19:00", detail: "Community dinner and cultural show" }
+          ]
+        },
+        {
+          day: 4,
+          activities: [
+            { t: "09:00", detail: "Final morning trek" },
+            { t: "11:00", detail: "Pack and check-out from homestay" },
+            { t: "13:00", detail: "Lunch in Chiang Mai city" },
+            { t: "15:00", detail: "Departure to Bangkok" }
+          ]
+        }
+      ],
+      spots: [
+        {
+          name: "Phrao District Homestay",
+          time: "14:00-18:00",
+          notes: "Check-in and meet local hosts",
+          lat: 19.3667,
+          lng: 99.2167
+        },
+        {
+          name: "Community Library",
+          time: "16:00-17:00",
+          notes: "Explore local books and art",
+          lat: 19.3670,
+          lng: 99.2170
+        },
+        {
+          name: "Trekking Trails",
+          time: "09:00-17:00",
+          notes: "Guided trek through countryside",
+          lat: 19.3700,
+          lng: 99.2200
+        },
+        {
+          name: "Phrao Night Market",
+          time: "18:00-20:00",
+          notes: "Local food and shopping",
+          lat: 19.3665,
+          lng: 99.2165
+        }
+      ]
+    }
+  });
+
+  // Use loaded trip data or fallback to mock data
+  const displayData = tripData || getMockTripData();
+  
+  // Ensure spots have coordinates for the map
+  const spotsWithCoords = displayData.trip_plan.spots.map(spot => ({
+    ...spot,
+    lat: spot.lat || 19.3667, // Default latitude if not provided
+    lng: spot.lng || 99.2167  // Default longitude if not provided
+  }));
+
+  if (loading) {
+    return (
+      <main className="mx-auto max-w-7xl px-4 py-8">
+        <div className="flex items-center justify-center min-h-[60vh]">
+          <div className="text-center">
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto mb-4"></div>
+            <p className="text-gray-600">Loading trip data...</p>
+          </div>
+        </div>
+      </main>
+    );
+  }
 
   return (
     <main className="mx-auto max-w-7xl px-4 py-8">
@@ -106,13 +141,31 @@ export default function NavigatePage() {
 
         {/* Trip Overview */}
         <div className="mt-4 p-4 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg border border-blue-200">
-          <h3 className="font-bold text-lg text-gray-900 mb-2">
-            {mockTripData.trip_plan.title}
-          </h3>
-          <p className="text-sm text-gray-700 mb-2">
-            {mockTripData.trip_plan.date}
-          </p>
-          <p className="text-sm text-gray-600">{mockTripData.tripOverview}</p>
+          <div className="flex justify-between items-start mb-2">
+            <div>
+              <h3 className="font-bold text-lg text-gray-900 mb-2">
+                {displayData.trip_plan.title}
+              </h3>
+              <p className="text-sm text-gray-700 mb-2">
+                {'date' in displayData.trip_plan ? displayData.trip_plan.date : 'Custom Trip Plan'}
+              </p>
+              <p className="text-sm text-gray-600">{displayData.tripOverview}</p>
+            </div>
+            {tripData && (
+              <div className="flex items-center gap-2 text-xs text-green-700 bg-green-100 px-2 py-1 rounded-full">
+                <Icon name="check" size={12} />
+                <span>From Your Plan</span>
+              </div>
+            )}
+          </div>
+          {!tripData && (
+            <div className="mt-3 p-2 bg-amber-100 rounded border border-amber-200">
+              <p className="text-xs text-amber-700">
+                No saved trip plan found. Showing sample data. 
+                <a href="/plan" className="underline ml-1">Create your trip plan</a>
+              </p>
+            </div>
+          )}
         </div>
       </div>
 
@@ -120,8 +173,8 @@ export default function NavigatePage() {
       <section className="relative overflow-hidden rounded-xl border border-[var(--color-border)] mb-[5vh] z-10">
         <div className="h-[70vh] w-full">
           <TripMap
-            spots={mockTripData.trip_plan.spots}
-            timeline={mockTripData.trip_plan.timeline}
+            spots={spotsWithCoords}
+            timeline={displayData.trip_plan.timeline}
             currentDay={currentDay}
           />
         </div>
@@ -168,7 +221,7 @@ export default function NavigatePage() {
                 <div className="flex justify-between items-center">
                   <span className="text-sm text-gray-600">Spots to Visit:</span>
                   <span className="font-semibold">
-                    {mockTripData.trip_plan.spots.length}
+                    {spotsWithCoords.length}
                   </span>
                 </div>
                 <div className="flex justify-between items-center">

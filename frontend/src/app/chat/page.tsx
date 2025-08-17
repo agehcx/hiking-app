@@ -1,6 +1,7 @@
 "use client";
 import { useState, useRef, useEffect, FormEvent } from "react";
 import { Button } from "@/components/ui/Button";
+import { tripStore, type TripPlanData } from "@/lib/store/tripStore";
 
 interface ChatMsg { role: "user" | "assistant"; content: string; ts: Date }
 
@@ -11,16 +12,32 @@ const SUGGESTIONS = [
   "Recommend beautiful waterfall routes in Thailand",
 ];
 
+const TRIP_SUGGESTIONS = [
+  "What should I pack for this trip?",
+  "Tell me about the weather during my trip dates",
+  "What are the best photography spots on my route?",
+  "Are there any safety precautions I should know?",
+];
+
 export default function ChatbotPage() {
   const [messages, setMessages] = useState<ChatMsg[]>([]);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
+  const [tripData, setTripData] = useState<TripPlanData | null>(null);
   const listRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     if (!listRef.current) return;
     listRef.current.scrollTop = listRef.current.scrollHeight;
   }, [messages]);
+
+  useEffect(() => {
+    // Load the latest trip plan when the component mounts
+    const latestTrip = tripStore.getLatestTripPlan();
+    if (latestTrip) {
+      setTripData(latestTrip);
+    }
+  }, []);
 
   const extract = (data: unknown): string => {
     if (!data) return "(empty)";
@@ -39,13 +56,22 @@ export default function ChatbotPage() {
     setMessages(m => [...m, { role: 'user', content, ts: new Date() }]);
     setInput("");
     setLoading(true);
+    
     try {
       const controller = new AbortController();
       const t = setTimeout(() => controller.abort(), 30000);
+      
+      // Prepare message with trip context if available
+      let messageContent = content;
+      if (tripData) {
+        const tripContext = tripStore.formatTripForChat(tripData);
+        messageContent = `${tripContext}\n\nUser Question: ${content}`;
+      }
+      
       const r = await fetch('https://taspol-pan-sea.hf.space/v1/basicChat', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ message: content }),
+        body: JSON.stringify({ message: messageContent }),
         signal: controller.signal
       });
       clearTimeout(t);
@@ -91,8 +117,28 @@ export default function ChatbotPage() {
   return (
     <main className="flex items-center justify-center min-h-[90vh] w-full p-6">
       <div className="w-full max-w-5xl h-[85vh] bg-gradient-to-br from-white/95 to-white/85 backdrop-blur-md border border-white/20 shadow-2xl rounded-3xl flex flex-col overflow-hidden ring-1 ring-gray-100/50">
+        {/* Trip Plan Header */}
+        {tripData && (
+          <div className="px-6 py-3 bg-gradient-to-r from-green-50 to-emerald-50 border-b border-green-200">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <div className="w-3 h-3 bg-green-500 rounded-full animate-pulse"></div>
+                <div>
+                  <p className="text-sm font-medium text-green-800">Trip Plan Active</p>
+                  <p className="text-xs text-green-600">{tripData.trip_plan.title}</p>
+                </div>
+              </div>
+              <button 
+                onClick={() => setTripData(null)}
+                className="text-green-600 hover:text-green-800 text-xs underline"
+              >
+                Chat without trip context
+              </button>
+            </div>
+          </div>
+        )}
+        
         {/* Messages Container */}
-
         <div ref={listRef} className="flex-1 overflow-y-auto px-8 py-8 space-y-6 scrollbar-thin scrollbar-thumb-gray-200 scrollbar-track-transparent hover:scrollbar-thumb-gray-300">
           {messages.length === 0 && (
             <div className="mt-16 flex flex-col items-center text-center gap-8 animate-fade-in">
@@ -104,7 +150,7 @@ export default function ChatbotPage() {
                 <p className="text-gray-600 max-w-md leading-relaxed">I’m here to assist with backpacking, gear, routes, and advice. Let’s start the conversation!</p>
               </div>
               <div className="flex flex-wrap gap-3 justify-center max-w-2xl">
-                {SUGGESTIONS.map((s, idx) => (
+                {(tripData ? TRIP_SUGGESTIONS : SUGGESTIONS).map((s, idx) => (
                   <button 
                     key={s} 
                     onClick={() => send(s)} 

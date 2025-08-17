@@ -81,7 +81,7 @@ export default function Home() {
       <section className="min-h-screen py-24 bg-gradient-to-b from-white to-gray-50 snap-start snap-always flex items-center">
         <div className="max-w-7xl mx-auto px-4 w-full">
           <div className="grid lg:grid-cols-2 gap-16 items-center">
-            <ScrollReveal direction="left">
+            <ScrollReveal direction="left" className="h-full">
               <div className="space-y-8">
                 <div className="inline-flex items-center px-4 py-2 bg-red-100 border border-red-200 rounded-full text-red-700 text-sm font-medium">
                   ⚠️ Current Challenges
@@ -353,7 +353,7 @@ export default function Home() {
 
         <div className="relative max-w-7xl mx-auto px-4 w-full">
           <ScrollReveal direction="up">
-            <div className="text-center mb-20">
+            <div className="text-center mb-5">
               <div className="inline-flex items-center px-4 py-2 bg-emerald-100 border border-emerald-200 rounded-full text-emerald-700 text-sm font-medium mb-6">
                 ⚡ Powerful Features
               </div>
@@ -485,23 +485,25 @@ export default function Home() {
                 Real Stories from
                 <br />
                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-600 to-teal-600">
-                  Real Hikers
+                  Real Travellers
                 </span>
               </h2>
             </div>
           </ScrollReveal>
 
-          <div className="grid md:grid-cols-2 gap-8">
-            <ScrollReveal direction="left">
-              <div className="group bg-white rounded-3xl p-8 shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:scale-105 relative overflow-hidden">
+          <div className="grid md:grid-cols-4 gap-6 items-stretch">
+            <ScrollReveal direction="left" className="h-full">
+              <div className="group bg-white rounded-3xl p-8 shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:scale-105 relative overflow-hidden h-full flex flex-col">
                 <div className="absolute top-0 right-0 w-24 h-24 bg-emerald-100 rounded-full -mr-12 -mt-12 opacity-50"></div>
-                <div className="relative">
+                <div className="relative flex flex-col flex-1 justify-between">
                   <div className="flex items-center mb-6">
                     <div className="w-16 h-16 rounded-full bg-gradient-to-br from-emerald-400 to-teal-500 flex items-center justify-center text-white font-bold text-xl mr-4">
-                      A
+                      S
                     </div>
                     <div>
-                      <h4 className="font-bold text-gray-900 text-lg">Anna</h4>
+                      <h4 className="font-bold text-gray-900 text-lg">
+                        Spirare
+                      </h4>
                       <p className="text-gray-600 text-sm">
                         Adventure Explorer
                       </p>
@@ -512,11 +514,47 @@ export default function Home() {
                   </div>
                   <div className="text-4xl text-emerald-300 mb-4">&ldquo;</div>
                   <p className="text-lg text-gray-700 italic mb-6 leading-relaxed">
-                    Finally, one platform that connects travelers with rangers.
-                    I felt completely safe hiking Mount Kinabalu for the first
-                    time! The AI recommendations were spot-on.
+                    It was always awkward to manage trip costs in small groups.
+                    The app makes it simple by showing clear cost splits, so
+                    even two people can plan easily without stress.
                   </p>
-                  <div className="flex items-center text-sm text-gray-500">
+                  <div className="flex items-center text-sm text-gray-500 mt-auto">
+                     
+                    <Icon name="mapPin" size={16} className="mr-2" />
+                    Taipei, Taiwan
+                  </div>
+                </div>
+              </div>
+            </ScrollReveal>
+
+            <ScrollReveal direction="left" className="h-full">
+              <div className="group bg-white rounded-3xl p-8 shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:scale-105 relative overflow-hidden h-full flex flex-col">
+                <div className="absolute top-0 right-0 w-24 h-24 bg-yellow-100 rounded-full -mr-12 -mt-12 opacity-50"></div>
+                <div className="relative flex flex-col flex-1 justify-between">
+                  <div className="flex items-center mb-6">
+                    <div className="w-16 h-16 rounded-full bg-gradient-to-br from-yellow-400 to-orange-500 flex items-center justify-center text-white font-bold text-xl mr-4">
+                      J
+                    </div>
+                    <div>
+                      <h4 className="font-bold text-gray-900 text-lg">
+                        Julia Lee,
+                      </h4>
+                      <p className="text-gray-600 text-sm">
+                        Adventure Explorer
+                      </p>
+                      <div className="flex text-yellow-400 text-sm mt-1">
+                        ⭐⭐⭐⭐⭐
+                      </div>
+                    </div>
+                  </div>
+                  <div className="text-4xl text-emerald-300 mb-4">&ldquo;</div>
+                  <p className="text-lg text-gray-700 italic mb-6 leading-relaxed">
+                    I used to worry about accidents on hikes, especially when
+                    there was no internet signal for emergencies. The app gave
+                    me offline safety info and contact steps, which makes me
+                    feel much more secure.
+                  </p>
+                  <div className="flex items-center text-sm text-gray-500 mt-auto">
                     <Icon name="mapPin" size={16} className="mr-2" />
                     Mount Kinabalu, Malaysia
                   </div>
@@ -524,35 +562,65 @@ export default function Home() {
               </div>
             </ScrollReveal>
 
-            <ScrollReveal direction="right">
-              <div className="group bg-white rounded-3xl p-8 shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:scale-105 relative overflow-hidden">
-                <div className="absolute top-0 right-0 w-24 h-24 bg-blue-100 rounded-full -mr-12 -mt-12 opacity-50"></div>
-                <div className="relative">
+            <ScrollReveal direction="right" className="h-full">
+              <div className="group bg-white rounded-3xl p-8 shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:scale-105 relative overflow-hidden h-full flex flex-col">
+                <div className="absolute top-0 right-0 w-24 h-24 bg-red-100 rounded-full -mr-12 -mt-12 opacity-50"></div>
+                <div className="relative flex flex-col flex-1 justify-between">
                   <div className="flex items-center mb-6">
-                    <div className="w-16 h-16 rounded-full bg-gradient-to-br from-blue-400 to-indigo-500 flex items-center justify-center text-white font-bold text-xl mr-4">
-                      R
+                    <div className="w-16 h-16 rounded-full bg-gradient-to-br from-pink-400 to-red-500 flex items-center justify-center text-white font-bold text-xl mr-4">
+                      P
                     </div>
                     <div>
                       <h4 className="font-bold text-gray-900 text-lg">
-                        Ranger Mike
+                        Puttaraksa
                       </h4>
-                      <p className="text-gray-600 text-sm">
-                        Gunung Mulu National Park
-                      </p>
+                      <p className="text-gray-600 text-sm">Thailand</p>
                       <div className="flex text-yellow-400 text-sm mt-1">
                         ⭐⭐⭐⭐⭐
                       </div>
                     </div>
                   </div>
-                  <div className="text-4xl text-blue-300 mb-4">&ldquo;</div>
+                  <div className="text-4xl text-blue-300 mb-2">&ldquo;</div>
                   <p className="text-lg text-gray-700 italic mb-6 leading-relaxed">
-                    Safety registration makes my job so much easier. I can track
-                    hikers in real-time and respond faster to any emergencies.
-                    This platform is a game-changer for park safety.
+                    Booking used to be a pain because links crashed or didn’t
+                    update. Now the app keeps everything clear and up to date,
+                    so I don’t waste time refreshing.
                   </p>
-                  <div className="flex items-center text-sm text-gray-500">
-                    <Icon name="shield" size={16} className="mr-2" />
-                    Safety & Rescue Operations
+                  <div className="flex items-center text-sm text-gray-500 mt-auto">
+                    <Icon name="mapPin" size={16} className="mr-2" />
+                    Bangkok, Thailand
+                  </div>
+                </div>
+              </div>
+            </ScrollReveal>
+
+            <ScrollReveal direction="right" className="h-full">
+              <div className="group bg-white rounded-3xl p-8 shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:scale-105 relative overflow-hidden h-full flex flex-col">
+                <div className="absolute top-0 right-0 w-24 h-24 bg-blue-100 rounded-full -mr-12 -mt-12 opacity-50"></div>
+                <div className="relative flex flex-col flex-1 justify-between">
+                  <div className="flex items-center mb-6">
+                    <div className="w-16 h-16 rounded-full bg-gradient-to-br from-blue-400 to-indigo-500 flex items-center justify-center text-white font-bold text-xl mr-4">
+                      T
+                    </div>
+                    <div>
+                      <h4 className="font-bold text-gray-900 text-lg">
+                        Tai Pattarawadee
+                      </h4>
+                      <p className="text-gray-600 text-sm">Thailand</p>
+                      <div className="flex text-yellow-400 text-sm mt-1">
+                        ⭐⭐⭐⭐⭐
+                      </div>
+                    </div>
+                  </div>
+                  <div className="text-4xl text-blue-300 mb-2">&ldquo;</div>
+                  <p className="text-lg text-gray-700 italic mb-6 leading-relaxed">
+                    Before, I had to call countless times just to get a spot.
+                    The app makes the whole process smooth and direct, saving me
+                    hours of effort.
+                  </p>
+                  <div className="flex items-center text-sm text-gray-500 mt-auto">
+                    <Icon name="mapPin" size={16} className="mr-2" />
+                    Thailand
                   </div>
                 </div>
               </div>
@@ -560,7 +628,7 @@ export default function Home() {
           </div>
 
           {/* Stats */}
-          <ScrollReveal direction="up" delay={300}>
+          {/* <ScrollReveal direction="up" delay={300}>
             <div className="mt-16 grid grid-cols-2 md:grid-cols-4 gap-8">
               <div className="text-center">
                 <div className="text-3xl font-black text-emerald-600 mb-2">
@@ -587,7 +655,8 @@ export default function Home() {
                 <p className="text-gray-600 text-sm">Support</p>
               </div>
             </div>
-          </ScrollReveal>
+          </ScrollReveal> */}
+
         </div>
       </section>
 

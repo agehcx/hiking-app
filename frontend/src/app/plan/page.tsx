@@ -4,6 +4,8 @@ import { useState } from 'react';
 import { Card } from '@/components/ui/Card';
 import { Button } from '@/components/ui/Button';
 import { Icon } from '@/components/ui/Icon';
+import { tripStore } from '@/lib/store/tripStore';
+import { useRouter } from 'next/navigation';
 
 // Define types for API response
 interface Activity {
@@ -53,6 +55,7 @@ interface TripPlanResponse {
 }
 
 export default function PlanPage() {
+  const router = useRouter();
   const [currentStep, setCurrentStep] = useState(1);
   const [selectedRegion, setSelectedRegion] = useState('');
   const [selectedTripType, setSelectedTripType] = useState('');
@@ -311,6 +314,15 @@ export default function PlanPage() {
 
       const data = await response.json();
       setTripPlanResponse(data);
+      
+      // Save trip plan to localStorage
+      if (data && data.trip_plan) {
+        const tripId = tripStore.saveTripPlan({
+          tripOverview: data.tripOverview || '',
+          trip_plan: data.trip_plan
+        });
+        console.log('Trip plan saved with ID:', tripId);
+      }
     } catch (error) {
       console.error('Error generating trip plan:', error);
       setApiError(error instanceof Error ? error.message : 'Failed to generate trip plan');
@@ -995,13 +1007,22 @@ export default function PlanPage() {
                 )}
 
                 {/* Action Buttons */}
-                <div className="flex gap-4 justify-center">
+                <div className="flex gap-4 justify-center flex-wrap">
                   <Button 
                     variant="primary" 
                     size="lg" 
                     className="px-8 py-4"
+                    onClick={() => router.push('/navigate')}
                   >
-                    Download Itinerary
+                    Start Navigation
+                  </Button>
+                  <Button 
+                    variant="outline" 
+                    size="lg" 
+                    className="px-8 py-4"
+                    onClick={() => router.push('/chat')}
+                  >
+                    Chat About Trip
                   </Button>
                   <Button 
                     variant="outline" 
