@@ -258,7 +258,7 @@ export default function Home() {
             <ScrollReveal direction="left">
               <div className="bg-white rounded-2xl p-8 shadow-sm">
                 <p className="text-lg text-gray-700 italic mb-6 leading-relaxed">
-                  "                  &ldquo;Finally, one platform that connects travelers with rangers. I felt safe hiking Mount Kinabalu for the first time!&rdquo;"
+                  &ldquo;Finally, one platform that connects travelers with rangers. I felt safe hiking Mount Kinabalu for the first time!&rdquo;
                 </p>
                 <div className="font-semibold text-gray-900">— Anna, Trekker</div>
               </div>
@@ -267,7 +267,7 @@ export default function Home() {
             <ScrollReveal direction="right">
               <div className="bg-white rounded-2xl p-8 shadow-sm">
                 <p className="text-lg text-gray-700 italic mb-6 leading-relaxed">
-                  "                  &ldquo;Safety registration makes my job easier. I can track hikers and respond faster.&rdquo;"
+                  &ldquo;Safety registration makes my job easier. I can track hikers and respond faster.&rdquo;
                 </p>
                 <div className="font-semibold text-gray-900">— Ranger, Gunung Mulu National Park</div>
               </div>

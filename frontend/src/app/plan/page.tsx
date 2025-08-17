@@ -383,7 +383,7 @@ export default function PlanPage() {
             <Card className="p-8 shadow-xl">
               <div className="text-center mb-8">
                 <h2 className="text-3xl font-bold text-gray-900 mb-2">Enter Your Destination</h2>
-                <p className="text-gray-600">Tell us where you'd like to go in Southeast Asia</p>
+                <p className="text-gray-600">Tell us where you&apos;d like to go in Southeast Asia</p>
               </div>
               
               <div className="max-w-2xl mx-auto">
