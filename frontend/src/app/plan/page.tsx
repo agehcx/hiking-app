@@ -57,6 +57,8 @@ export default function PlanPage() {
   const [selectedRegion, setSelectedRegion] = useState('');
   const [selectedTripType, setSelectedTripType] = useState('');
   const [selectedDestination, setSelectedDestination] = useState('');
+  const [hasDestination, setHasDestination] = useState<boolean | null>(null);
+  const [customDestination, setCustomDestination] = useState('');
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
   const [startPlace, setStartPlace] = useState('');
@@ -107,25 +109,68 @@ export default function PlanPage() {
 
   const regions = [
     {
-      id: 'northern',
-      name: 'Northern Thailand',
-      icon: '🏔️',
-      description: 'Mountains, hill tribes, and cooler climate',
-      destinations: ['Chiang Mai', 'Chiang Rai', 'Mae Hong Son', 'Pai', 'Doi Inthanon']
+      id: 'thailand',
+      name: 'Thailand',
+      icon: '🇹🇭',
+      description: 'Mountains, temples, and tropical paradise',
+      available: true,
+      destinations: ['Chiang Mai', 'Bangkok', 'Phuket', 'Krabi', 'Koh Samui', 'Ayutthaya', 'Pai', 'Kanchanaburi']
     },
     {
-      id: 'central',
-      name: 'Central Thailand',
-      icon: '🏛️',
-      description: 'Historic sites, temples, and cultural heritage',
-      destinations: ['Bangkok', 'Ayutthaya', 'Lopburi', 'Kanchanaburi', 'Erawan National Park']
+      id: 'vietnam',
+      name: 'Vietnam',
+      icon: '🇻🇳',
+      description: 'Scenic mountains, rice terraces, and rich culture',
+      available: false,
+      destinations: []
     },
     {
-      id: 'southern',
-      name: 'Southern Thailand',
-      icon: '🏝️',
-      description: 'Islands, beaches, and tropical paradise',
-      destinations: ['Phuket', 'Krabi', 'Koh Samui', 'Koh Phi Phi', 'Khao Sok National Park']
+      id: 'philippines',
+      name: 'Philippines',
+      icon: '🇵🇭',
+      description: 'Island paradise with stunning beaches',
+      available: false,
+      destinations: []
+    },
+    {
+      id: 'malaysia',
+      name: 'Malaysia',
+      icon: '🇲🇾',
+      description: 'Diverse landscapes and multicultural heritage',
+      available: false,
+      destinations: []
+    },
+    {
+      id: 'indonesia',
+      name: 'Indonesia',
+      icon: '🇮🇩',
+      description: 'Volcanic landscapes and pristine islands',
+      available: false,
+      destinations: []
+    },
+    {
+      id: 'cambodia',
+      name: 'Cambodia',
+      icon: '🇰🇭',
+      description: 'Ancient temples and jungle adventures',
+      available: false,
+      destinations: []
+    },
+    {
+      id: 'singapore',
+      name: 'Singapore',
+      icon: '🇸🇬',
+      description: 'Urban adventures and cultural fusion',
+      available: false,
+      destinations: []
+    },
+    {
+      id: 'laos',
+      name: 'Laos',
+      icon: '🇱🇦',
+      description: 'Tranquil landscapes and Buddhist heritage',
+      available: false,
+      destinations: []
     }
   ];
 
@@ -175,18 +220,19 @@ export default function PlanPage() {
   ];
 
   const steps = [
-    { id: 1, title: 'Region', icon: 'mapPin' },
-    { id: 2, title: 'Trip Type', icon: 'mountain' },
-    { id: 3, title: 'Destination', icon: 'navigation' },
-    { id: 4, title: 'Planning', icon: 'calendar' },
-    { id: 5, title: 'Preferences', icon: 'settings' },
-    { id: 6, title: 'Budget', icon: 'dollar' },
-    { id: 7, title: 'Generate', icon: 'send' }
+    { id: 1, title: 'Destination', icon: 'mapPin' },
+    { id: 2, title: 'Region', icon: 'globe' },
+    { id: 3, title: 'Trip Type', icon: 'mountain' },
+    { id: 4, title: 'Location', icon: 'navigation' },
+    { id: 5, title: 'Planning', icon: 'calendar' },
+    { id: 6, title: 'Preferences', icon: 'settings' },
+    { id: 7, title: 'Budget', icon: 'dollar' },
+    { id: 8, title: 'Generate', icon: 'send' }
   ];
 
   const getDestinationsByRegionAndType = () => {
     const region = regions.find(r => r.id === selectedRegion);
-    if (!region) return [];
+    if (!region || !region.available) return [];
     
     // Filter destinations based on trip type (simplified logic for now)
     return region.destinations;
@@ -206,12 +252,14 @@ export default function PlanPage() {
 
   const canProceed = () => {
     switch (currentStep) {
-      case 1: return selectedRegion !== "";
-      case 2: return selectedTripType !== "";
-      case 3: return selectedDestination !== "";
-      case 4: return startDate !== "" && endDate !== "" && startPlace !== "";
-      case 5: return interests.length > 0 && budgetTier !== "" && stayPref !== "" && transportPref !== "";
-      case 6: return true;
+      case 1: return hasDestination !== null;
+      case 2: return hasDestination ? customDestination !== "" : selectedRegion !== "";
+      case 3: return selectedTripType !== "";
+      case 4: return hasDestination ? true : selectedDestination !== "";
+      case 5: return startDate !== "" && endDate !== "" && startPlace !== "";
+      case 6: return interests.length > 0 && budgetTier !== "" && stayPref !== "" && transportPref !== "";
+      case 7: return true;
+      case 8: return true;
       default: return true;
     }
   };
@@ -225,9 +273,11 @@ export default function PlanPage() {
   };
 
   const generateTripJSON = async () => {
+    const finalDestination = hasDestination ? customDestination : selectedDestination;
+    
     const tripData = {
       start_place: startPlace,
-      destination: selectedDestination,
+      destination: finalDestination,
       travelDates: `${startDate} to ${endDate}`,
       duration: nights + 1,
       groupSize: hikers,
@@ -241,58 +291,31 @@ export default function PlanPage() {
     
     setGeneratedJSON(JSON.stringify(tripData, null, 2));
     
-    // Call the API with retry logic
     setIsLoading(true);
     setApiError('');
     setTripPlanResponse(null);
     
-    const MAX_RETRIES = 3;
-    const RETRY_DELAY = 2000; // 2 seconds
-    
-    for (let attempt = 1; attempt <= MAX_RETRIES; attempt++) {
-      try {
-        const controller = new AbortController();
-        const timeoutId = setTimeout(() => controller.abort(), 30000); // 30 second timeout
-        
-        const response = await fetch('https://taspol-pan-sea.hf.space/v1/generateTripPlan', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(tripData),
-          signal: controller.signal,
-        });
+    try {
+      const response = await fetch('https://taspol-pan-sea.hf.space/v1/generateTripPlan', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(tripData),
+      });
 
-        clearTimeout(timeoutId);
-
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-
-        const data = await response.json();
-        setTripPlanResponse(data);
-        setIsLoading(false);
-        return tripData; // Success - exit the function
-        
-      } catch (error) {
-        console.error(`Attempt ${attempt} failed:`, error);
-        
-        // If this is the last attempt, set the error and stop trying
-        if (attempt === MAX_RETRIES) {
-          setApiError(
-            error instanceof Error 
-              ? `Failed after ${MAX_RETRIES} attempts: ${error.message}` 
-              : `Failed to generate trip plan after ${MAX_RETRIES} attempts`
-          );
-          setIsLoading(false);
-          break;
-        }
-        
-        // Wait before retrying (exponential backoff)
-        const delay = RETRY_DELAY * Math.pow(2, attempt - 1);
-        setApiError(`Attempt ${attempt} failed, retrying in ${delay/1000} seconds...`);
-        await new Promise(resolve => setTimeout(resolve, delay));
+      if (!response.ok) {
+        console.log(`Error: ${response.status} - ${response.statusText}`);
+        throw new Error(`HTTP error! status: ${response.status}`);
       }
+
+      const data = await response.json();
+      setTripPlanResponse(data);
+    } catch (error) {
+      console.error('Error generating trip plan:', error);
+      setApiError(error instanceof Error ? error.message : 'Failed to generate trip plan');
+    } finally {
+      setIsLoading(false);
     }
     
     return tripData;
@@ -312,33 +335,139 @@ export default function PlanPage() {
         return (
           <Card className="p-8 shadow-xl">
             <div className="text-center mb-8">
-              <h2 className="text-3xl font-bold text-gray-900 mb-2">Choose Your Region</h2>
-              <p className="text-gray-600">Select the region of Thailand you&apos;d like to explore</p>
+              <h2 className="text-3xl font-bold text-gray-900 mb-2">Do you have a destination in mind?</h2>
+              <p className="text-gray-600">Let us know if you already know where you want to go</p>
             </div>
             
-            <div className="grid md:grid-cols-3 gap-6">
-              {regions.map((region) => (
-                <div
-                  key={region.id}
-                  onClick={() => setSelectedRegion(region.id)}
-                  className={`p-6 rounded-xl border-2 cursor-pointer transition-all duration-300 hover:shadow-lg ${
-                    selectedRegion === region.id
-                      ? 'border-[var(--color-primary-500)] bg-[var(--color-primary-50)] shadow-md transform scale-105'
-                      : 'border-gray-200 hover:border-[var(--color-primary-300)]'
-                  }`}
-                >
-                  <div className="text-center">
-                    <div className="text-4xl mb-3">{region.icon}</div>
-                    <h3 className="font-bold text-xl text-gray-900 mb-2">{region.name}</h3>
-                    <p className="text-gray-600 text-sm">{region.description}</p>
+            <div className="max-w-2xl mx-auto space-y-4">
+              <div
+                onClick={() => setHasDestination(true)}
+                className={`p-6 rounded-xl border-2 cursor-pointer transition-all duration-300 hover:shadow-lg ${
+                  hasDestination === true
+                    ? 'border-[var(--color-primary-500)] bg-[var(--color-primary-50)] shadow-md'
+                    : 'border-gray-200 hover:border-[var(--color-primary-300)]'
+                }`}
+              >
+                <div className="flex items-center gap-4">
+                  <div className="text-3xl">✅</div>
+                  <div>
+                    <h3 className="font-bold text-xl text-gray-900 mb-2">Yes, I have a specific destination</h3>
+                    <p className="text-gray-600">I know exactly where I want to go</p>
                   </div>
                 </div>
-              ))}
+              </div>
+
+              <div
+                onClick={() => setHasDestination(false)}
+                className={`p-6 rounded-xl border-2 cursor-pointer transition-all duration-300 hover:shadow-lg ${
+                  hasDestination === false
+                    ? 'border-[var(--color-primary-500)] bg-[var(--color-primary-50)] shadow-md'
+                    : 'border-gray-200 hover:border-[var(--color-primary-300)]'
+                }`}
+              >
+                <div className="flex items-center gap-4">
+                  <div className="text-3xl">🗺️</div>
+                  <div>
+                    <h3 className="font-bold text-xl text-gray-900 mb-2">No, help me choose</h3>
+                    <p className="text-gray-600">I want to explore different regions and find the perfect destination</p>
+                  </div>
+                </div>
+              </div>
             </div>
           </Card>
         );
 
       case 2:
+        if (hasDestination) {
+          return (
+            <Card className="p-8 shadow-xl">
+              <div className="text-center mb-8">
+                <h2 className="text-3xl font-bold text-gray-900 mb-2">Enter Your Destination</h2>
+                <p className="text-gray-600">Tell us where you'd like to go in Southeast Asia</p>
+              </div>
+              
+              <div className="max-w-2xl mx-auto">
+                <div className="mb-6">
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Destination</label>
+                  <input
+                    type="text"
+                    value={customDestination}
+                    onChange={(e) => setCustomDestination(e.target.value)}
+                    placeholder="e.g., Chiang Mai, Bali, Sapa, Palawan..."
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[var(--color-primary-500)] focus:border-transparent text-lg"
+                  />
+                </div>
+                
+                <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                  <div className="flex items-start gap-2">
+                    <Icon name="info" size={16} className="text-blue-600 mt-1" />
+                    <div className="text-sm text-blue-800">
+                      <p className="font-medium mb-1">Currently supported regions:</p>
+                      <p>🇹🇭 <strong>Thailand</strong> - Full trip planning available</p>
+                      <p className="text-blue-600 mt-2">Other Southeast Asian countries coming soon!</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </Card>
+          );
+        } else {
+          return (
+            <Card className="p-8 shadow-xl">
+              <div className="text-center mb-8">
+                <h2 className="text-3xl font-bold text-gray-900 mb-2">Choose Your Region</h2>
+                <p className="text-gray-600">Select a country in Southeast Asia to explore</p>
+              </div>
+              
+              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {regions.map((region) => (
+                  <div
+                    key={region.id}
+                    onClick={() => region.available ? setSelectedRegion(region.id) : null}
+                    className={`p-6 rounded-xl border-2 transition-all duration-300 ${
+                      region.available 
+                        ? `cursor-pointer hover:shadow-lg ${
+                            selectedRegion === region.id
+                              ? 'border-[var(--color-primary-500)] bg-[var(--color-primary-50)] shadow-md transform scale-105'
+                              : 'border-gray-200 hover:border-[var(--color-primary-300)]'
+                          }`
+                        : 'border-gray-200 bg-gray-50 cursor-not-allowed opacity-60'
+                    }`}
+                  >
+                    <div className="text-center">
+                      <div className="text-4xl mb-3">{region.icon}</div>
+                      <h3 className="font-bold text-xl text-gray-900 mb-2">{region.name}</h3>
+                      <p className="text-gray-600 text-sm mb-3">{region.description}</p>
+                      {!region.available && (
+                        <div className="bg-orange-100 text-orange-700 px-3 py-1 rounded-full text-xs font-medium">
+                          Coming Soon
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                ))}
+              </div>
+              
+              {!hasDestination && (
+                <div className="mt-8 text-center">
+                  <div className="bg-amber-50 border border-amber-200 rounded-lg p-4 max-w-2xl mx-auto">
+                    <div className="flex items-start gap-2">
+                      <Icon name="info" size={16} className="text-amber-600 mt-1" />
+                      <div className="text-sm text-amber-800">
+                        <p className="font-medium mb-1">Currently Available:</p>
+                        <p>🇹🇭 <strong>Thailand</strong> - Complete trip planning with local guides and detailed itineraries</p>
+                        <p className="mt-2 text-amber-700">🚧 Other Southeast Asian countries are coming soon! Stay tuned for Vietnam, Philippines, Malaysia, Indonesia, and Cambodia.</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )}
+            </Card>
+          );
+        }
+
+      case 3:
+      case 3:
         return (
           <Card className="p-8 shadow-xl">
             <div className="text-center mb-8">
@@ -376,34 +505,65 @@ export default function PlanPage() {
           </Card>
         );
 
-      case 3:
-        return (
-          <Card className="p-8 shadow-xl">
-            <div className="text-center mb-8">
-              <h2 className="text-3xl font-bold text-gray-900 mb-2">Choose Destination</h2>
-              <p className="text-gray-600">Pick your specific destination in {regions.find(r => r.id === selectedRegion)?.name}</p>
-            </div>
-            
-            <div className="grid md:grid-cols-2 gap-6">
-              {getDestinationsByRegionAndType().map((dest) => (
-                <div
-                  key={dest}
-                  onClick={() => setSelectedDestination(dest)}
-                  className={`p-6 rounded-xl border-2 cursor-pointer transition-all duration-300 hover:shadow-lg ${
-                    selectedDestination === dest
-                      ? 'border-[var(--color-primary-500)] bg-[var(--color-primary-50)] shadow-md'
-                      : 'border-gray-200 hover:border-[var(--color-primary-300)]'
-                  }`}
-                >
-                  <h3 className="font-bold text-lg text-gray-900 mb-2">{dest}</h3>
-                  <p className="text-gray-600 text-sm">Perfect for {tripTypes.find(t => t.id === selectedTripType)?.name.toLowerCase()}</p>
-                </div>
-              ))}
-            </div>
-          </Card>
-        );
-
       case 4:
+        if (hasDestination) {
+          return (
+            <Card className="p-8 shadow-xl">
+              <div className="text-center mb-8">
+                <h2 className="text-3xl font-bold text-gray-900 mb-2">Destination Confirmed</h2>
+                <p className="text-gray-600">Great choice! Let's plan your trip to {customDestination}</p>
+              </div>
+              
+              <div className="max-w-2xl mx-auto">
+                <div className="bg-gradient-to-r from-green-50 to-emerald-50 rounded-xl p-6 border border-green-200">
+                  <div className="text-center">
+                    <div className="text-4xl mb-4">🎯</div>
+                    <h3 className="font-bold text-xl text-gray-900 mb-2">Your Destination</h3>
+                    <p className="text-2xl font-bold text-[var(--color-primary-600)] mb-4">{customDestination}</p>
+                    <p className="text-gray-600">Perfect for {tripTypes.find(t => t.id === selectedTripType)?.name.toLowerCase()}</p>
+                  </div>
+                </div>
+                
+                <div className="mt-6 bg-blue-50 border border-blue-200 rounded-lg p-4">
+                  <div className="flex items-start gap-2">
+                    <Icon name="info" size={16} className="text-blue-600 mt-1" />
+                    <div className="text-sm text-blue-800">
+                      <p>We'll create a personalized itinerary based on your destination and preferences. Our AI will suggest the best activities, accommodations, and local experiences for your trip.</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </Card>
+          );
+        } else {
+          return (
+            <Card className="p-8 shadow-xl">
+              <div className="text-center mb-8">
+                <h2 className="text-3xl font-bold text-gray-900 mb-2">Choose Destination</h2>
+                <p className="text-gray-600">Pick your specific destination in {regions.find(r => r.id === selectedRegion)?.name}</p>
+              </div>
+              
+              <div className="grid md:grid-cols-2 gap-6">
+                {getDestinationsByRegionAndType().map((dest) => (
+                  <div
+                    key={dest}
+                    onClick={() => setSelectedDestination(dest)}
+                    className={`p-6 rounded-xl border-2 cursor-pointer transition-all duration-300 hover:shadow-lg ${
+                      selectedDestination === dest
+                        ? 'border-[var(--color-primary-500)] bg-[var(--color-primary-50)] shadow-md'
+                        : 'border-gray-200 hover:border-[var(--color-primary-300)]'
+                    }`}
+                  >
+                    <h3 className="font-bold text-lg text-gray-900 mb-2">{dest}</h3>
+                    <p className="text-gray-600 text-sm">Perfect for {tripTypes.find(t => t.id === selectedTripType)?.name.toLowerCase()}</p>
+                  </div>
+                ))}
+              </div>
+            </Card>
+          );
+        }
+
+      case 5:
         return (
           <Card className="p-8 shadow-xl">
             <div className="text-center mb-8">
@@ -659,6 +819,64 @@ export default function PlanPage() {
         );
 
       case 7:
+        return (
+          <Card className="p-8 shadow-xl">
+            <div className="text-center mb-8">
+              <h2 className="text-3xl font-bold text-gray-900 mb-2">Trip Confirmation</h2>
+              <p className="text-gray-600">Review your trip details before generating your plan</p>
+            </div>
+            
+            <div className="max-w-4xl mx-auto space-y-8">
+              {/* Trip Summary */}
+              <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl p-6 border border-blue-200">
+                <h3 className="font-bold text-lg text-gray-900 mb-4">Trip Summary</h3>
+                <div className="grid md:grid-cols-2 gap-6 text-sm">
+                  <div className="space-y-2">
+                    <div><span className="text-gray-600">From:</span> <span className="font-semibold">{startPlace}</span></div>
+                    <div><span className="text-gray-600">To:</span> <span className="font-semibold">{selectedDestination}</span></div>
+                    <div><span className="text-gray-600">Dates:</span> <span className="font-semibold">{startDate} to {endDate}</span></div>
+                    <div><span className="text-gray-600">Duration:</span> <span className="font-semibold">{nights + 1} days</span></div>
+                  </div>
+                  <div className="space-y-2">
+                    <div><span className="text-gray-600">Group Size:</span> <span className="font-semibold">{hikers} people</span></div>
+                    <div><span className="text-gray-600">Budget:</span> <span className="font-semibold">{budgetTiers.find(t => t.id === budgetTier)?.name}</span></div>
+                    <div><span className="text-gray-600">Theme:</span> <span className="font-semibold">{tripTypes.find(t => t.id === selectedTripType)?.name}</span></div>
+                    <div><span className="text-gray-600">Total Cost:</span> <span className="font-semibold">฿{((2500 + 1200 * nights + 800 + 600 * (nights + 1) + 400 + 200) * hikers).toLocaleString()}</span></div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Interests & Preferences */}
+              <div className="grid md:grid-cols-2 gap-8">
+                <div className="bg-gradient-to-r from-purple-50 to-pink-50 rounded-xl p-6 border border-purple-200">
+                  <h3 className="font-bold text-lg text-gray-900 mb-4">Your Interests</h3>
+                  <div className="flex flex-wrap gap-2">
+                    {interests.map((interest) => (
+                      <span key={interest} className="px-3 py-1 bg-white rounded-full text-sm font-medium border">
+                        {interest}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+
+                <div className="bg-gradient-to-r from-green-50 to-emerald-50 rounded-xl p-6 border border-green-200">
+                  <h3 className="font-bold text-lg text-gray-900 mb-4">Preferences</h3>
+                  <div className="space-y-2 text-sm">
+                    <div><span className="text-gray-600">Stay:</span> <span className="font-semibold">{stayPreferences.find(s => s.id === stayPref)?.name}</span></div>
+                    <div><span className="text-gray-600">Transport:</span> <span className="font-semibold">{transportPreferences.find(t => t.id === transportPref)?.name}</span></div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="bg-gradient-to-r from-orange-50 to-red-50 rounded-xl p-6 border border-orange-200 text-center">
+                <h3 className="font-bold text-lg text-gray-900 mb-2">Ready to Generate Your Plan?</h3>
+                <p className="text-gray-600">We'll match you with an expert local guide from Southeast Asia and create a detailed itinerary just for you.</p>
+              </div>
+            </div>
+          </Card>
+        );
+
+      case 8:
         return (
           <Card className="p-8 shadow-xl">
             {isLoading ? (
