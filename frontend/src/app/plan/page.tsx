@@ -670,7 +670,8 @@ export default function PlanPage() {
           </Card>
         );
 
-      case 5:
+      case 6:
+      case 6:
         return (
           <Card className="p-8 shadow-xl">
             <div className="text-center mb-8">
@@ -769,16 +770,38 @@ export default function PlanPage() {
           </Card>
         );
 
-      case 6:
+      case 7:
+      case 7:
         return (
           <Card className="p-8 shadow-xl">
             <div className="text-center mb-8">
-              <h2 className="text-3xl font-bold text-gray-900 mb-2">Budget Breakdown</h2>
-              <p className="text-gray-600">Transparent pricing for your adventure</p>
+              <h2 className="text-3xl font-bold text-gray-900 mb-2">Trip Confirmation</h2>
+              <p className="text-gray-600">Review your trip details before generating your plan</p>
             </div>
             
-            <div className="max-w-2xl mx-auto">
+            <div className="max-w-4xl mx-auto space-y-8">
+              {/* Trip Summary */}
+              <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl p-6 border border-blue-200">
+                <h3 className="font-bold text-lg text-gray-900 mb-4">Trip Summary</h3>
+                    <div className="grid md:grid-cols-2 gap-6 text-sm">
+                      <div className="space-y-2">
+                        <div><span className="text-gray-600">From:</span> <span className="font-semibold">{startPlace}</span></div>
+                        <div><span className="text-gray-600">To:</span> <span className="font-semibold">{hasDestination ? customDestination : selectedDestination}</span></div>
+                        <div><span className="text-gray-600">Dates:</span> <span className="font-semibold">{startDate} to {endDate}</span></div>
+                        <div><span className="text-gray-600">Duration:</span> <span className="font-semibold">{nights + 1} days</span></div>
+                      </div>
+                      <div className="space-y-2">
+                        <div><span className="text-gray-600">Group Size:</span> <span className="font-semibold">{hikers} people</span></div>
+                        <div><span className="text-gray-600">Budget:</span> <span className="font-semibold">{budgetTiers.find(t => t.id === budgetTier)?.name}</span></div>
+                        <div><span className="text-gray-600">Theme:</span> <span className="font-semibold">{tripTypes.find(t => t.id === selectedTripType)?.name}</span></div>
+                        <div><span className="text-gray-600">Total Cost:</span> <span className="font-semibold">฿{((2500 + 1200 * nights + 800 + 600 * (nights + 1) + 400 + 200) * hikers).toLocaleString()}</span></div>
+                      </div>
+                    </div>
+              </div>
+
+              {/* Budget Breakdown */}
               <div className="bg-gray-50 rounded-xl p-6 space-y-4">
+                <h3 className="font-bold text-lg text-gray-900 mb-4">Budget Breakdown</h3>
                 <div className="flex items-center justify-between py-3 border-b border-gray-200">
                   <span className="text-gray-600">Professional Guide (mandatory)</span>
                   <span className="font-semibold">฿2,500</span>
@@ -814,37 +837,6 @@ export default function PlanPage() {
                   <span>฿{((2500 + 1200 * nights + 800 + 600 * (nights + 1) + 400 + 200) * hikers).toLocaleString()}</span>
                 </div>
               </div>
-            </div>
-          </Card>
-        );
-
-      case 7:
-        return (
-          <Card className="p-8 shadow-xl">
-            <div className="text-center mb-8">
-              <h2 className="text-3xl font-bold text-gray-900 mb-2">Trip Confirmation</h2>
-              <p className="text-gray-600">Review your trip details before generating your plan</p>
-            </div>
-            
-            <div className="max-w-4xl mx-auto space-y-8">
-              {/* Trip Summary */}
-              <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl p-6 border border-blue-200">
-                <h3 className="font-bold text-lg text-gray-900 mb-4">Trip Summary</h3>
-                <div className="grid md:grid-cols-2 gap-6 text-sm">
-                  <div className="space-y-2">
-                    <div><span className="text-gray-600">From:</span> <span className="font-semibold">{startPlace}</span></div>
-                    <div><span className="text-gray-600">To:</span> <span className="font-semibold">{selectedDestination}</span></div>
-                    <div><span className="text-gray-600">Dates:</span> <span className="font-semibold">{startDate} to {endDate}</span></div>
-                    <div><span className="text-gray-600">Duration:</span> <span className="font-semibold">{nights + 1} days</span></div>
-                  </div>
-                  <div className="space-y-2">
-                    <div><span className="text-gray-600">Group Size:</span> <span className="font-semibold">{hikers} people</span></div>
-                    <div><span className="text-gray-600">Budget:</span> <span className="font-semibold">{budgetTiers.find(t => t.id === budgetTier)?.name}</span></div>
-                    <div><span className="text-gray-600">Theme:</span> <span className="font-semibold">{tripTypes.find(t => t.id === selectedTripType)?.name}</span></div>
-                    <div><span className="text-gray-600">Total Cost:</span> <span className="font-semibold">฿{((2500 + 1200 * nights + 800 + 600 * (nights + 1) + 400 + 200) * hikers).toLocaleString()}</span></div>
-                  </div>
-                </div>
-              </div>
 
               {/* Interests & Preferences */}
               <div className="grid md:grid-cols-2 gap-8">
@@ -875,7 +867,6 @@ export default function PlanPage() {
             </div>
           </Card>
         );
-
       case 8:
         return (
           <Card className="p-8 shadow-xl">
@@ -1041,7 +1032,7 @@ export default function PlanPage() {
                     <div className="grid md:grid-cols-2 gap-6 text-sm">
                       <div className="space-y-2">
                         <div><span className="text-gray-600">From:</span> <span className="font-semibold">{startPlace}</span></div>
-                        <div><span className="text-gray-600">To:</span> <span className="font-semibold">{selectedDestination}</span></div>
+                        <div><span className="text-gray-600">To:</span> <span className="font-semibold">{hasDestination ? customDestination : selectedDestination}</span></div>
                         <div><span className="text-gray-600">Dates:</span> <span className="font-semibold">{startDate} to {endDate}</span></div>
                         <div><span className="text-gray-600">Duration:</span> <span className="font-semibold">{nights + 1} days</span></div>
                       </div>
