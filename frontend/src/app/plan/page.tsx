@@ -63,7 +63,7 @@ export default function PlanPage() {
   const [endDate, setEndDate] = useState('');
   const [startPlace, setStartPlace] = useState('');
   const [nights, setNights] = useState(2);
-  const [hikers, setHikers] = useState(2);
+  const [travellers, setTravellers] = useState(2);
   const [interests, setInterests] = useState<string[]>([]);
   const [budgetTier, setBudgetTier] = useState('');
   const [stayPref, setStayPref] = useState('');
@@ -280,10 +280,10 @@ export default function PlanPage() {
       destination: finalDestination,
       travelDates: `${startDate} to ${endDate}`,
       duration: nights + 1,
-      groupSize: hikers,
+      groupSize: travellers,
       interests: interests,
       budgetTier: budgetTiers.find(t => t.id === budgetTier)?.name || budgetTier,
-      trip_price: (2500 + 1200 * nights + 800 + 600 * (nights + 1) + 400 + 200) * hikers,
+      trip_price: (2500 + 1200 * nights + 800 + 600 * (nights + 1) + 400 + 200) * travellers,
       stayPref: stayPreferences.find(s => s.id === stayPref)?.name || stayPref,
       transportPref: transportPreferences.find(t => t.id === transportPref)?.name || transportPref,
       theme: tripTypes.find(t => t.id === selectedTripType)?.name || selectedTripType
@@ -640,16 +640,16 @@ export default function PlanPage() {
                   <label className="block text-sm font-medium text-gray-700 mb-2">Group Size</label>
                   <div className="flex items-center gap-2">
                     <button 
-                      onClick={() => setHikers(Math.max(1, hikers - 1))}
+                      onClick={() => setTravellers(Math.max(1, travellers - 1))}
                       className="w-10 h-10 rounded-lg bg-gray-200 hover:bg-gray-300 flex items-center justify-center font-bold"
                     >
                       -
                     </button>
                     <span className="px-4 py-3 bg-gray-50 rounded-lg font-medium min-w-[120px] text-center">
-                      {hikers} hiker{hikers > 1 ? 's' : ''}
+                      {travellers} traveller{travellers > 1 ? 's' : ''}
                     </span>
                     <button 
-                      onClick={() => setHikers(hikers + 1)}
+                      onClick={() => setTravellers(travellers + 1)}
                       className="w-10 h-10 rounded-lg bg-gray-200 hover:bg-gray-300 flex items-center justify-center font-bold"
                     >
                       +
@@ -790,10 +790,10 @@ export default function PlanPage() {
                         <div><span className="text-gray-600">Duration:</span> <span className="font-semibold">{nights + 1} days</span></div>
                       </div>
                       <div className="space-y-2">
-                        <div><span className="text-gray-600">Group Size:</span> <span className="font-semibold">{hikers} people</span></div>
+                        <div><span className="text-gray-600">Group Size:</span> <span className="font-semibold">{travellers} people</span></div>
                         <div><span className="text-gray-600">Budget:</span> <span className="font-semibold">{budgetTiers.find(t => t.id === budgetTier)?.name}</span></div>
                         <div><span className="text-gray-600">Theme:</span> <span className="font-semibold">{tripTypes.find(t => t.id === selectedTripType)?.name}</span></div>
-                        <div><span className="text-gray-600">Total Cost:</span> <span className="font-semibold">฿{((2500 + 1200 * nights + 800 + 600 * (nights + 1) + 400 + 200) * hikers).toLocaleString()}</span></div>
+                        <div><span className="text-gray-600">Total Cost:</span> <span className="font-semibold">฿{((2500 + 1200 * nights + 800 + 600 * (nights + 1) + 400 + 200) * travellers).toLocaleString()}</span></div>
                       </div>
                     </div>
               </div>
@@ -832,8 +832,8 @@ export default function PlanPage() {
                 </div>
                 
                 <div className="flex items-center justify-between py-4 font-bold text-xl bg-gradient-to-r from-[var(--color-primary-600)] to-[var(--color-primary-500)] text-white rounded-lg px-4">
-                  <span>Total for {hikers} hikers</span>
-                  <span>฿{((2500 + 1200 * nights + 800 + 600 * (nights + 1) + 400 + 200) * hikers).toLocaleString()}</span>
+                  <span>Total for {travellers} travellers</span>
+                  <span>฿{((2500 + 1200 * nights + 800 + 600 * (nights + 1) + 400 + 200) * travellers).toLocaleString()}</span>
                 </div>
               </div>
 
@@ -1036,10 +1036,10 @@ export default function PlanPage() {
                         <div><span className="text-gray-600">Duration:</span> <span className="font-semibold">{nights + 1} days</span></div>
                       </div>
                       <div className="space-y-2">
-                        <div><span className="text-gray-600">Group Size:</span> <span className="font-semibold">{hikers} people</span></div>
+                        <div><span className="text-gray-600">Group Size:</span> <span className="font-semibold">{travellers} people</span></div>
                         <div><span className="text-gray-600">Budget:</span> <span className="font-semibold">{budgetTiers.find(t => t.id === budgetTier)?.name}</span></div>
                         <div><span className="text-gray-600">Theme:</span> <span className="font-semibold">{tripTypes.find(t => t.id === selectedTripType)?.name}</span></div>
-                        <div><span className="text-gray-600">Total Cost:</span> <span className="font-semibold">฿{((2500 + 1200 * nights + 800 + 600 * (nights + 1) + 400 + 200) * hikers).toLocaleString()}</span></div>
+                        <div><span className="text-gray-600">Total Cost:</span> <span className="font-semibold">฿{((2500 + 1200 * nights + 800 + 600 * (nights + 1) + 400 + 200) * travellers).toLocaleString()}</span></div>
                       </div>
                     </div>
                   </div>
