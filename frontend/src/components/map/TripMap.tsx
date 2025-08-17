@@ -2,7 +2,6 @@
 
 import { useEffect, useState, useMemo } from 'react';
 import dynamic from 'next/dynamic';
-import L from 'leaflet';
 
 // Dynamically import map components to avoid SSR issues
 const MapContainer = dynamic(() => import('react-leaflet').then(mod => mod.MapContainer), { ssr: false });
@@ -10,14 +9,6 @@ const TileLayer = dynamic(() => import('react-leaflet').then(mod => mod.TileLaye
 const Marker = dynamic(() => import('react-leaflet').then(mod => mod.Marker), { ssr: false });
 const Popup = dynamic(() => import('react-leaflet').then(mod => mod.Popup), { ssr: false });
 const Polyline = dynamic(() => import('react-leaflet').then(mod => mod.Polyline), { ssr: false });
-
-// Fix for default icons in Leaflet
-delete (L.Icon.Default.prototype as any)._getIconUrl;
-L.Icon.Default.mergeOptions({
-  iconRetinaUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-icon-2x.png',
-  iconUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-icon.png',
-  shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-shadow.png',
-});
 
 interface TripSpot {
   name: string;
@@ -51,32 +42,62 @@ const locationCoordinates: { [key: string]: [number, number] } = {
   'Phrao Night Market': [19.3665, 99.2165]
 };
 
-// Create icon factory function to ensure fresh icons
-const createIcon = (color: string) => new L.Icon({
-  iconUrl: `https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-${color}.png`,
-  shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-shadow.png',
-  iconSize: [25, 41],
-  iconAnchor: [12, 41],
-  popupAnchor: [1, -34],
-  shadowSize: [41, 41]
-});
-
 export function TripMap({ spots, timeline, currentDay = 1 }: TripMapProps) {
   const [isClient, setIsClient] = useState(false);
+  const [leafletLoaded, setLeafletLoaded] = useState(false);
+  const [L, setL] = useState<typeof import('leaflet') | null>(null);
   // progressIndex represents position along routePath: 0 = start, n = nth coordinate in routePath
   const [progressIndex, setProgressIndex] = useState(0);
 
   useEffect(() => {
     setIsClient(true);
+    
+    // Dynamically import and configure Leaflet on client side only
+    if (typeof window !== 'undefined') {
+      import('leaflet').then((leaflet) => {
+        try {
+          // Fix for default icons in Leaflet
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          delete (leaflet.Icon.Default.prototype as any)._getIconUrl;
+          leaflet.Icon.Default.mergeOptions({
+            iconRetinaUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-icon-2x.png',
+            iconUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-icon.png',
+            shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-shadow.png',
+          });
+          setL(leaflet);
+          setLeafletLoaded(true);
+        } catch (error) {
+          console.warn('Leaflet configuration error:', error);
+        }
+      });
+    }
   }, []);
 
+  // Create icon factory function to ensure fresh icons
+  const createIcon = useMemo(() => {
+    if (!leafletLoaded || !L) return null;
+    
+    return (color: string) => new L.Icon({
+      iconUrl: `https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-${color}.png`,
+      shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-shadow.png',
+      iconSize: [25, 41],
+      iconAnchor: [12, 41],
+      popupAnchor: [1, -34],
+      shadowSize: [41, 41]
+    });
+  }, [leafletLoaded, L]);
+
   // Memoize icons to prevent recreation on every render
-  const icons = useMemo(() => ({
-    start: createIcon('green'),
-    current: createIcon('red'),
-    visited: createIcon('grey'),
-    upcoming: createIcon('blue')
-  }), []);
+  const icons = useMemo(() => {
+    if (!createIcon) return null;
+    
+    return {
+      start: createIcon('green'),
+      current: createIcon('red'),
+      visited: createIcon('grey'),
+      upcoming: createIcon('blue')
+    };
+  }, [createIcon]);
 
   // Full route path: start + all spot coordinates
   const routePath: [number, number][] = useMemo(() => [
@@ -87,7 +108,7 @@ export function TripMap({ spots, timeline, currentDay = 1 }: TripMapProps) {
   // Current visible portion of path (progressive reveal)
   const visibleRoute = useMemo(() => routePath.slice(0, progressIndex + 1), [routePath, progressIndex]);
 
-  if (!isClient) {
+  if (!isClient || !leafletLoaded || !icons) {
     return (
       <div className="h-full w-full flex items-center justify-center bg-gray-100 rounded-xl">
         <div className="text-center">

@@ -70,7 +70,7 @@ export default function Home() {
         </div>
 
         {/* Scroll indicator */}
-        <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
+        <div className="absolute bottom-8 mt-5 left-1/2 transform -translate-x-1/2 animate-bounce">
           <div className="w-6 h-10 border-2 border-white/50 rounded-full flex justify-center">
             <div className="w-1 h-3 bg-white/70 rounded-full mt-2 animate-pulse"></div>
           </div>
@@ -373,7 +373,7 @@ export default function Home() {
           <div className="grid md:grid-cols-2 gap-8">
             {/* Feature 1 */}
             <ScrollReveal direction="left" delay={100}>
-              <div className="group relative bg-gradient-to-br from-emerald-500 to-teal-600 rounded-3xl p-8 text-white overflow-hidden hover:shadow-2xl transition-all duration-300 transform hover:scale-105">
+              <div className="group relative bg-gradient-to-br from-emerald-500 to-emerald-600 rounded-3xl p-8 text-white overflow-hidden hover:shadow-2xl transition-all duration-300 transform hover:scale-105">
                 <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full -mr-16 -mt-16"></div>
                 <div className="relative z-10">
                   <div className="w-16 h-16 bg-white/20 backdrop-blur-sm rounded-2xl flex items-center justify-center mb-6 group-hover:bg-white/30 transition-colors">
@@ -397,7 +397,7 @@ export default function Home() {
 
             {/* Feature 2 */}
             <ScrollReveal direction="right" delay={100}>
-              <div className="group relative bg-gradient-to-br from-blue-500 to-indigo-600 rounded-3xl p-8 text-white overflow-hidden hover:shadow-2xl transition-all duration-300 transform hover:scale-105">
+              <div className="group relative bg-gradient-to-br from-teal-500 to-teal-600 rounded-3xl p-8 text-white overflow-hidden hover:shadow-2xl transition-all duration-300 transform hover:scale-105">
                 <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full -mr-16 -mt-16"></div>
                 <div className="relative z-10">
                   <div className="w-16 h-16 bg-white/20 backdrop-blur-sm rounded-2xl flex items-center justify-center mb-6 group-hover:bg-white/30 transition-colors">
@@ -406,12 +406,12 @@ export default function Home() {
                   <h3 className="text-2xl font-bold mb-4">
                     All-in-One Booking
                   </h3>
-                  <p className="text-blue-100 leading-relaxed">
+                  <p className="text-teal-100 leading-relaxed">
                     Book guides, transport, accommodation, and equipment all in
                     one place. No more juggling between multiple platforms and
                     providers.
                   </p>
-                  <div className="mt-6 flex items-center text-blue-200 text-sm">
+                  <div className="mt-6 flex items-center text-teal-200 text-sm">
                     <span className="mr-2">🏆</span>
                     <span>Save 3+ hours per trip</span>
                   </div>
@@ -421,7 +421,7 @@ export default function Home() {
 
             {/* Feature 3 */}
             <ScrollReveal direction="left" delay={200}>
-              <div className="group relative bg-gradient-to-br from-purple-500 to-pink-600 rounded-3xl p-8 text-white overflow-hidden hover:shadow-2xl transition-all duration-300 transform hover:scale-105">
+              <div className="group relative bg-gradient-to-br from-green-600 to-green-700 rounded-3xl p-8 text-white overflow-hidden hover:shadow-2xl transition-all duration-300 transform hover:scale-105">
                 <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full -mr-16 -mt-16"></div>
                 <div className="relative z-10">
                   <div className="w-16 h-16 bg-white/20 backdrop-blur-sm rounded-2xl flex items-center justify-center mb-6 group-hover:bg-white/30 transition-colors">
@@ -430,12 +430,12 @@ export default function Home() {
                   <h3 className="text-2xl font-bold mb-4">
                     Ranger-Connected Safety
                   </h3>
-                  <p className="text-purple-100 leading-relaxed">
+                  <p className="text-green-100 leading-relaxed">
                     Your safety is our priority. Real-time location sharing with
                     park rangers, automated check-ins, and instant emergency
                     response system.
                   </p>
-                  <div className="mt-6 flex items-center text-purple-200 text-sm">
+                  <div className="mt-6 flex items-center text-green-200 text-sm">
                     <span className="mr-2">🛡️</span>
                     <span>24/7 safety monitoring</span>
                   </div>
@@ -445,7 +445,7 @@ export default function Home() {
 
             {/* Feature 4 */}
             <ScrollReveal direction="right" delay={200}>
-              <div className="group relative bg-gradient-to-br from-orange-500 to-red-600 rounded-3xl p-8 text-white overflow-hidden hover:shadow-2xl transition-all duration-300 transform hover:scale-105">
+              <div className="group relative bg-gradient-to-br from-emerald-600 to-teal-700 rounded-3xl p-8 text-white overflow-hidden hover:shadow-2xl transition-all duration-300 transform hover:scale-105">
                 <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full -mr-16 -mt-16"></div>
                 <div className="relative z-10">
                   <div className="w-16 h-16 bg-white/20 backdrop-blur-sm rounded-2xl flex items-center justify-center mb-6 group-hover:bg-white/30 transition-colors">
@@ -454,12 +454,12 @@ export default function Home() {
                   <h3 className="text-2xl font-bold mb-4">
                     Rewards & Community
                   </h3>
-                  <p className="text-orange-100 leading-relaxed">
+                  <p className="text-emerald-100 leading-relaxed">
                     Earn points for every safe adventure, share experiences with
                     fellow hikers, and unlock exclusive perks from our partner
                     network.
                   </p>
-                  <div className="mt-6 flex items-center text-orange-200 text-sm">
+                  <div className="mt-6 flex items-center text-emerald-200 text-sm">
                     <span className="mr-2">🎁</span>
                     <span>50,000+ active community members</span>
                   </div>
