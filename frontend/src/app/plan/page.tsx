@@ -511,7 +511,7 @@ export default function PlanPage() {
             <Card className="p-8 shadow-xl">
               <div className="text-center mb-8">
                 <h2 className="text-3xl font-bold text-gray-900 mb-2">Destination Confirmed</h2>
-                <p className="text-gray-600">Great choice! Let's plan your trip to {customDestination}</p>
+                <p className="text-gray-600">Great choice! Let&apos;s plan your trip to {customDestination}</p>
               </div>
               
               <div className="max-w-2xl mx-auto">
@@ -528,7 +528,7 @@ export default function PlanPage() {
                   <div className="flex items-start gap-2">
                     <Icon name="info" size={16} className="text-blue-600 mt-1" />
                     <div className="text-sm text-blue-800">
-                      <p>We'll create a personalized itinerary based on your destination and preferences. Our AI will suggest the best activities, accommodations, and local experiences for your trip.</p>
+                      <p>We&apos;ll create a personalized itinerary based on your destination and preferences. Our AI will suggest the best activities, accommodations, and local experiences for your trip.</p>
                     </div>
                   </div>
                 </div>
@@ -771,7 +771,6 @@ export default function PlanPage() {
         );
 
       case 7:
-      case 7:
         return (
           <Card className="p-8 shadow-xl">
             <div className="text-center mb-8">
@@ -862,7 +861,7 @@ export default function PlanPage() {
 
               <div className="bg-gradient-to-r from-orange-50 to-red-50 rounded-xl p-6 border border-orange-200 text-center">
                 <h3 className="font-bold text-lg text-gray-900 mb-2">Ready to Generate Your Plan?</h3>
-                <p className="text-gray-600">We'll match you with an expert local guide from Southeast Asia and create a detailed itinerary just for you.</p>
+                <p className="text-gray-600">We&apos;ll match you with an expert local guide from Southeast Asia and create a detailed itinerary just for you.</p>
               </div>
             </div>
           </Card>
