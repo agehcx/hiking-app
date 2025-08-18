@@ -601,6 +601,7 @@ export default function PlanPage() {
                   <input
                     type="date"
                     value={startDate}
+                    min={new Date().toISOString().split("T")[0]}
                     onChange={(e) => {
                       setStartDate(e.target.value);
                       setEndDate(calculateEndDate(e.target.value, nights));
