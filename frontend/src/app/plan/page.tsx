@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { Card } from '@/components/ui/Card';
 import { Button } from '@/components/ui/Button';
 import { Icon } from '@/components/ui/Icon';
+import { TripDetails } from '@/components/plan/TripDetails';
 import { tripStore } from '@/lib/store/tripStore';
 import { useRouter } from 'next/navigation';
 
@@ -20,13 +21,21 @@ interface TimelineDay {
 
 interface Spot {
   name: string;
+  latitude?: number;
+  longitude?: number;
+  lat?: number;
+  lng?: number;
   time: string;
   notes: string;
 }
 
 interface Budget {
+  transport: number;
+  entrance: number;
+  meals: number;
+  accommodation: number;
+  activities: number;
   total: number;
-  [key: string]: number;
 }
 
 interface SafetyContact {
@@ -43,15 +52,53 @@ interface Safety {
 
 interface TripPlan {
   title: string;
+  date: string;
   timeline: TimelineDay[];
   spots: Spot[];
-  budget: Budget;
-  safety: Safety;
+  budget?: Budget;
+  permits?: {
+    needed: boolean;
+    notes: string;
+    seasonal?: string;
+  };
+  safety?: Safety;
 }
 
 interface TripPlanResponse {
   tripOverview: string;
+  query_params?: {
+    start_place: string;
+    destination: string;
+    travelDates: string;
+    duration: number;
+    groupSize: number;
+    interests: string[];
+    budgetTier: string;
+    trip_price: number;
+    stayPref: string;
+    transportPref: string;
+    theme: string;
+  };
+  retrieved_data?: Array<{
+    place_id: string;
+    place_name: string;
+    score: number;
+  }>;
   trip_plan: TripPlan;
+  preparation?: {
+    overview: string;
+    items: Array<{
+      category: string;
+      items: string[];
+      notes: string;
+    }>;
+    timeline: string;
+  };
+  meta?: {
+    status: string;
+    timestamp: string;
+    attempt: number;
+  };
 }
 
 export default function PlanPage() {
@@ -315,12 +362,9 @@ export default function PlanPage() {
       const data = await response.json();
       setTripPlanResponse(data);
       
-      // Save trip plan to localStorage
+      // Save complete trip plan to localStorage with new format
       if (data && data.trip_plan) {
-        const tripId = tripStore.saveTripPlan({
-          tripOverview: data.tripOverview || '',
-          trip_plan: data.trip_plan
-        });
+        const tripId = tripStore.saveTripPlan(data);
         console.log('Trip plan saved with ID:', tripId);
       }
     } catch (error) {
@@ -1211,6 +1255,90 @@ export default function PlanPage() {
             </Button>
           </div>
         </div>
+
+        {/* Trip Results */}
+        {tripPlanResponse && (
+          <div className="mt-12">
+            <div className="text-center mb-8">
+              <h2 className="text-3xl font-bold text-gray-900 mb-2">🎉 Your Trip Plan is Ready!</h2>
+              <p className="text-lg text-gray-600">Here&apos;s your personalized adventure itinerary</p>
+            </div>
+            
+            <div className="grid lg:grid-cols-3 gap-8">
+              {/* Trip Details */}
+              <div className="lg:col-span-2">
+                <TripDetails tripData={tripPlanResponse} />
+              </div>
+              
+              {/* Quick Actions */}
+              <div className="space-y-4">
+                <Card className="p-6">
+                  <h3 className="text-xl font-bold text-gray-800 mb-4">Quick Actions</h3>
+                  <div className="space-y-3">
+                    <Button 
+                      variant="primary" 
+                      size="lg" 
+                      className="w-full px-8 py-4"
+                      onClick={() => router.push('/navigate')}
+                    >
+                      <Icon name="map" className="mr-2" />
+                      Start Navigation
+                    </Button>
+                    <Button 
+                      variant="outline" 
+                      size="lg" 
+                      className="w-full px-8 py-4"
+                      onClick={() => router.push('/chat')}
+                    >
+                      <Icon name="message-circle" className="mr-2" />
+                      Chat with AI
+                    </Button>
+                    <Button 
+                      variant="outline" 
+                      size="lg" 
+                      className="w-full px-8 py-4"
+                      onClick={() => {
+                        const dataStr = JSON.stringify(tripPlanResponse, null, 2);
+                        const dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
+                        const exportFileDefaultName = `trip-plan-${new Date().toISOString().split('T')[0]}.json`;
+                        const linkElement = document.createElement('a');
+                        linkElement.setAttribute('href', dataUri);
+                        linkElement.setAttribute('download', exportFileDefaultName);
+                        linkElement.click();
+                      }}
+                    >
+                      <Icon name="download" className="mr-2" />
+                      Export JSON
+                    </Button>
+                  </div>
+                </Card>
+                
+                <Card className="p-6 bg-green-50 border-green-200">
+                  <div className="flex items-center text-green-800 mb-2">
+                    <Icon name="check-circle" className="mr-2" />
+                    <span className="font-medium">Trip Saved!</span>
+                  </div>
+                  <p className="text-sm text-green-700">
+                    Your trip plan has been automatically saved and is ready to use in Navigation and Chat.
+                  </p>
+                </Card>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Error Display */}
+        {apiError && (
+          <div className="mt-8">
+            <Card className="p-6 bg-red-50 border-red-200">
+              <div className="flex items-center text-red-800 mb-2">
+                <Icon name="alert-circle" className="mr-2" />
+                <span className="font-medium">Error Generating Trip</span>
+              </div>
+              <p className="text-sm text-red-700">{apiError}</p>
+            </Card>
+          </div>
+        )}
       </div>
     </main>
   );

@@ -1,6 +1,6 @@
 'use client';
 
-// Types for trip data
+// Types for trip data matching the new API format
 interface Activity {
   t: string;
   detail: string;
@@ -13,15 +13,25 @@ interface TimelineDay {
 
 interface Spot {
   name: string;
+  latitude: number;
+  longitude: number;
   time: string;
   notes: string;
-  lat: number;
-  lng: number;
 }
 
 interface Budget {
+  transport: number;
+  entrance: number;
+  meals: number;
+  accommodation: number;
+  activities: number;
   total: number;
-  [key: string]: number;
+}
+
+interface Permits {
+  needed: boolean;
+  notes: string;
+  seasonal: string;
 }
 
 interface SafetyContact {
@@ -33,30 +43,79 @@ interface Safety {
   registration: string;
   checkins: string;
   sos: string;
-  contacts: Record<string, SafetyContact>;
+  contacts: {
+    ranger: SafetyContact;
+    hospital: SafetyContact;
+    police: SafetyContact;
+  };
+}
+
+interface PreparationItem {
+  category: string;
+  items: string[];
+  notes: string;
+}
+
+interface Preparation {
+  overview: string;
+  items: PreparationItem[];
+  timeline: string;
+}
+
+interface QueryParams {
+  start_place: string;
+  destination: string;
+  travelDates: string;
+  duration: number;
+  groupSize: number;
+  interests: string[];
+  budgetTier: string;
+  trip_price: number;
+  stayPref: string;
+  transportPref: string;
+  theme: string;
+}
+
+interface RetrievedData {
+  place_id: string;
+  place_name: string;
+  score: number;
 }
 
 interface TripPlan {
   title: string;
+  date: string;
   timeline: TimelineDay[];
   spots: Spot[];
   budget: Budget;
+  permits: Permits;
   safety: Safety;
 }
 
+interface Meta {
+  status: string;
+  timestamp: string;
+  attempt: number;
+}
+
 export interface TripPlanData {
-  id: string;
   tripOverview: string;
+  query_params: QueryParams;
+  retrieved_data?: RetrievedData[];
   trip_plan: TripPlan;
-  createdAt: string;
-  updatedAt: string;
+  preparation: Preparation;
+  meta?: Meta;
+  // Local storage fields
+  id?: string;
+  createdAt?: string;
+  updatedAt?: string;
 }
 
 class TripStore {
   private storageKey = 'hiking-app-trips';
 
   // Save trip plan to localStorage
-  saveTripPlan(tripPlan: Omit<TripPlanData, 'id' | 'createdAt' | 'updatedAt'>): string {
+  saveTripPlan(tripPlan: TripPlanData): string {
     if (typeof window === 'undefined') return '';
     
     const id = this.generateId();
@@ -104,9 +163,11 @@ class TripStore {
     const trips = this.getAllTrips();
     if (trips.length === 0) return null;
     
-    return trips.sort((a, b) => 
-      new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime()
-    )[0];
+    return trips.sort((a, b) => {
+      const aTime = a.updatedAt || a.createdAt || '';
+      const bTime = b.updatedAt || b.createdAt || '';
+      return new Date(bTime).getTime() - new Date(aTime).getTime();
+    })[0];
   }
 
   // Update existing trip plan
@@ -166,12 +227,22 @@ class TripStore {
     return `trip_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
   }
 
-  // Format trip plan for chat context
+  // Format trip plan for chat context with comprehensive information
   formatTripForChat(tripData: TripPlanData): string {
-    const { trip_plan, tripOverview } = tripData;
+    const { trip_plan, tripOverview, query_params, preparation } = tripData;
     
     let context = `Current Trip Plan: ${trip_plan.title}\n\n`;
     context += `Overview: ${tripOverview}\n\n`;
+    
+    // Add trip details
+    context += `Trip Details:\n`;
+    context += `- Destination: ${query_params.start_place} to ${query_params.destination}\n`;
+    context += `- Dates: ${query_params.travelDates}\n`;
+    context += `- Duration: ${query_params.duration} days\n`;
+    context += `- Group Size: ${query_params.groupSize} people\n`;
+    context += `- Budget: ${query_params.budgetTier} (฿${query_params.trip_price.toLocaleString()})\n`;
+    context += `- Theme: ${query_params.theme}\n`;
+    context += `- Interests: ${query_params.interests.join(', ')}\n\n`;
     
     // Add timeline information
     context += `Itinerary:\n`;
@@ -192,9 +263,31 @@ class TripStore {
       context += '\n';
     }
     
-    // Add budget info
+    // Add budget breakdown
     if (trip_plan.budget) {
-      context += `Budget: Total ฿${trip_plan.budget.total?.toLocaleString() || 'N/A'}\n\n`;
+      context += `Budget Breakdown:\n`;
+      context += `- Transport: ฿${trip_plan.budget.transport.toLocaleString()}\n`;
+      context += `- Accommodation: ฿${trip_plan.budget.accommodation.toLocaleString()}\n`;
+      context += `- Meals: ฿${trip_plan.budget.meals.toLocaleString()}\n`;
+      context += `- Activities: ฿${trip_plan.budget.activities.toLocaleString()}\n`;
+      context += `- Entrance Fees: ฿${trip_plan.budget.entrance.toLocaleString()}\n`;
+      context += `- Total: ฿${trip_plan.budget.total.toLocaleString()}\n\n`;
+    }
+    
+    // Add permits and safety info
+    if (trip_plan.permits && trip_plan.permits.needed) {
+      context += `Permits Required: ${trip_plan.permits.notes}\n`;
+      context += `Best Season: ${trip_plan.permits.seasonal}\n\n`;
+    }
+    
+    // Add preparation info
+    if (preparation) {
+      context += `Preparation Needed:\n`;
+      context += `${preparation.overview}\n\n`;
+      preparation.items.forEach(item => {
+        context += `${item.category}: ${item.items.join(', ')}\n`;
+        context += `Notes: ${item.notes}\n\n`;
+      });
     }
     
     return context;
