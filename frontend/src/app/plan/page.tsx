@@ -389,25 +389,25 @@ export default function PlanPage() {
     switch (currentStep) {
       case 1:
         return (
-          <Card className="p-8 shadow-xl">
+          <Card className="p-4 md:p-8 shadow-xl">
             <div className="text-center mb-8">
-              <h2 className="text-3xl font-bold text-gray-900 mb-2">Do you have a destination in mind?</h2>
+              <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-2">Do you have a destination in mind?</h2>
               <p className="text-gray-600">Let us know if you already know where you want to go</p>
             </div>
             
             <div className="max-w-2xl mx-auto space-y-4">
               <div
                 onClick={() => setHasDestination(true)}
-                className={`p-6 rounded-xl border-2 cursor-pointer transition-all duration-300 hover:shadow-lg ${
+                className={`p-4 md:p-6 rounded-xl border-2 cursor-pointer transition-all duration-300 hover:shadow-lg ${
                   hasDestination === true
                     ? 'border-[var(--color-primary-500)] bg-[var(--color-primary-50)] shadow-md'
                     : 'border-gray-200 hover:border-[var(--color-primary-300)]'
                 }`}
               >
-                <div className="flex items-center gap-4">
+                <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
                   <div className="text-3xl">✅</div>
                   <div>
-                    <h3 className="font-bold text-xl text-gray-900 mb-2">Yes, I have a specific destination</h3>
+                    <h3 className="font-bold text-lg md:text-xl text-gray-900 mb-1">Yes, I have a specific destination</h3>
                     <p className="text-gray-600">I know exactly where I want to go</p>
                   </div>
                 </div>
@@ -415,16 +415,16 @@ export default function PlanPage() {
 
               <div
                 onClick={() => setHasDestination(false)}
-                className={`p-6 rounded-xl border-2 cursor-pointer transition-all duration-300 hover:shadow-lg ${
+                className={`p-4 md:p-6 rounded-xl border-2 cursor-pointer transition-all duration-300 hover:shadow-lg ${
                   hasDestination === false
                     ? 'border-[var(--color-primary-500)] bg-[var(--color-primary-50)] shadow-md'
                     : 'border-gray-200 hover:border-[var(--color-primary-300)]'
                 }`}
               >
-                <div className="flex items-center gap-4">
+                <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
                   <div className="text-3xl">🗺️</div>
                   <div>
-                    <h3 className="font-bold text-xl text-gray-900 mb-2">No, help me choose</h3>
+                    <h3 className="font-bold text-lg md:text-xl text-gray-900 mb-1">No, help me choose</h3>
                     <p className="text-gray-600">I want to explore different regions and find the perfect destination</p>
                   </div>
                 </div>
@@ -436,9 +436,9 @@ export default function PlanPage() {
       case 2:
         if (hasDestination) {
           return (
-            <Card className="p-8 shadow-xl">
+            <Card className="p-4 md:p-8 shadow-xl">
               <div className="text-center mb-8">
-                <h2 className="text-3xl font-bold text-gray-900 mb-2">Enter Your Destination</h2>
+                <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-2">Enter Your Destination</h2>
                 <p className="text-gray-600">Tell us where you&apos;d like to go in Southeast Asia</p>
               </div>
               
@@ -449,14 +449,14 @@ export default function PlanPage() {
                     type="text"
                     value={customDestination}
                     onChange={(e) => setCustomDestination(e.target.value)}
-                    placeholder="e.g., Chiang Mai, Bali, Sapa, Palawan..."
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[var(--color-primary-500)] focus:border-transparent text-lg"
+                    placeholder="e.g., Chiang Mai, Bali, Sapa..."
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[var(--color-primary-500)] focus:border-transparent text-base md:text-lg"
                   />
                 </div>
                 
                 <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
                   <div className="flex items-start gap-2">
-                    <Icon name="info" size={16} className="text-blue-600 mt-1" />
+                    <Icon name="info" size={16} className="text-blue-600 mt-1 flex-shrink-0" />
                     <div className="text-sm text-blue-800">
                       <p className="font-medium mb-1">Currently supported regions:</p>
                       <p>🇹🇭 <strong>Thailand</strong> - Full trip planning available</p>
@@ -469,18 +469,18 @@ export default function PlanPage() {
           );
         } else {
           return (
-            <Card className="p-8 shadow-xl">
+            <Card className="p-4 md:p-8 shadow-xl">
               <div className="text-center mb-8">
-                <h2 className="text-3xl font-bold text-gray-900 mb-2">Choose Your Region</h2>
+                <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-2">Choose Your Region</h2>
                 <p className="text-gray-600">Select a country in Southeast Asia to explore</p>
               </div>
               
-              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
                 {regions.map((region) => (
                   <div
                     key={region.id}
                     onClick={() => region.available ? setSelectedRegion(region.id) : null}
-                    className={`p-6 rounded-xl border-2 transition-all duration-300 ${
+                    className={`p-4 md:p-6 rounded-xl border-2 transition-all duration-300 ${
                       region.available 
                         ? `cursor-pointer hover:shadow-lg ${
                             selectedRegion === region.id
@@ -491,8 +491,8 @@ export default function PlanPage() {
                     }`}
                   >
                     <div className="text-center">
-                      <div className="text-4xl mb-3">{region.icon}</div>
-                      <h3 className="font-bold text-xl text-gray-900 mb-2">{region.name}</h3>
+                      <div className="text-3xl md:text-4xl mb-3">{region.icon}</div>
+                      <h3 className="font-bold text-lg md:text-xl text-gray-900 mb-2">{region.name}</h3>
                       <p className="text-gray-600 text-sm mb-3">{region.description}</p>
                       {!region.available && (
                         <div className="bg-orange-100 text-orange-700 px-3 py-1 rounded-full text-xs font-medium">
@@ -508,8 +508,8 @@ export default function PlanPage() {
                 <div className="mt-8 text-center">
                   <div className="bg-amber-50 border border-amber-200 rounded-lg p-4 max-w-2xl mx-auto">
                     <div className="flex items-start gap-2">
-                      <Icon name="info" size={16} className="text-amber-600 mt-1" />
-                      <div className="text-sm text-amber-800">
+                      <Icon name="info" size={16} className="text-amber-600 mt-1 flex-shrink-0" />
+                      <div className="text-sm text-amber-800 text-left">
                         <p className="font-medium mb-1">Currently Available:</p>
                         <p>🇹🇭 <strong>Thailand</strong> - Complete trip planning with local guides and detailed itineraries</p>
                         <p className="mt-2 text-amber-700">🚧 Other Southeast Asian countries are coming soon! Stay tuned for Vietnam, Philippines, Malaysia, Indonesia, and Cambodia.</p>
@@ -523,20 +523,19 @@ export default function PlanPage() {
         }
 
       case 3:
-      case 3:
         return (
-          <Card className="p-8 shadow-xl">
+          <Card className="p-4 md:p-8 shadow-xl">
             <div className="text-center mb-8">
-              <h2 className="text-3xl font-bold text-gray-900 mb-2">Select Trip Type</h2>
+              <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-2">Select Trip Type</h2>
               <p className="text-gray-600">What kind of adventure are you looking for?</p>
             </div>
             
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
               {tripTypes.map((type) => (
                 <div
                   key={type.id}
                   onClick={() => setSelectedTripType(type.id)}
-                  className={`p-6 rounded-xl border-2 cursor-pointer transition-all duration-300 hover:shadow-lg ${
+                  className={`p-4 md:p-6 rounded-xl border-2 cursor-pointer transition-all duration-300 hover:shadow-lg ${
                     selectedTripType === type.id
                       ? 'border-[var(--color-primary-500)] bg-[var(--color-primary-50)] shadow-md transform scale-105'
                       : 'border-gray-200 hover:border-[var(--color-primary-300)]'
@@ -544,7 +543,7 @@ export default function PlanPage() {
                 >
                   <div className="text-center">
                     <div className="text-3xl mb-3">{type.icon}</div>
-                    <h3 className="font-bold text-lg text-gray-900 mb-1">{type.name}</h3>
+                    <h3 className="font-bold text-base md:text-lg text-gray-900 mb-1">{type.name}</h3>
                     <p className="text-gray-600 text-sm mb-2">{type.description}</p>
                     <span className={`px-3 py-1 rounded-full text-xs font-medium ${
                       type.difficulty === 'Beginner' ? 'bg-green-100 text-green-700' :
@@ -564,9 +563,9 @@ export default function PlanPage() {
       case 4:
         if (hasDestination) {
           return (
-            <Card className="p-8 shadow-xl">
+            <Card className="p-4 md:p-8 shadow-xl">
               <div className="text-center mb-8">
-                <h2 className="text-3xl font-bold text-gray-900 mb-2">Destination Confirmed</h2>
+                <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-2">Destination Confirmed</h2>
                 <p className="text-gray-600">Great choice! Let&apos;s plan your trip to {customDestination}</p>
               </div>
               
@@ -575,14 +574,14 @@ export default function PlanPage() {
                   <div className="text-center">
                     <div className="text-4xl mb-4">🎯</div>
                     <h3 className="font-bold text-xl text-gray-900 mb-2">Your Destination</h3>
-                    <p className="text-2xl font-bold text-[var(--color-primary-600)] mb-4">{customDestination}</p>
+                    <p className="text-2xl font-bold text-[var(--color-primary-600)] mb-4 break-words">{customDestination}</p>
                     <p className="text-gray-600">Perfect for {tripTypes.find(t => t.id === selectedTripType)?.name.toLowerCase()}</p>
                   </div>
                 </div>
                 
                 <div className="mt-6 bg-blue-50 border border-blue-200 rounded-lg p-4">
                   <div className="flex items-start gap-2">
-                    <Icon name="info" size={16} className="text-blue-600 mt-1" />
+                    <Icon name="info" size={16} className="text-blue-600 mt-1 flex-shrink-0" />
                     <div className="text-sm text-blue-800">
                       <p>We&apos;ll create a personalized itinerary based on your destination and preferences. Our AI will suggest the best activities, accommodations, and local experiences for your trip.</p>
                     </div>
@@ -593,24 +592,24 @@ export default function PlanPage() {
           );
         } else {
           return (
-            <Card className="p-8 shadow-xl">
+            <Card className="p-4 md:p-8 shadow-xl">
               <div className="text-center mb-8">
-                <h2 className="text-3xl font-bold text-gray-900 mb-2">Choose Destination</h2>
+                <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-2">Choose Destination</h2>
                 <p className="text-gray-600">Pick your specific destination in {regions.find(r => r.id === selectedRegion)?.name}</p>
               </div>
               
-              <div className="grid md:grid-cols-2 gap-6">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 md:gap-6">
                 {getDestinationsByRegionAndType().map((dest) => (
                   <div
                     key={dest}
                     onClick={() => setSelectedDestination(dest)}
-                    className={`p-6 rounded-xl border-2 cursor-pointer transition-all duration-300 hover:shadow-lg ${
+                    className={`p-4 md:p-6 rounded-xl border-2 cursor-pointer transition-all duration-300 hover:shadow-lg ${
                       selectedDestination === dest
                         ? 'border-[var(--color-primary-500)] bg-[var(--color-primary-50)] shadow-md'
                         : 'border-gray-200 hover:border-[var(--color-primary-300)]'
                     }`}
                   >
-                    <h3 className="font-bold text-lg text-gray-900 mb-2">{dest}</h3>
+                    <h3 className="font-bold text-base md:text-lg text-gray-900 mb-2">{dest}</h3>
                     <p className="text-gray-600 text-sm">Perfect for {tripTypes.find(t => t.id === selectedTripType)?.name.toLowerCase()}</p>
                   </div>
                 ))}
@@ -621,9 +620,9 @@ export default function PlanPage() {
 
       case 5:
         return (
-          <Card className="p-8 shadow-xl">
+          <Card className="p-4 md:p-8 shadow-xl">
             <div className="text-center mb-8">
-              <h2 className="text-3xl font-bold text-gray-900 mb-2">Planning Details</h2>
+              <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-2">Planning Details</h2>
               <p className="text-gray-600">Set your dates, starting point, and group preferences</p>
             </div>
             
@@ -639,7 +638,7 @@ export default function PlanPage() {
                 />
               </div>
               
-              <div className="grid md:grid-cols-2 gap-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">Start Date</label>
                   <input
@@ -664,7 +663,7 @@ export default function PlanPage() {
                 </div>
               </div>
 
-              <div className="grid md:grid-cols-2 gap-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">Duration</label>
                   <div className="flex items-center gap-2">
@@ -674,11 +673,11 @@ export default function PlanPage() {
                         setNights(newNights);
                         if (startDate) setEndDate(calculateEndDate(startDate, newNights));
                       }}
-                      className="w-10 h-10 rounded-lg bg-gray-200 hover:bg-gray-300 flex items-center justify-center font-bold"
+                      className="w-10 h-10 rounded-lg bg-gray-200 hover:bg-gray-300 flex items-center justify-center font-bold flex-shrink-0"
                     >
                       -
                     </button>
-                    <span className="px-4 py-3 bg-gray-50 rounded-lg font-medium min-w-[120px] text-center">
+                    <span className="px-4 py-3 bg-gray-50 rounded-lg font-medium w-full text-center">
                       {nights} night{nights > 1 ? 's' : ''}
                     </span>
                     <button 
@@ -687,7 +686,7 @@ export default function PlanPage() {
                         setNights(newNights);
                         if (startDate) setEndDate(calculateEndDate(startDate, newNights));
                       }}
-                      className="w-10 h-10 rounded-lg bg-gray-200 hover:bg-gray-300 flex items-center justify-center font-bold"
+                      className="w-10 h-10 rounded-lg bg-gray-200 hover:bg-gray-300 flex items-center justify-center font-bold flex-shrink-0"
                     >
                       +
                     </button>
@@ -698,16 +697,16 @@ export default function PlanPage() {
                   <div className="flex items-center gap-2">
                     <button 
                       onClick={() => setTravellers(Math.max(1, travellers - 1))}
-                      className="w-10 h-10 rounded-lg bg-gray-200 hover:bg-gray-300 flex items-center justify-center font-bold"
+                      className="w-10 h-10 rounded-lg bg-gray-200 hover:bg-gray-300 flex items-center justify-center font-bold flex-shrink-0"
                     >
                       -
                     </button>
-                    <span className="px-4 py-3 bg-gray-50 rounded-lg font-medium min-w-[120px] text-center">
+                    <span className="px-4 py-3 bg-gray-50 rounded-lg font-medium w-full text-center">
                       {travellers} traveller{travellers > 1 ? 's' : ''}
                     </span>
                     <button 
                       onClick={() => setTravellers(travellers + 1)}
-                      className="w-10 h-10 rounded-lg bg-gray-200 hover:bg-gray-300 flex items-center justify-center font-bold"
+                      className="w-10 h-10 rounded-lg bg-gray-200 hover:bg-gray-300 flex items-center justify-center font-bold flex-shrink-0"
                     >
                       +
                     </button>
@@ -716,8 +715,8 @@ export default function PlanPage() {
               </div>
 
               <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-                <div className="flex items-center gap-2">
-                  <Icon name="info" size={16} className="text-blue-600" />
+                <div className="flex items-start gap-2">
+                  <Icon name="info" size={16} className="text-blue-600 flex-shrink-0 mt-1" />
                   <span className="text-sm font-medium text-blue-800">
                     Guide is mandatory for {selectedDestination}. Local guides ensure safety and provide cultural insights.
                   </span>
@@ -728,19 +727,18 @@ export default function PlanPage() {
         );
 
       case 6:
-      case 6:
         return (
-          <Card className="p-8 shadow-xl">
+          <Card className="p-4 md:p-8 shadow-xl">
             <div className="text-center mb-8">
-              <h2 className="text-3xl font-bold text-gray-900 mb-2">Travel Preferences</h2>
+              <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-2">Travel Preferences</h2>
               <p className="text-gray-600">Tell us about your interests and preferences</p>
             </div>
             
             <div className="max-w-4xl mx-auto space-y-8">
               {/* Interests */}
               <div>
-                <h3 className="text-xl font-bold text-gray-900 mb-4">What interests you?</h3>
-                <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-3">
+                <h3 className="text-lg md:text-xl font-bold text-gray-900 mb-4">What interests you?</h3>
+                <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
                   {availableInterests.map((interest) => (
                     <button
                       key={interest}
@@ -759,13 +757,13 @@ export default function PlanPage() {
 
               {/* Budget Tier */}
               <div>
-                <h3 className="text-xl font-bold text-gray-900 mb-4">Budget Level</h3>
-                <div className="grid md:grid-cols-3 gap-6">
+                <h3 className="text-lg md:text-xl font-bold text-gray-900 mb-4">Budget Level</h3>
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 md:gap-6">
                   {budgetTiers.map((tier) => (
                     <div
                       key={tier.id}
                       onClick={() => setBudgetTier(tier.id)}
-                      className={`p-6 rounded-xl border-2 cursor-pointer transition-all duration-300 hover:shadow-lg ${
+                      className={`p-4 md:p-6 rounded-xl border-2 cursor-pointer transition-all duration-300 hover:shadow-lg ${
                         budgetTier === tier.id
                           ? 'border-[var(--color-primary-500)] bg-[var(--color-primary-50)] shadow-md'
                           : 'border-gray-200 hover:border-[var(--color-primary-300)]'
@@ -773,7 +771,7 @@ export default function PlanPage() {
                     >
                       <div className="text-center">
                         <div className="text-3xl mb-3">{tier.icon}</div>
-                        <h4 className="font-bold text-lg text-gray-900 mb-2">{tier.name}</h4>
+                        <h4 className="font-bold text-base md:text-lg text-gray-900 mb-2">{tier.name}</h4>
                         <p className="text-gray-600 text-sm">{tier.description}</p>
                       </div>
                     </div>
@@ -782,9 +780,9 @@ export default function PlanPage() {
               </div>
 
               {/* Accommodation & Transport */}
-              <div className="grid md:grid-cols-2 gap-8">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                 <div>
-                  <h3 className="text-xl font-bold text-gray-900 mb-4">Accommodation</h3>
+                  <h3 className="text-lg md:text-xl font-bold text-gray-900 mb-4">Accommodation</h3>
                   <div className="space-y-3">
                     {stayPreferences.map((stay) => (
                       <button
@@ -797,14 +795,14 @@ export default function PlanPage() {
                         }`}
                       >
                         <span className="text-2xl">{stay.icon}</span>
-                        <span className="font-medium">{stay.name}</span>
+                        <span className="font-medium text-sm md:text-base">{stay.name}</span>
                       </button>
                     ))}
                   </div>
                 </div>
 
                 <div>
-                  <h3 className="text-xl font-bold text-gray-900 mb-4">Transportation</h3>
+                  <h3 className="text-lg md:text-xl font-bold text-gray-900 mb-4">Transportation</h3>
                   <div className="space-y-3">
                     {transportPreferences.map((transport) => (
                       <button
@@ -817,7 +815,7 @@ export default function PlanPage() {
                         }`}
                       >
                         <span className="text-2xl">{transport.icon}</span>
-                        <span className="font-medium">{transport.name}</span>
+                        <span className="font-medium text-sm md:text-base">{transport.name}</span>
                       </button>
                     ))}
                   </div>
@@ -829,9 +827,9 @@ export default function PlanPage() {
 
       case 7:
         return (
-          <Card className="p-8 shadow-xl">
+          <Card className="p-4 md:p-8 shadow-xl">
             <div className="text-center mb-8">
-              <h2 className="text-3xl font-bold text-gray-900 mb-2">Trip Confirmation</h2>
+              <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-2">Trip Confirmation</h2>
               <p className="text-gray-600">Review your trip details before generating your plan</p>
             </div>
             
@@ -839,10 +837,10 @@ export default function PlanPage() {
               {/* Trip Summary */}
               <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl p-6 border border-blue-200">
                 <h3 className="font-bold text-lg text-gray-900 mb-4">Trip Summary</h3>
-                    <div className="grid md:grid-cols-2 gap-6 text-sm">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4 text-sm">
                       <div className="space-y-2">
-                        <div><span className="text-gray-600">From:</span> <span className="font-semibold">{startPlace}</span></div>
-                        <div><span className="text-gray-600">To:</span> <span className="font-semibold">{hasDestination ? customDestination : selectedDestination}</span></div>
+                        <div><span className="text-gray-600">From:</span> <span className="font-semibold break-words">{startPlace}</span></div>
+                        <div><span className="text-gray-600">To:</span> <span className="font-semibold break-words">{hasDestination ? customDestination : selectedDestination}</span></div>
                         <div><span className="text-gray-600">Dates:</span> <span className="font-semibold">{startDate} to {endDate}</span></div>
                         <div><span className="text-gray-600">Duration:</span> <span className="font-semibold">{nights + 1} days</span></div>
                       </div>
@@ -858,44 +856,44 @@ export default function PlanPage() {
               {/* Budget Breakdown */}
               <div className="bg-gray-50 rounded-xl p-6 space-y-4">
                 <h3 className="font-bold text-lg text-gray-900 mb-4">Budget Breakdown</h3>
-                <div className="flex items-center justify-between py-3 border-b border-gray-200">
+                <div className="flex items-center justify-between py-3 border-b border-gray-200 text-sm">
                   <span className="text-gray-600">Professional Guide (mandatory)</span>
                   <span className="font-semibold">฿2,500</span>
                 </div>
-                <div className="flex items-center justify-between py-3 border-b border-gray-200">
+                <div className="flex items-center justify-between py-3 border-b border-gray-200 text-sm">
                   <span className="text-gray-600">Accommodation ({nights} night{nights > 1 ? 's' : ''})</span>
                   <span className="font-semibold">฿{(1200 * nights).toLocaleString()}</span>
                 </div>
-                <div className="flex items-center justify-between py-3 border-b border-gray-200">
+                <div className="flex items-center justify-between py-3 border-b border-gray-200 text-sm">
                   <span className="text-gray-600">Transportation</span>
                   <span className="font-semibold">฿800</span>
                 </div>
-                <div className="flex items-center justify-between py-3 border-b border-gray-200">
+                <div className="flex items-center justify-between py-3 border-b border-gray-200 text-sm">
                   <span className="text-gray-600">Meals & Refreshments</span>
                   <span className="font-semibold">฿{(600 * (nights + 1)).toLocaleString()}</span>
                 </div>
-                <div className="flex items-center justify-between py-3 border-b border-gray-200">
+                <div className="flex items-center justify-between py-3 border-b border-gray-200 text-sm">
                   <span className="text-gray-600">Equipment Rental</span>
                   <span className="font-semibold">฿400</span>
                 </div>
-                <div className="flex items-center justify-between py-3 border-b border-gray-200">
+                <div className="flex items-center justify-between py-3 border-b border-gray-200 text-sm">
                   <span className="text-gray-600">Park Fees & Permits</span>
                   <span className="font-semibold">฿200</span>
                 </div>
                 
-                <div className="flex items-center justify-between py-4 font-bold text-lg bg-white rounded-lg px-4 border-2 border-[var(--color-primary-200)]">
+                <div className="flex items-center justify-between py-4 font-bold text-base md:text-lg bg-white rounded-lg px-4 border-2 border-[var(--color-primary-200)]">
                   <span>Total per person</span>
                   <span className="text-[var(--color-primary-600)]">฿{(2500 + 1200 * nights + 800 + 600 * (nights + 1) + 400 + 200).toLocaleString()}</span>
                 </div>
                 
-                <div className="flex items-center justify-between py-4 font-bold text-xl bg-gradient-to-r from-[var(--color-primary-600)] to-[var(--color-primary-500)] text-white rounded-lg px-4">
+                <div className="flex items-center justify-between py-4 font-bold text-lg md:text-xl bg-gradient-to-r from-[var(--color-primary-600)] to-[var(--color-primary-500)] text-white rounded-lg px-4">
                   <span>Total for {travellers} travellers</span>
                   <span>฿{((2500 + 1200 * nights + 800 + 600 * (nights + 1) + 400 + 200) * travellers).toLocaleString()}</span>
                 </div>
               </div>
 
               {/* Interests & Preferences */}
-              <div className="grid md:grid-cols-2 gap-8">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                 <div className="bg-gradient-to-r from-purple-50 to-pink-50 rounded-xl p-6 border border-purple-200">
                   <h3 className="font-bold text-lg text-gray-900 mb-4">Your Interests</h3>
                   <div className="flex flex-wrap gap-2">
@@ -925,12 +923,12 @@ export default function PlanPage() {
         );
       case 8:
         return (
-          <Card className="p-8 shadow-xl">
+          <Card className="p-4 md:p-8 shadow-xl">
             {isLoading ? (
               // Loading Screen
               <div className="text-center py-16">
-                <div className="inline-block animate-spin rounded-full h-16 w-16 border-b-2 border-[var(--color-primary-600)] mb-4"></div>
-                <h2 className="text-2xl font-bold text-gray-900 mb-2">Generating Your Trip Plan</h2>
+                <div className="inline-block animate-spin rounded-full h-12 w-12 md:h-16 md:w-16 border-b-2 border-[var(--color-primary-600)] mb-4"></div>
+                <h2 className="text-xl md:text-2xl font-bold text-gray-900 mb-2">Generating Your Trip Plan</h2>
                 <p className="text-gray-600 mb-8">Our AI is crafting the perfect itinerary just for you...</p>
                 <div className="max-w-md mx-auto">
                   <div className="bg-gray-200 rounded-full h-2 mb-4">
@@ -943,13 +941,13 @@ export default function PlanPage() {
               // Trip Plan Response Display
               <div className="space-y-8">
                 <div className="text-center mb-8">
-                  <h2 className="text-3xl font-bold text-gray-900 mb-2">🎉 Your Trip Plan is Ready!</h2>
-                  <p className="text-gray-600">{tripPlanResponse.trip_plan?.title}</p>
+                  <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-2">🎉 Your Trip Plan is Ready!</h2>
+                  <p className="text-gray-600 break-words">{tripPlanResponse.trip_plan?.title}</p>
                 </div>
 
                 {/* Trip Overview */}
-                <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl p-6 border border-blue-200">
-                  <h3 className="font-bold text-xl text-gray-900 mb-4 flex items-center gap-2">
+                <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl p-4 md:p-6 border border-blue-200">
+                  <h3 className="font-bold text-lg md:text-xl text-gray-900 mb-4 flex items-center gap-2">
                     <Icon name="info" size={24} className="text-[var(--color-primary-600)]" />
                     Trip Overview
                   </h3>
@@ -957,22 +955,22 @@ export default function PlanPage() {
                 </div>
 
                 {/* Timeline */}
-                <div className="bg-white rounded-xl p-6 border border-gray-200">
-                  <h3 className="font-bold text-xl text-gray-900 mb-6 flex items-center gap-2">
+                <div className="bg-white rounded-xl p-4 md:p-6 border border-gray-200">
+                  <h3 className="font-bold text-lg md:text-xl text-gray-900 mb-6 flex items-center gap-2">
                     <Icon name="calendar" size={24} className="text-[var(--color-primary-600)]" />
                     Daily Itinerary
                   </h3>
                   <div className="space-y-6">
                     {tripPlanResponse.trip_plan?.timeline?.map((day: TimelineDay) => (
-                      <div key={day.day} className="border-l-4 border-[var(--color-primary-500)] pl-6">
-                        <h4 className="font-bold text-lg text-gray-900 mb-3">Day {day.day}</h4>
+                      <div key={day.day} className="border-l-4 border-[var(--color-primary-500)] pl-4 md:pl-6">
+                        <h4 className="font-bold text-base md:text-lg text-gray-900 mb-3">Day {day.day}</h4>
                         <div className="space-y-2">
                           {day.activities?.map((activity: Activity, index: number) => (
                             <div key={index} className="flex items-start gap-3 py-2">
                               <span className="text-sm font-medium text-[var(--color-primary-600)] min-w-[60px]">
                                 {activity.t}
                               </span>
-                              <span className="text-gray-700">{activity.detail}</span>
+                              <span className="text-gray-700 text-sm md:text-base">{activity.detail}</span>
                             </div>
                           ))}
                         </div>
@@ -983,12 +981,12 @@ export default function PlanPage() {
 
                 {/* Budget Breakdown */}
                 {tripPlanResponse.trip_plan?.budget && (
-                  <div className="bg-gradient-to-r from-green-50 to-emerald-50 rounded-xl p-6 border border-green-200">
-                    <h3 className="font-bold text-xl text-gray-900 mb-4 flex items-center gap-2">
+                  <div className="bg-gradient-to-r from-green-50 to-emerald-50 rounded-xl p-4 md:p-6 border border-green-200">
+                    <h3 className="font-bold text-lg md:text-xl text-gray-900 mb-4 flex items-center gap-2">
                       <Icon name="dollar" size={24} className="text-green-600" />
                       Budget Breakdown
                     </h3>
-                    <div className="grid md:grid-cols-2 gap-4">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
                       {Object.entries(tripPlanResponse.trip_plan.budget).map(([key, value]: [string, number]) => (
                         key !== 'total' && (
                           <div key={key} className="flex justify-between items-center py-2 border-b border-green-200">
@@ -997,7 +995,7 @@ export default function PlanPage() {
                           </div>
                         )
                       ))}
-                      <div className="md:col-span-2 flex justify-between items-center py-3 border-t-2 border-green-300 font-bold text-lg">
+                      <div className="md:col-span-2 flex justify-between items-center py-3 border-t-2 border-green-300 font-bold text-base md:text-lg">
                         <span>Total:</span>
                         <span className="text-green-600">฿{tripPlanResponse.trip_plan.budget.total?.toLocaleString()}</span>
                       </div>
@@ -1007,15 +1005,15 @@ export default function PlanPage() {
 
                 {/* Key Spots */}
                 {tripPlanResponse.trip_plan?.spots && (
-                  <div className="bg-gradient-to-r from-purple-50 to-pink-50 rounded-xl p-6 border border-purple-200">
-                    <h3 className="font-bold text-xl text-gray-900 mb-4 flex items-center gap-2">
+                  <div className="bg-gradient-to-r from-purple-50 to-pink-50 rounded-xl p-4 md:p-6 border border-purple-200">
+                    <h3 className="font-bold text-lg md:text-xl text-gray-900 mb-4 flex items-center gap-2">
                       <Icon name="mapPin" size={24} className="text-purple-600" />
                       Key Destinations
                     </h3>
-                    <div className="grid md:grid-cols-2 gap-4">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                       {tripPlanResponse.trip_plan.spots.map((spot: Spot, index: number) => (
                         <div key={index} className="bg-white rounded-lg p-4 border">
-                          <h4 className="font-semibold text-gray-900 mb-2">{spot.name}</h4>
+                          <h4 className="font-semibold text-gray-900 mb-2 text-base">{spot.name}</h4>
                           <p className="text-sm text-gray-600 mb-1">Time: {spot.time}</p>
                           <p className="text-sm text-gray-700">{spot.notes}</p>
                         </div>
@@ -1026,8 +1024,8 @@ export default function PlanPage() {
 
                 {/* Safety Information */}
                 {tripPlanResponse.trip_plan?.safety && (
-                  <div className="bg-gradient-to-r from-amber-50 to-orange-50 rounded-xl p-6 border border-amber-200">
-                    <h3 className="font-bold text-xl text-gray-900 mb-4 flex items-center gap-2">
+                  <div className="bg-gradient-to-r from-amber-50 to-orange-50 rounded-xl p-4 md:p-6 border border-amber-200">
+                    <h3 className="font-bold text-lg md:text-xl text-gray-900 mb-4 flex items-center gap-2">
                       <Icon name="shield" size={24} className="text-amber-600" />
                       Safety Information
                     </h3>
@@ -1038,7 +1036,7 @@ export default function PlanPage() {
                         <p className="text-sm font-medium text-red-600">Emergency: {tripPlanResponse.trip_plan.safety.sos}</p>
                       </div>
                       {tripPlanResponse.trip_plan.safety.contacts && (
-                        <div className="grid md:grid-cols-3 gap-4 mt-4">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mt-4">
                           {Object.entries(tripPlanResponse.trip_plan.safety.contacts).map(([key, contact]: [string, SafetyContact]) => (
                             <div key={key} className="bg-white rounded-lg p-3 border">
                               <h5 className="font-semibold text-sm text-gray-900 mb-1">{contact.name}</h5>
@@ -1056,7 +1054,7 @@ export default function PlanPage() {
                   <Button 
                     variant="primary" 
                     size="lg" 
-                    className="px-8 py-4"
+                    className="px-6 py-3 md:px-8 md:py-4"
                     onClick={() => router.push('/navigate')}
                   >
                     Start Navigation
@@ -1064,7 +1062,7 @@ export default function PlanPage() {
                   <Button 
                     variant="outline" 
                     size="lg" 
-                    className="px-8 py-4"
+                    className="px-6 py-3 md:px-8 md:py-4"
                     onClick={() => router.push('/chat')}
                   >
                     Chat About Trip
@@ -1076,7 +1074,7 @@ export default function PlanPage() {
                       setTripPlanResponse(null);
                       setGeneratedJSON('');
                     }}
-                    className="px-8 py-4"
+                    className="px-6 py-3 md:px-8 md:py-4"
                   >
                     Plan Another Trip
                   </Button>
@@ -1086,7 +1084,7 @@ export default function PlanPage() {
               // Initial Step 7 Content
               <div>
                 <div className="text-center mb-8">
-                  <h2 className="text-3xl font-bold text-gray-900 mb-2">Generate Trip Plan</h2>
+                  <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-2">Generate Trip Plan</h2>
                   <p className="text-gray-600">Ready to create your personalized trip itinerary</p>
                 </div>
                 
@@ -1094,10 +1092,10 @@ export default function PlanPage() {
                   {/* Trip Summary */}
                   <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl p-6 border border-blue-200">
                     <h3 className="font-bold text-lg text-gray-900 mb-4">Trip Summary</h3>
-                    <div className="grid md:grid-cols-2 gap-6 text-sm">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4 text-sm">
                       <div className="space-y-2">
-                        <div><span className="text-gray-600">From:</span> <span className="font-semibold">{startPlace}</span></div>
-                        <div><span className="text-gray-600">To:</span> <span className="font-semibold">{hasDestination ? customDestination : selectedDestination}</span></div>
+                        <div><span className="text-gray-600">From:</span> <span className="font-semibold break-words">{startPlace}</span></div>
+                        <div><span className="text-gray-600">To:</span> <span className="font-semibold break-words">{hasDestination ? customDestination : selectedDestination}</span></div>
                         <div><span className="text-gray-600">Dates:</span> <span className="font-semibold">{startDate} to {endDate}</span></div>
                         <div><span className="text-gray-600">Duration:</span> <span className="font-semibold">{nights + 1} days</span></div>
                       </div>
@@ -1111,7 +1109,7 @@ export default function PlanPage() {
                   </div>
 
                   {/* Interests & Preferences */}
-                  <div className="grid md:grid-cols-2 gap-8">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                     <div className="bg-gradient-to-r from-purple-50 to-pink-50 rounded-xl p-6 border border-purple-200">
                       <h3 className="font-bold text-lg text-gray-900 mb-4">Your Interests</h3>
                       <div className="flex flex-wrap gap-2">
@@ -1142,9 +1140,9 @@ export default function PlanPage() {
 
                   {/* JSON Output */}
                   {generatedJSON && (
-                    <div className="bg-gray-900 rounded-xl p-6">
+                    <div className="bg-gray-900 rounded-xl p-4 md:p-6">
                       <div className="flex justify-between items-center mb-4">
-                        <h3 className="font-bold text-lg text-white">Generated Trip Data (JSON)</h3>
+                        <h3 className="font-bold text-base md:text-lg text-white">Generated Trip Data (JSON)</h3>
                         <Button
                           variant="outline"
                           size="sm"
@@ -1154,7 +1152,7 @@ export default function PlanPage() {
                           Copy JSON
                         </Button>
                       </div>
-                      <pre className="text-green-400 text-sm overflow-x-auto whitespace-pre-wrap">
+                      <pre className="text-green-400 text-xs md:text-sm overflow-x-auto whitespace-pre-wrap">
                         {generatedJSON}
                       </pre>
                     </div>
@@ -1167,7 +1165,7 @@ export default function PlanPage() {
                       size="lg" 
                       onClick={generateTripJSON}
                       disabled={isLoading}
-                      className="w-full text-lg py-4 bg-gradient-to-r from-[var(--color-primary-600)] to-[var(--color-primary-500)] hover:from-[var(--color-primary-700)] hover:to-[var(--color-primary-600)] shadow-lg"
+                      className="w-full text-base md:text-lg py-3 md:py-4 bg-gradient-to-r from-[var(--color-primary-600)] to-[var(--color-primary-500)] hover:from-[var(--color-primary-700)] hover:to-[var(--color-primary-600)] shadow-lg"
                     >
                       {isLoading ? 'Generating...' : 'Generate Trip Plan'}
                     </Button>
@@ -1188,25 +1186,25 @@ export default function PlanPage() {
       <div className="mx-auto max-w-7xl px-4">
         {/* Header */}
         <div className="mb-8 text-center">
-          <h1 className="text-4xl font-bold text-gray-900 mb-2">Plan Your Adventure</h1>
-          <p className="text-lg text-gray-600">Step-by-step planning for your perfect hiking experience</p>
+          <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-2">Plan Your Adventure</h1>
+          <p className="text-base md:text-lg text-gray-600">Step-by-step planning for your perfect hiking experience</p>
         </div>
 
         {/* Progress Steps */}
         <div className="mb-8">
           <div className="flex justify-center">
-            <div className="flex items-center space-x-4 bg-white rounded-full px-6 py-3 shadow-lg">
+            <div className="flex items-center justify-between sm:justify-center sm:space-x-4 bg-white rounded-full px-2 py-2 sm:px-6 sm:py-3 shadow-lg w-full max-w-sm sm:max-w-none sm:w-auto">
               {steps.map((step, index) => (
                 <div key={step.id} className="flex items-center">
-                  <div className={`flex items-center justify-center w-10 h-10 rounded-full transition-all duration-300 ${
+                  <div className={`flex items-center justify-center w-8 h-8 sm:w-10 sm:h-10 rounded-full transition-all duration-300 flex-shrink-0 ${
                     currentStep >= step.id 
                       ? 'bg-[var(--color-primary-600)] text-white shadow-lg' 
                       : 'bg-gray-200 text-gray-500'
                   }`}>
-                    <Icon name={step.icon} size={20} />
+                    <Icon name={step.icon} size={16} />
                   </div>
                   {index < steps.length - 1 && (
-                    <div className={`w-12 h-1 mx-2 transition-all duration-300 ${
+                    <div className={`flex-grow h-1 mx-1 sm:mx-2 transition-all duration-300 sm:w-12 ${
                       currentStep > step.id ? 'bg-[var(--color-primary-600)]' : 'bg-gray-200'
                     }`} />
                   )}
@@ -1223,18 +1221,18 @@ export default function PlanPage() {
 
         {/* Navigation */}
         <div className="flex justify-center">
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-2 sm:gap-4">
             <Button
               variant="outline"
               onClick={prevStep}
               disabled={currentStep === 1}
-              className="px-8 py-3"
+              className="px-6 py-2 sm:px-8 sm:py-3 text-sm sm:text-base"
             >
               Previous
             </Button>
             
-            <div className="text-center px-4">
-              <span className="text-sm text-gray-500">
+            <div className="text-center px-2 sm:px-4">
+              <span className="text-xs sm:text-sm text-gray-500">
                 Step {currentStep} of {steps.length}
               </span>
             </div>
@@ -1249,9 +1247,9 @@ export default function PlanPage() {
                 }
               }}
               disabled={!canProceed()}
-              className="px-8 py-3"
+              className="px-6 py-2 sm:px-8 sm:py-3 text-sm sm:text-base"
             >
-              {currentStep === steps.length ? 'Generate JSON' : 'Next'}
+              {currentStep === steps.length ? 'Generate' : 'Next'}
             </Button>
           </div>
         </div>
@@ -1260,11 +1258,11 @@ export default function PlanPage() {
         {tripPlanResponse && (
           <div className="mt-12">
             <div className="text-center mb-8">
-              <h2 className="text-3xl font-bold text-gray-900 mb-2">🎉 Your Trip Plan is Ready!</h2>
-              <p className="text-lg text-gray-600">Here&apos;s your personalized adventure itinerary</p>
+              <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-2">🎉 Your Trip Plan is Ready!</h2>
+              <p className="text-base md:text-lg text-gray-600">Here&apos;s your personalized adventure itinerary</p>
             </div>
             
-            <div className="grid lg:grid-cols-3 gap-8">
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
               {/* Trip Details */}
               <div className="lg:col-span-2">
                 <TripDetails tripData={tripPlanResponse} />
