@@ -68,8 +68,7 @@ export default function ChatbotPage() {
         messageContent = `${tripContext}\n\nUser Question: ${content}`;
       }
       
-      // const r = await fetch('https://taspol-pan-sea.hf.space/v1/basicChat', {
-      const r = await fetch("http://34.1.196.119:9000/v1/basicChat", {
+      const r = await fetch("/api/chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ message: messageContent }),

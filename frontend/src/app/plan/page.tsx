@@ -347,16 +347,13 @@ export default function PlanPage() {
     
     try {
       // const response = await fetch('https://taspol-pan-sea.hf.space/v1/generateTripPlan', {
-      const response = await fetch(
-        "http://34.1.196.119:9000/v1/generateTripPlan",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(tripData),
-        }
-      );
+      const response = await fetch("/api/plan", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(tripData),
+      });
 
       if (!response.ok) {
         console.log(`Error: ${response.status} - ${response.statusText}`);
